@@ -20,21 +20,21 @@ export const registerUser = async (req, res) => {
         return res.status(400).json(new ApiError(400,"Image is not uploaded"))
     }
 
-    const cloudPathImage = await uploadImageOnCloudinary(user_avatar_upload);
-    if(!cloudPathImage){
-        return res.status(400).json(new ApiError(400,"File is not uploaded in cloud"))
-    }
+    // const cloudPathImage = await uploadImageOnCloudinary(user_avatar_upload);
+    // if(!cloudPathImage){
+    //     return res.status(400).json(new ApiError(400,"File is not uploaded in cloud"))
+    // }
 
     const newUser = await User.create({
       userEmail,
       userFirstName,
       userLastName,
-      user_avatar:cloudPathImage,
+      user_avatar:user_avatar_upload,
       userPassword,
     });
 
     //Generate email verification token
-    const emailToken = newUser.generateEmailVerifiactionToken();
+    const emailToken = newUser.generateEmailVerificationToken();
 
     await newUser.save();
 
@@ -42,7 +42,7 @@ export const registerUser = async (req, res) => {
     await sendEmail({
       email: newUser.email,
       subject: "Verification Email",
-      mailgencontent: verificationEmailTemplate(name, emailToken.unhashedToken),
+      mailgencontent: verificationEmailTemplate(userFirstName, emailToken.unhashedToken),
     });
 
     res
