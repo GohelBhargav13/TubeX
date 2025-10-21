@@ -3,9 +3,9 @@ import path from "path"
 import fs from "fs"
 
 const s3 = new AWS.S3({
-    accessKeyId:"AKIA2NK3X7XBS4RSR24T",
-    secretAccessKey:"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",
-    region:"eu-north-1"
+    accessKeyId:process.env.S3_ACCESSID,
+    secretAccessKey:process.env.S3_SECRET_ACCESSID,
+    region:process.env.S3_REGION
 })
 
 export const uploadVideoToS3 = async (folderPath) => {
@@ -26,7 +26,7 @@ export const uploadVideoToS3 = async (folderPath) => {
 
         // upload the data on the aws s3 bucket
         const data = await s3.upload({
-            Bucket:"hls.bhargavgohel",
+            Bucket:process.env.S3_BUCKET || "",
             Key:file,
             Body:fs.readFileSync(file_path),
             ContentType: file.endsWith('.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/MP2T',

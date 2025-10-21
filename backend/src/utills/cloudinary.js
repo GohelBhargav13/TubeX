@@ -3,9 +3,9 @@ import fs from "fs";
 import path from "path";
 
 cloudinary.config({
-  cloud_name: "dgllanar3",
-  api_key: "275635841576997",
-  api_secret: "rxL-uEa6bgGv-Ks-R5R85IiZJ6Q",
+  cloud_name: process.env.CLUDINARY_CLOUD_NAME,
+  api_key:process.env.CLODINARY_APIKEY,
+  api_secret: process.env.CLODINARY_APISECRET,
 });
 
 export const uploadVideoToCloudinary = async (folderPath) => {
