@@ -1,22 +1,12 @@
-import express from "express"
-import cors from "cors"
-import videoRoutes from "./src/routes/video.routes.js"
-const app = express()
 
+import { db } from "./src/db-config/db.js";
+import app from "./app.js";
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000;
 
-app.use(express.json())
-app.use(cors({
-    origin:["http://localhost:5173","http://localhost:5174"],
-    methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
-    credentials:true
-}))
-
-app.get("/",(req,res) => {
-    res.status(200).json({ message:"Hello from the root" })
-})
-
-app.use("/video",videoRoutes)
-
-app.listen(PORT,() => console.log(`App is running on port ${PORT}`))
+// IF DB is connect then start the server
+db()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server is Running on port ${PORT}`));
+  })
+  .catch((error) => console.log(error));
