@@ -13,24 +13,24 @@ export const sendEmail = async(options) => {
     }
 });
 
-const textMail = mailGenerator.generatePlaintext(options.mailgenContent);
-const htmlMail = mailGenerator.generate(options.mailgenContent);
+const textMail = mailGenerator.generatePlaintext(options.mailgencontent);
+const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 
 // Send the mail Using Nodemailer
 
 let transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOSTNAME,
-    port: process.env.MAIL_PORT,
+    host:"smtp.gmail.com",
+    port: 587,
     secure: false,
     auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD
+        user: "gohelbhargav401@gmail.com",
+        pass: "aqknaoglmxclkvct"
     }
 });
 
 const MailOptions = {
-    from:process.env.SMTP_EMAIL,
+    from:"gohelbhargav401@gmail.com" || "",
     to:options.email,
     subject:options.subject,
     text:textMail,
@@ -60,7 +60,7 @@ export const verificationEmailTemplate = (username, verifyURL) => {
         button: {
           color: "#22BC66", // Green like in screenshot
           text: "Confirm your account",
-          link: `${process.env.FRONTEND_URL}/verify-email/${verifyURL}`,
+          link: `http://localhost:3000/api/v1/user/verify-email/${verifyURL}`,
         },
       },
       outro:

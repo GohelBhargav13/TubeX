@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
-dotenv.config()
+dotenv.config({ path:"./.env" })
 
 const app = express()
 
@@ -23,9 +23,12 @@ app.get("/",(req,res) => {
 
 // All routes
 import videoRoutes from "./src/routes/video.routes.js"
+import userRoutes from "./src/routes/user.routes.js"
+
 
 
 // middleware of the routes
 app.use("/api/v1/video",videoRoutes)
+app.use("/api/v1/user",userRoutes)
 
 export default app
