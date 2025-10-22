@@ -24,11 +24,12 @@ app.get("/",(req,res) => {
 // All routes
 import videoRoutes from "./src/routes/video.routes.js"
 import userRoutes from "./src/routes/user.routes.js"
-
+import playlistRoutes from "./src/routes/playlist.routes.js"
 
 
 // middleware of the routes
 app.use("/api/v1/video",videoRoutes)
 app.use("/api/v1/user",userRoutes)
+app.use("/api/v1/playlist",playlistRoutes)
 
 export default app

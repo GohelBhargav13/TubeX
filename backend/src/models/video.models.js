@@ -24,17 +24,17 @@ const videoSchema = new mongoose.Schema({
     },
     videoOwner:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:"Userm",
     },
     videoLikes:[
         { 
             type:mongoose.Schema.Types.ObjectId,
-            ref:"User"
+            ref:"Userm"
          }
     ],
     videoComments:[
         {
-            user:{ type: mongoose.Schema.Types.ObjectId, ref:"User" },
+            user:{ type: mongoose.Schema.Types.ObjectId, ref:"Userm" },
             comment:{ type:String, trim:true, required:[true,"Comment is Required"] },
             commentedOn:{ type:Date, default:Date.now() }
         }

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
 import { AvailableUserRole, UserRole } from "../utills/constant.js";
-import { type } from "os";
+
 
 const userSchema = new mongoose.Schema({
 

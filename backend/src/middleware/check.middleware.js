@@ -3,7 +3,9 @@ import ApiError from "../utills/api-error.js"
 
 export const checkUserRole = (availableRoles = []) => {
     return async (req,res,next) => {
-        const { id,role } = req.user
+        const { id,userRole:role } = req.user
+
+        console.log("User Roles is : ",role);
 
         const userRole = await Userm.findById(id).select("userRole")
         console.log(userRole);
