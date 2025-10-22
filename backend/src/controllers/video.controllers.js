@@ -263,4 +263,24 @@ export const deleteComment = async (req,res) => {
 
 }
 
+// delete video from platform
+export const deleteVideo = async (req,res) => {
+  const { videoId } = req.params;
 
+  try {
+
+    if(!videoId){
+      return res.status(404).json(new ApiError(404,"VideoId is required"))
+    }
+
+    // Find the video and delete
+    await Video.findByIdAndDelete(videoId)
+
+    res.status(200).json(new ApiResponse(200,"Video Deleted Successfully"))
+    
+  } catch (error) {
+    console.log("Error while deleteing video : ",error);
+    res.status(500).json(new ApiError(500,"Internal Error in deleting video"))
+  }
+
+}
