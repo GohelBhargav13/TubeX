@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { AvailableUserRole, UserRole } from "../utills/constant";
+import crypto from "crypto"
+import { AvailableUserRole, UserRole } from "../utills/constant.js";
+import { type } from "os";
 
 const userSchema = new mongoose.Schema({
 
@@ -50,6 +52,10 @@ const userSchema = new mongoose.Schema({
     EmailVerficationExpiry:{
         type:Date
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
     userVideos: [
         { 
             type:mongoose.Schema.Types.ObjectId,
@@ -67,19 +73,19 @@ const userSchema = new mongoose.Schema({
 
 // hashing the password
 userSchema.pre("save",async function(next){
-    if(!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password,10);
+    if(!this.isModified("userPassword")) return next();
+    this.userPassword = await bcrypt.hash(this.userPassword,10);
     next();
 })
 
 // compare the password function
 userSchema.methods.comparePassword = async function(password){
-    return await bcrypt.compare(password,this.password);
+    return await bcrypt.compare(password,this.userPassword);
 }
 
 // Generate the Access-Token using JWT
 userSchema.methods.generateAccessToken = function(){
-    return jwt.sign({ id:this._id,role:this.role },process.env.JWT_SECRET,
+    return jwt.sign({ id:this._id,role:this.userRole },process.env.JWT_SECRET,
         { expiresIn:process.env.JWT_EXPIRES_IN,algorithm:"HS256"})
 }
 
@@ -95,6 +101,6 @@ userSchema.methods.generateEmailVerifiactionToken = function(){
 }
 
 
-const User = mongoose.model("User",userSchema);
+const Userm = mongoose.model("Userm",userSchema);
 
-export default User
+export default Userm
