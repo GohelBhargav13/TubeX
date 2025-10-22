@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { getMe, registerUser, userLogin, verifyEmail } from "../controllers/user.controller.js";
+import { getMe, registerUser, userLogin, userLogout, verifyEmail } from "../controllers/user.controller.js";
 import { upload } from "../multer-config/multer_user_avatar.js";
 import IsLoggedIn from "../middleware/auth.middleware.js";
 
@@ -9,5 +9,6 @@ userRoutes.post("/register", upload.single("user_avatar") ,registerUser)
 userRoutes.get("/verify-email/:token",verifyEmail)
 userRoutes.post("/login",userLogin)
 userRoutes.get("/me",IsLoggedIn,getMe)
+userRoutes.get("/logout",IsLoggedIn,userLogout)
 
 export default userRoutes
