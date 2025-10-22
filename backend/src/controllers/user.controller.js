@@ -2,6 +2,7 @@ import Userm from "../models/user.models.js";
 import ApiError from "../utills/api-error.js";
 import ApiResponse from "../utills/api-response.js";
 import crypto from "crypto";
+import Video from "../models/video.models.js"
 import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
 
 export const registerUser = async (req, res) => {
@@ -171,3 +172,78 @@ export const getMe = async (req, res) => {
       .json(new ApiError(500, "Internal Error in getMe", error.message));
   }
 };
+
+// Logout Module
+export const userLogout = async (req, res) => {
+  const { id } = req.user;
+  try {
+    const user = await Userm.findById({ _id: id });
+    if (!user) {
+      return res.status(404).json(new ApiError(404, "User Not Found"));
+    }
+
+    res.cookie("accesstoken", "", {
+      httpOnly: true,
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json(new ApiResponse(200,{ message:"user Logout Successfully" }))
+
+  } catch (error) {
+    res
+      .status(500)
+      .json(
+        new ApiError(500, "Internal Error in logout", error.message)
+      );
+  }
+};
+
+// Fetch the user uploaded videos
+export const getUserVideos = async (req,res) => {
+  const { id } = req.user;
+
+  try {
+
+    if(!id){
+      return res.status(404).json(new ApiError(404,"User Id is not Found"))
+    }
+
+    const videos = await Video.find({ videoOwner:id }).select("-__v -postdAt -updatedAt")
+    // If Videos are not Available 
+    if(videos.length === 0){
+      return res.status(400).json(new ApiError(400,"No Videos Are Available"))
+    }
+
+    res.status(200).json(new ApiResponse(200,videos,"Videos Are Fetched Successfully"))
+    
+  } catch (error) {
+    console.log("Error in fetching user videos : ",error);
+    res.status(500).json(new ApiError(500,"Internal Error in fetching user videos"))
+  }
+  
+}
+
+// Fetch User where User Like video like instagram
+export const getUserLikedVideos = async () => {
+    const { id } = req.user;
+    try {
+
+      if(!id){
+        return res.status(404).json(new ApiError(404,"User Id is not Found"))
+      }
+
+      const LikedVideos = await Video.find({ videoLikes:id }).select("-__v -postdAt -updatedAt")
+      
+      // If User is not Found
+      if(LikedVideos.length === 0){
+        return res.status(404).json(new ApiError(404,"No Liked Videos Are Available"))
+      }
+
+      res.status(200).json(new ApiResponse(200,LikedVideos,"Liked Videos Are Fetched Successfully"))
+
+    } catch (error) {
+      console.log("Error in fetching user liked videos : ",error);
+      res.status(500).json(new ApiError(500,"Internal Error in fetching user liked videos"))
+    }
+}
