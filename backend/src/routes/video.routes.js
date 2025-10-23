@@ -8,7 +8,7 @@ import {  UserRole } from "../utills/constant.js";
 const videoRoutes = express.Router();
 
 
-videoRoutes.post("/upload-videos",upload.single("video"),checkUserRole([UserRole.ADMIN]),uploadVideo)  
+videoRoutes.post("/upload-videos",IsLoggedIn,upload.single("video"),checkUserRole([UserRole.ADMIN,UserRole.USER]),uploadVideo)  
 videoRoutes.get("/get-videos",getVideos)
 videoRoutes.get("/get-video/:videoId",getVideoId)
 videoRoutes.post("/video-like/:videoId",IsLoggedIn,videoLiked)
