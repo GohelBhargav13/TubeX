@@ -4,7 +4,6 @@ import { uploadVideoToS3 } from "../utills/s3.configuration.js";
 import Video from "../models/video.models.js";
 import ApiResponse from "../utills/api-response.js";
 import ApiError from "../utills/api-error.js";
-import mongoose from "mongoose";
 import Userm from "../models/user.models.js";
 
 // Upload the data and core logic is here 
@@ -60,7 +59,7 @@ export const uploadVideo = async (req, res) => {
       videoTitle,
       videoDescription,
       videoUrl: url_data[0],
-      videoOwner: new mongoose.Types.ObjectId(123456789),
+      videoOwner: req.user.id,
     });
 
     if (!newVideo) {
