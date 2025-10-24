@@ -1,13 +1,15 @@
 
 import { useEffect } from "react";
-import { useUserAuthStore } from "../store/auth.store.js"
 import { Navigate } from 'react-router-dom'
+import { useUserAuthStore } from "../store/auth.store.js"
 
 const ProtectedRoute = ({ children }) => {
-    // UserData Fetch from the store
-    const { userData,isFetching } = useUserAuthStore.getState();
 
-    if(isFetching) return <h1>Loading...</h1>
+    // UserData Fetch from the store
+    const { userData,isFetching,isChecked } = useUserAuthStore();
+
+    if(isFetching || !isChecked) return <h1>Loading...</h1>
+
     return userData ? children : <Navigate to="/login" />
 }
 
