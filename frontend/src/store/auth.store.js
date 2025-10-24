@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 export const useUserAuthStore = create((set) => ({
   userData: null,
   isFetching: false,
+  isChecked:false,
 
   setUserData: async () => {
     try {
@@ -14,9 +15,9 @@ export const useUserAuthStore = create((set) => ({
 
       // Safe access + toast
       const user = res?.data?.data || null;
-      console.log(user);
+      // console.log(user);
       
-      set({ userData: user });
+      set({ userData: user,isChecked:true });
 
       if (user) {
         return toast.success(res?.data?.message || "Data fetched successfully");
@@ -26,11 +27,12 @@ export const useUserAuthStore = create((set) => ({
 
     } catch (error) {
       console.error("Error in fetching user data:", error);
-      set({ userData: null });
+      set({ userData: null ,isChecked:true});
       toast.error("Error fetching user data");
 
     } finally {
       set({ isFetching: false });
     }
   },
+
 }));
