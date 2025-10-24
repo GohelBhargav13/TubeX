@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setUserData,userData } = useUserAuthStore.getState();
+  const { setUserData,userData } = useUserAuthStore();
 
   const navigate = useNavigate();
 
@@ -30,9 +30,7 @@ export default function LoginPage() {
         console.log("Login successful, updating Zustand store");
       await setUserData(); // fetch /user/me and set user data
         toast.success(res.data.message || "Login successful");
-        console.log(userData)
         navigate("/home");
-      return;
 
     } else {
       toast.error(res.data.message || "Login failed");
