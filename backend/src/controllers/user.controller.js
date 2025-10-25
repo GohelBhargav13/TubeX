@@ -209,7 +209,7 @@ export const getUserVideos = async (req,res) => {
       return res.status(404).json(new ApiError(404,"User Id is not Found"))
     }
 
-    const videos = await Video.find({ videoOwner:id }).select("-__v -postdAt -updatedAt")
+    const videos = await Video.find({ videoOwner:id }).select("-__v -postdAt -updatedAt").populate("videoOwner","userFirstName userLastName user_avatar");
     // If Videos are not Available 
     if(videos.length === 0){
       return res.status(400).json(new ApiError(400,"No Videos Are Available"))
@@ -225,7 +225,7 @@ export const getUserVideos = async (req,res) => {
 }
 
 // Fetch User where User Like video like instagram
-export const getUserLikedVideos = async () => {
+export const getUserLikedVideos = async (req,res) => {
     const { id } = req.user;
     try {
 
@@ -233,7 +233,7 @@ export const getUserLikedVideos = async () => {
         return res.status(404).json(new ApiError(404,"User Id is not Found"))
       }
 
-      const LikedVideos = await Video.find({ videoLikes:id }).select("-__v -postdAt -updatedAt")
+      const LikedVideos = await Video.find({ videoLikes:id }).select("-__v -postdAt -updatedAt").populate("videoOwner","userFirstName userLastName user_avatar");
       
       // If User is not Found
       if(LikedVideos.length === 0){
