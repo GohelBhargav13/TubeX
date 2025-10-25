@@ -1,15 +1,17 @@
 import React from 'react'
 import ReactPlayer from 'react-player'
 
-const VideoPlayer = ({ videoURL }) => {
+const VideoPlayer = ({ videoURL,width,height,config }) => {
   return (
     <div>
         <ReactPlayer
         src={videoURL}
-        width= {'312px'}
-        height={'200px'}
+        width= {width || '100%'}
+        height={ height ||'200px'}
         controls
         crossOrigin='undefined'
+        config={ config }
+        onError={(e) => console.log("Error in video Playing: ",e)}
          />
     </div>
   )
