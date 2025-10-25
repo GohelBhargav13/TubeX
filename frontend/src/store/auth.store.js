@@ -35,4 +35,25 @@ export const useUserAuthStore = create((set) => ({
     }
   },
 
+  userLogout: async () => {
+    try {
+
+      set({ isFetching : true })
+
+      const res = await api.get("/user/logout")
+      if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
+          toast.success(res.data.message || "Logout successful");
+          set({ userData : null})
+      }else {
+        toast.error(res.data.message || "Logout failed");
+      }
+      
+    } catch (error) {
+      set({ isFetching : false })
+      set({ userData: null })
+    }finally {
+      set({ isFetching : false })
+    }
+  }
+
 }));
