@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import VideoPlayer from "../component/VideoPlayer.jsx";
 import { Heart, MessageCircle } from "lucide-react";
 import socket from "../Server/Server.js"
+import { useNavigate } from "react-router-dom"
 
 // const videos = [
 //   {
@@ -33,6 +34,7 @@ import socket from "../Server/Server.js"
 export default function HomePage() {
   const userData = useUserAuthStore((state) => state.userData);
   const [videos, setVideos] = useState([]);
+  const naviagte = useNavigate();
 
   useEffect(() => {
     // fetch the all videos
@@ -113,7 +115,9 @@ export default function HomePage() {
                   key={idx}
                   className="min-w-[320px] bg-white rounded-lg shadow hover:shadow-md transition p-2"
                 >
+                  <div className="hover:shadow-md cursor-pointer"  onClick={() => naviagte(`/watch/${video?._id}`) }>
                   <VideoPlayer videoURL={video.videoUrl} />
+                  </div>
                   <div className="flex flex-row">
                     <img
                       src={
@@ -123,10 +127,11 @@ export default function HomePage() {
                       alt="User"
                       className="w-10 h-10 rounded-full"
                     />
-                    <h3 className="flex font-medium text-gray-800 justify-items-start">
+                      <h4 className="flex font-medium text-gray-600 justify-items-start mt-2 px-2">{ video?.videoOwner?.userFirstName }{" "}{video?.videoOwner?.userLastName}</h4>
+                  </div>
+                 <h3 className="flex font-medium text-gray-800 justify-items-start">
                       {video.videoTitle}
                     </h3>
-                  </div>
                   <p className="flex text-sm text-gray-500 justify-items-start">
                     {video.videoDescription}
                   </p>
