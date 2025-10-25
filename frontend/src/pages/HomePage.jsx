@@ -140,7 +140,7 @@ export default function HomePage() {
                   <p className="flex text-sm text-gray-500 justify-items-start">
                     {video.videoDescription}
                   </p>
-                  <div className="flex flex-row gap-4 mt-2">
+                  <div className="flex flex-row gap-3 mt-2 justify-center p-2">
                     <button className="text-sm text-gray-500 flex cursor-pointer"
                     onClick={() => handleLike(video?._id,userData?._id)}
                     >
