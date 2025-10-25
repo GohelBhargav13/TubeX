@@ -34,6 +34,7 @@ import { useNavigate } from "react-router-dom"
 export default function HomePage() {
   const userData = useUserAuthStore((state) => state.userData);
   const [videos, setVideos] = useState([]);
+  
   const naviagte = useNavigate();
 
   useEffect(() => {
@@ -113,7 +114,7 @@ export default function HomePage() {
         <div className="flex-1 overflow-y-auto p-6">
           {/* Container for padding left/right */}
           <div className="max-w-[1400px] mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Recommended</h2>
+            <h2 className="text-xl font-semibold mb-4">Learn New Things....</h2>
             <div className="flex space-x-4 overflow-x-auto pb-4">
               {videos.map((video, idx) => (
                 <div
