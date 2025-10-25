@@ -41,7 +41,7 @@ export const uploadVideo = async (req, res) => {
     });
 
     // Function for the S3 data upload
-    const url_data = await uploadVideoToS3(upload_clodinary_path);
+    const url_data = await uploadVideoToS3(upload_clodinary_path,videoTitle);
     // Print the data
     console.log("Data From the S3 : ", url_data);
 
@@ -85,7 +85,7 @@ export const uploadVideo = async (req, res) => {
 // getting all video for the home
 export const getVideos = async (req, res) => {
   try {
-    const videos = await Video.find().select("-__v -postdAt -updatedAt");
+    const videos = await Video.find().select("-__v -postdAt -updatedAt").populate("videoOwner","userFirstName userLastName user_avatar");
 
     if (videos.length === 0) {
       return res.status(400).json(new ApiError(400, "No Videos Are Available"));
@@ -112,20 +112,22 @@ export const getVideoId = async (req, res) => {
 
     const video = await Video.findById(videoId).select(
       "-__v -postdAt -updatedAt"
-    );
+    ).populate("videoOwner","userFirstName userLastName user_avatar");
 
     if (!video) {
       return res.status(400).json(new ApiError(400, "Video is Not Found Yet"));
     }
 
+    const userInfoComments = await video.populate("videoComments.user","userFirstName userLastName user_avatar");
+
     res
       .status(200)
-      .json(new ApiResponse(200, video, "Video is fetched Successfully"));
+      .json(new ApiResponse(200, { video,userInfoComments }, "Video is fetched Successfully"));
   } catch (error) {
     console.log("Error in fetch the video by ID : ", error);
     res
       .status(500)
-      .json(new ApiError(500, "Internal Error in fetching video by ID", err));
+      .json(new ApiError(500, "Internal Error in fetching video by ID", error));
   }
 };
 
@@ -215,6 +217,8 @@ export const videoComment = async (req, res) => {
     // Add the Comment of the user
     video.videoComments.push({ user:id,comment })
     await video.save()
+
+    // const userInfo = await video.populate("videoComments.user","userFirstName userLastName user_avatar");
 
     res.status(200).json(new ApiResponse(200,{ orginalVideo:video,CommentCount:video.videoComments.length },"Comment Added"))
 
