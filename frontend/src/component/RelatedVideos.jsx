@@ -20,7 +20,7 @@ const RelatedVideos = ({ videoId }) => {
 
     fetchAllVideos();   
 
-  }, [relatedVideos]);
+  }, []);
 
   return (
     <>
