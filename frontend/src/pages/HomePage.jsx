@@ -61,6 +61,11 @@ export default function HomePage() {
       if(userData?._id === userId && message) toast.success(message)
     })
 
+    socket.on("VideoCommentUpdated", ({ New_Comment,commentCount,userId,videoId,message,commentId }) => {
+      // update the comment count
+      setVideos((prevVideos) => prevVideos.map((video) => video?._id === videoId ? { ...video,VideoCommentsLike:commentCount } : video))
+    })
+
     // listen Error from socket
     socket.on("ErrorInSocket", ({message}) => {
       toast.error(message)
@@ -142,7 +147,7 @@ export default function HomePage() {
                       <Heart /> { typeof video?.VideoLikes === "number" ? video?.VideoLikes : video?.videoLikes.length }
                     </button>
                     <p className="text-sm text-gray-500 flex">
-                      <MessageCircle height={22} /> {video.videoComments.length}
+                      <MessageCircle height={22} /> {video?.VideoCommentsLike || video?.videoComments?.length}
                     </p>
                   </div>
                 </div>

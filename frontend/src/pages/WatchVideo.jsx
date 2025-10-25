@@ -7,6 +7,8 @@ import SideBar from '../component/SideBar.jsx'
 import { useUserAuthStore } from "../store/auth.store.js"
 import VideoPlayer from '../component/VideoPlayer.jsx'
 import CommentSection from '../component/CommentSection.jsx'
+import socket from '../Server/Server.js'
+import RelatedVideos from '../component/RelatedVideos.jsx'
 
 const WatchVideo = () => {
     
@@ -14,15 +16,7 @@ const WatchVideo = () => {
     const { videoId } = useParams();
      const { userData } = useUserAuthStore();
 
-    const mainVideo = "https://www.w3schools.com/html/mov_bbb.mp4";
-
-  const relatedVideos = [
-    { id: 1, title: "Video 1", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    { id: 2, title: "Video 2", url: "https://www.w3schools.com/html/movie.mp4" },
-    { id: 3, title: "Video 3", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-  ];
-
-  const [currentVideo, setCurrentVideo] = useState(mainVideo);
+     console.log("Video Details : ",videoDetails)
 
     useEffect(() => {
         // check if videoId is not available
@@ -50,7 +44,30 @@ const WatchVideo = () => {
         }
         fetchVideo(videoId)  
 
+        socket.on("VideoLikeUpdated",({ LikeCounts,message,userId,videoId:updatedId }) => {
+            // console.log({  LikeCounts,message,userId,videoId })
+           setVideoDetails((prevVideo) => prevVideo?._id === updatedId ? {...prevVideo, LikeCounts} : prevVideo )
+           if(userData?._id === userId && message) toast.success(message || "Video Liked Successfully")
+        })
+
+        socket.on("VideoCommentUpdated", ({ New_Comment,commentCount,userId,videoId:updatedId,message }) => {
+            setVideoDetails((prevVideo) => prevVideo?._id === updatedId  ? { ...prevVideo, CommentCounts:commentCount, videoComments: [...(prevVideo?.videoComments || []), New_Comment],} : prevVideo)
+        })
+
+  
+        socket.on("ErrorInSocket", ({ message }) => toast.error(message))
+
+       return () => {
+        socket.off("VideoCommentUpdated")
+        socket.off("ErrorInSocket")
+        socket.off("VideoLikeUpdated")
+       }
+
     },[videoId])
+
+    const handleLikes = (videoId) => {
+      socket.emit("likePost", { videoId,userId:userData?._id })
+    }
 
   return (
     <>
@@ -94,13 +111,15 @@ const WatchVideo = () => {
             </div>
             {/* Like/Dislike/Share Buttons Placeholder */}
             <div className='flex items-center space-x-5'>
-                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'>
+                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'
+                onClick={() => handleLikes(videoDetails?._id,userData?._id)}
+                >
                     <span className="text-xl"><ThumbsUp /></span>
-                    <span className='font-medium'>{ videoDetails?.videoLikes?.length }</span>
+                    <span className='font-medium'>{ videoDetails?.LikeCounts ?? videoDetails?.videoLikes?.length ?? 0}</span>
                 </button>
                 <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'>
                     <span className="text-xl"><MessageCircle /></span>
-                    <span className='font-medium'>{ videoDetails?.videoComments?.length }</span>
+                    <span className='font-medium'>{videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0}</span>
                 </button>
                 {/* <button className='font-medium hover:text-red-600 transition'>SHARE</button> */}
             </div>
@@ -121,7 +140,7 @@ const WatchVideo = () => {
                             {videoDetails?.videoOwner?.userFirstName} {videoDetails?.videoOwner?.userLastName}
                         </p>
                         <p className="text-xs text-gray-600">
-                            {videoDetails?.videoComments?.length} comments
+                            {videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0} comments
                         </p>
                     </div>
                 </div>
@@ -140,36 +159,18 @@ const WatchVideo = () => {
 
         {/* Comments Section Placeholder */}
         <div className="mt-6">
-            <CommentSection comments={videoDetails?.videoComments} />
+            <CommentSection comments={videoDetails?.videoComments} userInfo={userData} videoId={videoId} />
         </div>
 
       </div>
 
       {/* Right Sidebar / Related Videos - YouTube's standard related videos column */}
       {/* Keeping w-1/4, which is appropriate for a related videos column */}
-      <div className="w-1/4 bg-white p-4 space-y-3 overflow-y-auto border-l border-gray-100">
+      <div className="w-1/4 bg-white p-4 space-y-3 overflow-y-auto border-l border-gray-100 flex-col justify-items-center">
         <h2 className="font-bold text-lg mb-4 text-gray-900">Related</h2>
         
-        {relatedVideos.map((video) => (
-          <div
-            key={video.id}
-            className="cursor-pointer hover:bg-gray-100 p-2 rounded-lg flex space-x-3"
-            onClick={() => setCurrentVideo(video.url)}
-          >
-            {/* Video Info */}
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-gray-900 line-clamp-2">
-                {video.title}
-              </p>
-              <p className="text-xs text-gray-600 mt-1">
-                {video.channel}
-              </p>
-              <p className="text-xs text-gray-500">
-                200K views • 1 week ago
-              </p>
-            </div>
-          </div>
-        ))}
+        <RelatedVideos videoId={videoId} />
+      
       </div>
     </div>
     </>
