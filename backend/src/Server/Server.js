@@ -1,7 +1,7 @@
 import { Server } from "socket.io"
 import app from "../../app.js"
 import http from "http"
-import { likeVideo } from "../API/video.api.js"
+import { commentVideo, likeVideo } from "../API/video.api.js"
 
 export const server = http.createServer(app)
 
@@ -20,6 +20,10 @@ io.on("connection",(socket) => {
     socket.on("likePost", async ({ videoId,userId }) => {
         // console.log("Receving Like Event : ",videoId,userId)
         await likeVideo(videoId,userId,socket)
+    })
+
+    socket.on("commentPost", async ({ comment,commentId,userId,videoId }) => {
+        await commentVideo(comment,userId,videoId,socket)
     })
 
 
