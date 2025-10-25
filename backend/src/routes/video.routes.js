@@ -9,8 +9,8 @@ const videoRoutes = express.Router();
 
 
 videoRoutes.post("/upload-videos",IsLoggedIn,upload.single("video"),checkUserRole([UserRole.ADMIN,UserRole.USER]),uploadVideo)  
-videoRoutes.get("/get-videos",getVideos)
-videoRoutes.get("/get-video/:videoId",getVideoId)
+videoRoutes.get("/get-videos",IsLoggedIn,getVideos)
+videoRoutes.get("/get-video/:videoId",IsLoggedIn,getVideoId)
 videoRoutes.post("/video-like/:videoId",IsLoggedIn,videoLiked)
 videoRoutes.post("/video-comment/:videoId",IsLoggedIn,videoComment)
 videoRoutes.delete("/video-comment-delete/:videoId",IsLoggedIn,deleteComment)
