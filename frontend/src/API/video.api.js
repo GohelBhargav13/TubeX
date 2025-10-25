@@ -31,3 +31,40 @@ export const getVideoById = async(videoId) => {
         return null
     }
 }
+
+// User Liked Videos
+export const userLikedVideos = async () => {
+    try {
+
+        const res = await api.get("/user/get-liked-videos");
+
+        // check the statusCode is 200 or not
+        if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
+            return { data:res.data.data, message:res.data.message, success:res.data.success }            
+        }else{
+            return { data:null, messgae:res.data.Message, success:res.data.success }
+        }
+        
+    } catch (error) {
+        console.log("Error while fetching user liked videos of User : ",error);
+        return
+    }
+}
+
+// Fetch users Videos they upload on portal
+export const userVideos = async() => {
+    try {
+
+       const res = await api.get("/user/user-videos")
+       console.log("User Videos data is : ",res.data.data);
+
+       if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
+            return { data:res.data.data, message:res.data.message, success:res.data.success }        
+       }else {
+        return { data:null, message:res.data.Message, success:res.data.success }
+       }
+        
+    } catch (error) {
+         console.log("Error while fetching user videos of User : ",error);
+    }
+}
