@@ -5,7 +5,7 @@ import SideBar from "../component/SideBar.jsx";
 import { getAllVideos } from "../API/video.api.js";
 import toast from "react-hot-toast";
 import VideoPlayer from "../component/VideoPlayer.jsx";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, Loader2, MessageCircle, ThumbsUp } from "lucide-react";
 import socket from "../Server/Server.js";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +34,8 @@ import { useNavigate } from "react-router-dom";
 export default function HomePage() {
   const userData = useUserAuthStore((state) => state.userData);
   const [videos, setVideos] = useState([]);
+  const [fetchingVideos, setFetchingVideos] = useState(false)
+  const [newCommentCount, setNewCommentCount] = useState(0)
 
   const naviagte = useNavigate();
 
@@ -41,8 +43,10 @@ export default function HomePage() {
     // fetch the all videos
     const fetchVideo = async () => {
       try {
+        setFetchingVideos(true);
+
         const res = await getAllVideos();
-        if (res.data !== null) {
+        if (res?.data !== null) {
           setVideos(res.data);
           toast.success(res.message || "Videos fetched successfully");
           return;
@@ -50,7 +54,11 @@ export default function HomePage() {
           toast.error(res.message || "Videos Can't Fetched");
         }
       } catch (error) {
+        setFetchingVideos(false)
         console.log("Error in fetching all videos : ", error);
+      }finally {
+        setFetchingVideos(false);
+
       }
     };
     fetchVideo();
@@ -85,6 +93,10 @@ export default function HomePage() {
       }
     );
 
+    socket.on("VideoCommentDeleted",({ commentId,userId,videoID, message, success, r_comments, commentCounts }) =>{
+      setNewCommentCount(commentCounts)
+    })
+
     // listen Error from socket
     socket.on("ErrorInSocket", ({ message }) => {
       toast.error(message);
@@ -92,6 +104,8 @@ export default function HomePage() {
 
     return () => {
       socket.off("VideoLikeUpdated");
+      socket.off("VideoCommentUpdated")
+      socket.off("VideoCommentDeleted")
       socket.off("ErrorInSocket");
     };
   }, []);
@@ -102,6 +116,14 @@ export default function HomePage() {
     // console.log("Like Event Triggered")
     socket.emit("likePost", { videoId, userId });
   };
+
+  if(fetchingVideos){
+    return (
+      <div className="flex items-center justify-center h-screen">
+          <Loader2  className="animate-spin"/>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -162,11 +184,11 @@ export default function HomePage() {
                       </h4>
                     </div>
 
-                    <h3 className="mt-2 font-medium text-gray-800">
+                    <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
                       {video.videoTitle}
                     </h3>
-                    <p className="text-sm text-gray-500">
-                      {video.videoDescription}
+                    <p className="text-sm text-gray-500 flex justify-items-center">
+                     {video?.videoDescription?.length > 35 ? video?.videoDescription?.slice(0,35) + "..." : video?.videoDescription + "..."}
                     </p>
 
                     <div className="flex flex-row gap-3 mt-2 justify-center items-center">
@@ -174,14 +196,14 @@ export default function HomePage() {
                         className="text-sm text-gray-500 flex items-center cursor-pointer"
                         onClick={() => handleLike(video?._id, userData?._id)}
                       >
-                        <Heart className="mr-1" />{" "}
+                        <ThumbsUp className="mr-1" />{" "}
                         {typeof video?.VideoLikes === "number"
                           ? video?.VideoLikes
                           : video?.videoLikes.length}
                       </button>
                       <p className="text-sm text-gray-500 flex items-center">
                         <MessageCircle className="mr-1" height={22} />{" "}
-                        {video?.VideoCommentsLike ||
+                        { newCommentCount || video?.VideoCommentsLike ||
                           video?.videoComments?.length}
                       </p>
                     </div>

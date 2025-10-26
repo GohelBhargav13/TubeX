@@ -13,6 +13,8 @@ import RelatedVideos from '../component/RelatedVideos.jsx'
 const WatchVideo = () => {
     
     const [videoDetails, setVideoDetails] = useState({})
+    const [newCommentCount, setNewCommentCount] = useState(0)
+
     const { videoId } = useParams();
      const { userData } = useUserAuthStore();
 
@@ -52,9 +54,13 @@ const WatchVideo = () => {
 
         socket.on("VideoCommentUpdated", ({ New_Comment,commentCount,userId,videoId:updatedId,message }) => {
             setVideoDetails((prevVideo) => prevVideo?._id === updatedId  ? { ...prevVideo, CommentCounts:commentCount, videoComments: [...(prevVideo?.videoComments || []), New_Comment],} : prevVideo)
+            setNewCommentCount(commentCount)
         })
 
-  
+        socket.on("deleteCommentUpdate", ({ commentId,userId,videoID,message, success,r_comments,commentCounts }) => {
+            setNewCommentCount(commentCounts)
+        })
+
         socket.on("ErrorInSocket", ({ message }) => toast.error(message))
 
        return () => {
@@ -122,7 +128,7 @@ const WatchVideo = () => {
                 </button>
                 <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'>
                     <span className="text-xl"><MessageCircle /></span>
-                    <span className='font-medium'>{videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0}</span>
+                    <span className='font-medium'>{ newCommentCount ?? videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0}</span>
                 </button>
                 {/* <button className='font-medium hover:text-red-600 transition'>SHARE</button> */}
             </div>
@@ -143,7 +149,7 @@ const WatchVideo = () => {
                             {videoDetails?.videoOwner?.userFirstName} {videoDetails?.videoOwner?.userLastName}
                         </p>
                         <p className="text-xs text-gray-600">
-                            {videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0} comments
+                            { newCommentCount ?? videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0} comments
                         </p>
                     </div>
                 </div>
@@ -170,7 +176,7 @@ const WatchVideo = () => {
       {/* Right Sidebar / Related Videos - YouTube's standard related videos column */}
       {/* Keeping w-1/4, which is appropriate for a related videos column */}
       <div className="w-1/4 bg-white p-4 space-y-3 overflow-y-auto border-l border-gray-100 flex-col justify-items-center">
-        <h2 className="font-bold text-lg mb-4 text-gray-900">Related</h2>
+        <h2 className="font-bold text-lg mb-4 text-gray-900">Related Videos</h2>
         
         <RelatedVideos videoId={videoId} />
       

@@ -19,11 +19,11 @@ const UserVideos = () => {
          const res =  await userVideos()
          console.log("User videos are : ", res?.data)
 
-        if(res?.data?.StatusCode === 404) return setLikedVideos([])
+        if(res?.data?.StatusCode === 404 || res?.data === undefined) return setUserVideos([])
 
         // set first all videos than filter
         if(res?.data !== null || res?.data?.length > 0 || res?.data !== undefined){
-             setLikedVideos(res?.data);
+             setUserVideos(res?.data);
         }
 
       } catch (error) {
