@@ -71,6 +71,22 @@ const WatchVideo = () => {
 
   return (
     <>
+     {/* Header */}
+        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
+          <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+          <div className="flex items-center space-x-4">
+            <p className="font-medium">
+              {userData?.userFirstName} {userData?.userLastName}
+            </p>
+            <img
+              src={
+                userData?.user_avatar || "https://via.placeholder.com/320x180"
+              }
+              alt="User"
+              className="w-10 h-10 rounded-full"
+            />
+          </div>
+        </div>
    <div className="flex min-h-screen bg-white">
       {/* Left Sidebar - YouTube's main navigation */}
       {/* Keeping w-1/5 as per your original structure, though YouTube's is often narrower */}
@@ -78,20 +94,7 @@ const WatchVideo = () => {
 
       {/* Center Main Video and Details */}
       <div className="flex-1 p-6 overflow-y-auto flex flex-col max-w-[calc(100%-25%)]">
-        
-        {/* Top Bar - Keeping your original top bar for the site header/user profile */}
-        <div className="h-10 bg-white flex items-center justify-between px-0 mb-4">
-          <h1 className="text-2xl font-bold text-red-600">TubeX</h1>
-          <div className="flex items-center space-x-4">
-            <p className="font-medium text-sm">{userData?.userFirstName} {userData?.userLastName}</p>
-            <img
-              src={userData?.user_avatar || "https://placehold.co/600x400/png"}
-              alt="User"
-              className="w-10 h-10 rounded-full cursor-pointer"
-            />
-          </div>
-        </div>
-        
+              
         {/* Video Player - Adjusted height for a more standard aspect ratio */}
         <div className="w-full mb-6 rounded-lg overflow-hidden shadow-lg">
           <VideoPlayer videoURL={videoDetails?.videoUrl} width="100%" height="550px"  config={ { youtube:{ playerVars: { autoplay: 1 } } } } />

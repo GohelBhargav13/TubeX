@@ -38,13 +38,8 @@ const UserVideos = () => {
   },[])
 
   return (
-      <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <SideBar />
-
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        {/* Header */}
+    <>
+     {/* Header */}
         <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
           <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
           <div className="flex items-center space-x-4">
@@ -60,7 +55,13 @@ const UserVideos = () => {
             />
           </div>
         </div>
+      <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <SideBar />
 
+      {/* Main Content */}
+      <div className="flex-1 p-6 overflow-y-auto">
+    
         {/* Liked Videos Section */}
         <div>
           <h2 className="text-xl font-semibold mb-4 text-gray-900">
@@ -128,6 +129,7 @@ const UserVideos = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

@@ -35,13 +35,7 @@ const LikedVideos = () => {
   
   return (
     <>
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <SideBar />
-
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        {/* Header */}
+     {/* Header */}
         <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
           <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
           <div className="flex items-center space-x-4">
@@ -57,6 +51,28 @@ const LikedVideos = () => {
             />
           </div>
         </div>
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <SideBar />
+      {/* Main Content */}
+      <div className="flex-1 p-6 overflow-y-auto">
+        {/* Header */}
+        
+        {/* <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
+          <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+          <div className="flex items-center space-x-4">
+            <p className="font-medium">
+              {userData?.userFirstName} {userData?.userLastName}
+            </p>
+            <img
+              src={
+                userData?.user_avatar || "https://via.placeholder.com/320x180"
+              }
+              alt="User"
+              className="w-10 h-10 rounded-full"
+            />
+          </div>
+        </div> */}
 
         {/* Liked Videos Section */}
         <div>
