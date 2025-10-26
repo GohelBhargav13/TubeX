@@ -10,6 +10,7 @@ import { useUserAuthStore } from "./store/auth.store.js";
 import WatchVideo from "./pages/WatchVideo.jsx";
 import AdminProtectedRoute from "./utills/AdminProtectedRoute.jsx";
 import VideoUploadPage from "./pages/VideoUploadPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
 
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={ <RegisterPage /> } />
       <Route path="/home" element={<ProtectedRoute> <HomePage /> </ProtectedRoute>} />
       <Route path="/liked" element={ <ProtectedRoute> <Liked /> </ProtectedRoute> } />
       <Route path="/uvideos" element={ <ProtectedRoute> <UserVideos /> </ProtectedRoute> } />
