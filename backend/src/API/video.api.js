@@ -2,7 +2,7 @@ import Userm from "../models/user.models.js";
 import Video from "../models/video.models.js";
 import { io } from "../Server/Server.js"
 
-export const likeVideo = async (videoId, userId, socket) => {
+export const likeVideo = async (videoId, userId, socket) => { 
   try {
     if (!videoId || !userId) {
       socket.emit("ErrorInSocket", {
@@ -45,7 +45,7 @@ export const likeVideo = async (videoId, userId, socket) => {
       });
     } else {
       video.videoLikes = video.videoLikes.filter(
-        (userId) => userId.toString() !== userId.toString()
+        (Id) => Id.toString() !== userId.toString()
       );
       await video.save(); // Must Remember
 
@@ -119,5 +119,41 @@ export const commentVideo = async (comment,userId,videoId,socket) => {
         success: false,
       });
       return;
+  }
+}
+
+export const deleteComment = async (commentId,userId,videoId,socket) => {
+  try {
+
+    if(!videoId || !userId || !commentId){
+     socket.emit("ErrorInSocket", { message:"Video Is Not Found" })
+     return;
+    }
+
+    // Find the Video
+    const video = await Video.findById(videoId);  
+
+    if(!video){
+      socket.emit("ErrorInSocket", { StatusCode:404,  message:"Video is not found" })
+      return;
+    }
+
+    // Find the User
+    const user = await Userm.findById(userId);
+
+    if(!user){
+      socket.emit("ErrorInSocket", { StatusCode:404,  message:"User is not found" })
+      return;
+    }
+
+    // Delete the user comments
+    video.videoComments = video.videoComments.filter((comment) => comment.user.toString() !== userId.toString() )
+    await video.save();
+
+    io.emit("deleteCommentUpdate",{ commentId,userId,videoID:videoId,message:"Comment Deleted Successfully",success:true, r_comments:Array.from(video.videoComments), commentCounts:video.videoComments.length })
+    
+  } catch (error) {
+    console.log("Error in deleting Comment: ",error);
+    socket.emit("ErrorInSocket", { message:"Internal Error in deleting Comment", StatusCode:500, success:false });
   }
 }
