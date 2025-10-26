@@ -68,3 +68,26 @@ export const userVideos = async() => {
          console.log("Error while fetching user videos of User : ",error);
     }
 }
+
+// video upload api function
+export const upoadVideo = async (formdata) => {
+    try {
+
+        if(!formdata) return {StatusCode:404, data:null, message:"Video Details is not found", success:false };
+
+        const res = await api.post("/video/upload-videos",formdata, {
+            headers:{ "Content-Type":"multipart/form-data" }
+        })
+
+        if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201){
+            return { data:res?.data?.data, message:res?.data?.message, success:res?.data?.success }        
+        }else {
+            return { data:null, message:res?.data?.Message, success:res?.data?.success }
+        }
+
+        
+    } catch (error) {
+        console.log("Error while uploading a video : ",error);
+        return { data:null, message:error?.message, success:false }
+    }
+}
