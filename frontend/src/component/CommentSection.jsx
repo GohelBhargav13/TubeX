@@ -23,19 +23,38 @@ const CommentSection = ({ comments = [],userInfo,videoId }) => {
         if(userId === userInfo?._id && message) toast.success(message)
     })
 
+    socket.on("deleteCommentUpdate", ({ commentId,userId,videoID,message,success,r_comments,commentCounts }) => {
+        if(success){
+          console.log(typeof r_comments);
+
+          console.log("Flow is here")
+          setComments((prev) => [...prev.filter((com) => com?._id.toString() !== commentId.toString() )] )           
+        }
+
+         if(userId === userInfo?._id && message) toast.success(message)
+          // console.log(`This comment : ${commentId} is deleted on this video ${videoID} and remaining comments are : ${commentCounts}`)
+    })
+
     socket.on("ErrorInSocket" ,({message}) => toast.error(message))
 
     return () => {
       socket.off("VideoCommentUpdated")
+      socket.off("deleteCommentUpdate")
       socket.off("ErrorInSocket")
     }
 
-  },[comments])
+  },[])
 
+  // Handle a New Comment
   const handleComment = (comment,commentId,userId,videoId) => {
     console.log("Nutton Clicked")
     socket.emit("commentPost",{ comment,commentId,userId,videoId })
     setNewComment("")
+  }
+
+  // Handle a Delete Comment
+  const handleDeleteComment = (commentId,userId,videoID) => {
+      socket.emit("deleteComment", { commentId,userId,videoID })
   }
 
   return (
@@ -81,6 +100,7 @@ const CommentSection = ({ comments = [],userInfo,videoId }) => {
                 </p>
                 <p className="text-gray-700">{comment?.comment}</p>
               </div>
+               { comment?.user?._id === userInfo?._id  && <button className="cursor-pointer bg-black text-white p-2 rounded-xl ml-2" onClick={() => handleDeleteComment(comment?._id,userInfo?._id,videoId)} >delete</button> }
             </div>
           ))
         ) : (

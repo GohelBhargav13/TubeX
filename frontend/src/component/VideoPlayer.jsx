@@ -10,6 +10,7 @@ const VideoPlayer = ({ videoURL,width,height,config }) => {
         height={ height ||'200px'}
         controls
         crossOrigin='undefined'
+        color='red'
         config={ config }
         onError={(e) => console.log("Error in video Playing: ",e)}
          />

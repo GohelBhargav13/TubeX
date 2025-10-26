@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getAllVideos } from "../API/video.api.js";
 import VideoPlayer from "./VideoPlayer.jsx";
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useParams } from "react-router-dom"
 
 const RelatedVideos = ({ videoId }) => {
   const [relatedVideos, setRelatedVideos] = useState([]);
   const navigate = useNavigate();
+  // const { videoID } = useParams();
 
   useEffect(() => {
     const fetchAllVideos = async () => {
@@ -20,7 +21,7 @@ const RelatedVideos = ({ videoId }) => {
 
     fetchAllVideos();   
 
-  }, []);
+  }, [videoId]);
 
   return (
     <>
