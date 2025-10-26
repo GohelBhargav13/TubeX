@@ -41,8 +41,10 @@ export const userLikedVideos = async () => {
         // check the statusCode is 200 or not
         if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
             return { data:res.data.data, message:res.data.message, success:res.data.success }            
-        }else{
-            return { data:null, messgae:res.data.Message, success:res.data.success }
+        }else if(res?.data?.StatusCode === 404){
+            return res.data
+        }else {
+            return { data:null, message:res?.data?.Message, success:res?.data?.success }
         }
         
     } catch (error) {
@@ -58,7 +60,7 @@ export const userVideos = async() => {
        const res = await api.get("/user/user-videos")
        console.log("User Videos data is : ",res.data.data);
 
-       if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
+       if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201){
             return { data:res.data.data, message:res.data.message, success:res.data.success }        
        }else {
         return { data:null, message:res.data.Message, success:res.data.success }
@@ -89,5 +91,27 @@ export const upoadVideo = async (formdata) => {
     } catch (error) {
         console.log("Error while uploading a video : ",error);
         return { data:null, message:error?.message, success:false }
+    }
+}
+
+// User Register api function
+export const userRegister = async (formData) => {
+    try {
+
+       if(!formData) return;
+
+       const res = await api.post("/user/register",formData, {
+            headers:{ "Content-Type":"multipart/form-data" }
+        })
+
+        if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
+            return { data:res.data.data, message:res.data.message, success:res.data.success }
+        }else{
+            return { data:null, message:res.data.Message || "User Can't Register", success:res.data.success || false }
+        }
+        
+    } catch (error) {
+        console.log("Error while user Register : ",error);
+        return { data:null, message:error?.message || "Error from catch block register", success:false }
     }
 }
