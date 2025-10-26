@@ -103,7 +103,7 @@ export default function LoginPage() {
               Forgot email?
             </a>
             <a
-              href="#"
+              href="/register"
               className="text-blue-600 hover:text-blue-800 font-medium"
             >
               Create account

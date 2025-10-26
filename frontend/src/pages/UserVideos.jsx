@@ -19,12 +19,12 @@ const UserVideos = () => {
          const res =  await userVideos()
          console.log("User videos are : ", res?.data)
 
-         if(res?.data !== null){
-            setUserVideos(res?.data)
-         }else {
-          console.log("Error in fetching user data")
-          setUserVideos([])
-         }
+        if(res?.data?.StatusCode === 404) return setLikedVideos([])
+
+        // set first all videos than filter
+        if(res?.data !== null || res?.data?.length > 0 || res?.data !== undefined){
+             setLikedVideos(res?.data);
+        }
 
       } catch (error) {
         setLoading(false)
@@ -72,7 +72,7 @@ const UserVideos = () => {
 
           {!loading && userVideoslist.length === 0 ? (
             <p className="text-gray-500 text-sm">
-              You haven’t liked any videos yet.
+              You haven’t any videos yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

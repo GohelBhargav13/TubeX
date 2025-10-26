@@ -18,8 +18,14 @@ const LikedVideos = () => {
         const res = await userLikedVideos();
         console.log("Liked Video response : ", res?.data);
 
+        if(res?.data?.StatusCode === 404) return setLikedVideos([])
+
+          
         // set first all videos than filter
-        setLikedVideos(res?.data);
+        if(res?.data !== null || res?.data?.length > 0 || res?.data !== undefined){
+             setLikedVideos(res?.data);
+        }
+       
         
       } catch (error) {
         setLoading(false);
@@ -57,7 +63,7 @@ const LikedVideos = () => {
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-y-auto">
         {/* Header */}
-        
+
         {/* <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
           <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
           <div className="flex items-center space-x-4">
