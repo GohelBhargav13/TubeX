@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended:true }))
 app.use(cookieParser())
 
 app.use(cors({
-    origin:["http://localhost:5173","http://localhost:5174","tube-5o95n3y7c-gohelbhargav13s-projects.vercel.app"],
+    origin:["http://localhost:5173","http://localhost:5174","https://tube-x-1qp4.vercel.app/"],
     methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
     credentials:true
 }))
