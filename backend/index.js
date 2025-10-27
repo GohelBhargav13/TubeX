@@ -1,6 +1,4 @@
-
-import { db } from "./src/db-config/db.js";
-import app from "./app.js";
+import { db } from "./src/db-config/db.js" 
 import { server } from "./src/Server/Server.js"
 
 const PORT = process.env.PORT || 4000;

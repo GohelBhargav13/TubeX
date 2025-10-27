@@ -24,7 +24,7 @@ export const uploadVideo = async (req, res) => {
       ffmpeg(path)
         .outputOptions([
           "-start_number 0",
-          "-hls_time 10", // each chunk 10 sec
+          "-hls_time 12", // each chunk 12 sec
           "-hls_list_size 0",
           "-f hls",
         ])
