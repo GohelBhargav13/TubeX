@@ -6,16 +6,18 @@ dotenv.config({ path:"./.env" })
 
 const app = express()
 
-// MiddleWares
-app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
-app.use(cookieParser())
-
 app.use(cors({
     origin:["http://localhost:5173","http://localhost:5174","https://tube-x-1qp4.vercel.app"],
     methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
     credentials:true
 }))
+
+// MiddleWares
+app.use(express.json())
+app.use(express.urlencoded({ extended:true }))
+app.use(cookieParser())
+
+
 
 app.get("/",(req,res) => {
     res.status(200).json({ message:"Hello from the root" })
