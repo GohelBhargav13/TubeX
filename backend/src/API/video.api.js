@@ -157,3 +157,21 @@ export const deleteComment = async (commentId,userId,videoId,socket) => {
     socket.emit("ErrorInSocket", { message:"Internal Error in deleting Comment", StatusCode:500, success:false });
   }
 }
+
+export const deleteVideo = async (videoId,userData,socket) => {
+   try {
+
+    if(!videoId){
+      socket.emit("ErrorInSocket", { message:"Video is not found"});
+      return
+    }
+    // Find the video and delete
+    await Video.findByIdAndDelete(videoId)
+
+    io.emit("videoDeleted", { videoId,userData,message:"Video Deleted Successfully" })
+    
+  } catch (error) {
+    console.log("Error while deleteing video : ",error);
+    socket.emit("ErrorInSocket", { message:"Internal Error in deleting video"});
+  }
+}
