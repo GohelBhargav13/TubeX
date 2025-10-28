@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     // Centering the form in the middle of the screen
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 font-mono">
       {/* 💳 The Login Card: Mimics Google's clean, centered card */}
       <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg border border-gray-200">
         {/* Header/Logo */}

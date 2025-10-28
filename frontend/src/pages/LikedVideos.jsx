@@ -42,7 +42,7 @@ const LikedVideos = () => {
   return (
     <>
      {/* Header */}
-        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
+        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
           <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
           <div className="flex items-center space-x-4">
             <p className="font-medium">
@@ -81,14 +81,14 @@ const LikedVideos = () => {
         </div> */}
 
         {/* Liked Videos Section */}
-        <div>
+        <div className='font-mono'>
           <h2 className="text-xl font-semibold mb-4 text-gray-900">
             ❤️ Liked Videos
           </h2>
 
           { loading && <Loader2 className='animate-spin mx-auto text-blue-600 my-4' /> }
 
-          { !loading && likedVideos.length === 0 ? (
+          { !loading && likedVideos?.length === 0 ? (
             <p className="text-gray-500 text-sm">
               You haven’t liked any videos yet.
             </p>

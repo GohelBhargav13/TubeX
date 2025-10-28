@@ -33,6 +33,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const userData = useUserAuthStore((state) => state.userData);
+  
   const [videos, setVideos] = useState([]);
   const [fetchingVideos, setFetchingVideos] = useState(false)
   const [newCommentCount, setNewCommentCount] = useState(0)
@@ -48,7 +49,7 @@ export default function HomePage() {
         const res = await getAllVideos();
         if (res?.data !== null) {
           setVideos(res.data);
-          toast.success(res.message || "Videos fetched successfully");
+          // toast.success(res.message || "Videos fetched successfully");
           return;
         } else {
           toast.error(res.message || "Videos Can't Fetched");
@@ -97,17 +98,37 @@ export default function HomePage() {
       setNewCommentCount(commentCounts)
     })
 
+    socket.on("newVideoUploaded", ({ videoData }) => {
+        console.log("Video Data is : ", { videoData })
+        console.log("Video URL is : ",videoData?.data?.videoUrl)
+        
+        if(videoData) {
+          toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`)
+          setVideos((prevVideos) => [videoData?.data,...prevVideos])
+          console.log(videos)
+        }
+    })  
+
+    // delete video and update UI
+    socket.on("videoDeleted", ({ videoId,userData,message }) => {
+      setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId ))
+    })
+
     // listen Error from socket
     socket.on("ErrorInSocket", ({ message }) => {
       toast.error(message);
     });
 
+    // unmounted sockets
     return () => {
       socket.off("VideoLikeUpdated");
       socket.off("VideoCommentUpdated")
       socket.off("VideoCommentDeleted")
+      socket.off("newVideoUploaded")
+      socket.off("videoDeleted")
       socket.off("ErrorInSocket");
     };
+
   }, []);
 
   // handle the like feature of the video
@@ -128,7 +149,7 @@ export default function HomePage() {
   return (
     <>
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
+      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
         <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
         <div className="flex items-center space-x-4">
           <p className="font-medium">
@@ -141,7 +162,7 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div className="flex h-screen overflow-hidden bg-gray-100">
+      <div className="flex h-screen overflow-hidden bg-gray-100 font-mono">
         {/*  Side bar Component Import */}
         <SideBar />
 
@@ -155,24 +176,25 @@ export default function HomePage() {
                 Learn New Things....
               </h2>
 
-              {/* Grid container */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {!fetchingVideos  && videos.length === 0 ? (
+                <div className="text-gray-700 font-mono">No videos Yet</div>
+              ) : (
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {videos.map((video, idx) => (
                   <div
                     key={idx}
                     className="bg-white rounded-lg shadow hover:shadow-md transition p-2"
                   >
-                    <div
-                      className="hover:shadow-md cursor-pointer"
+                  <div
+                      className="relative cursor-pointer"
                       onClick={() => naviagte(`/watch/${video?._id}`)}
                     >
-                      <VideoPlayer videoURL={video.videoUrl} />
-                    </div>
-
+                      <VideoPlayer videoURL={video?.videoUrl} />
+                      
                     <div className="flex items-center mt-2">
                       <img
                         src={
-                          video.user_avatar ||
+                          video?.user_avatar ||
                           "https://via.placeholder.com/320x180"
                         }
                         alt="User"
@@ -183,9 +205,10 @@ export default function HomePage() {
                         {video?.videoOwner?.userLastName}
                       </h4>
                     </div>
+                      </div>
 
                     <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
-                      {video.videoTitle}
+                      {video?.videoTitle}
                     </h3>
                     <p className="text-sm text-gray-500 flex justify-items-center">
                      {video?.videoDescription?.length > 35 ? video?.videoDescription?.slice(0,35) + "..." : video?.videoDescription + "..."}
@@ -199,7 +222,7 @@ export default function HomePage() {
                         <ThumbsUp className="mr-1" />{" "}
                         {typeof video?.VideoLikes === "number"
                           ? video?.VideoLikes
-                          : video?.videoLikes.length}
+                          : video?.videoLikes?.length}
                       </button>
                       <p className="text-sm text-gray-500 flex items-center">
                         <MessageCircle className="mr-1" height={22} />{" "}
@@ -208,8 +231,10 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
+                
                 ))}
               </div>
+              ) }
             </div>
           </div>
         </div>

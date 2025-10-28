@@ -32,7 +32,7 @@ const WatchVideo = () => {
 
                if(res?.data !== null){
                     setVideoDetails(res?.data)
-                    toast.success(res?.message || "Video Fetched Successfully")
+                    // toast.success(res?.message || "Video Fetched Successfully")
                     return;
                }else {
                     toast.error(res?.message || "Video Can't Fetched")
@@ -108,7 +108,7 @@ const WatchVideo = () => {
         
         {/* Video Metadata */}
         <div className="pb-4 border-b border-gray-200">
-          <h1 className="font-bold text-2xl mb-2 text-gray-900">
+          <h1 className="font-bold text-2xl mb-2 text-gray-900 font-mono">
             {videoDetails?.videoTitle}
           </h1>
           
@@ -138,7 +138,7 @@ const WatchVideo = () => {
         {/* Channel Info and Description */}
         <div className="mt-4 pb-6 border-b border-gray-200">
             <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 font-mono">
                     <img
                         src={videoDetails?.videoOwner?.user_avatar || "" }
                         alt={videoDetails?.videoOwner?.userFirstName}
@@ -161,13 +161,13 @@ const WatchVideo = () => {
             </div>
 
             {/* Video Description - Collapsible section placeholder */}
-            <p className="mt-4 text-sm whitespace-pre-line bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <p className="mt-4 text-sm whitespace-pre-line bg-gray-50 p-3 rounded-lg border border-gray-100 font-mono">
                 {videoDetails?.videoDescription}
             </p>
         </div>
 
         {/* Comments Section Placeholder */}
-        <div className="mt-6">
+        <div className="mt-6 font-mono">
             <CommentSection comments={videoDetails?.videoComments} userInfo={userData} videoId={videoId} />
         </div>
 
