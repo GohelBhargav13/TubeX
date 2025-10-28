@@ -23,6 +23,12 @@ const RelatedVideos = ({ videoId }) => {
 
   }, [videoId]);
 
+  if(relatedVideos?.length === 0) {
+    return (
+      <div className="text-gray-700 font-mono">❌ No Videos are there</div>
+    )
+  }
+
   return (
     <>
          {relatedVideos.map((video) => (
