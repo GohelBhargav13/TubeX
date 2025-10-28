@@ -1,7 +1,7 @@
 import { Server } from "socket.io"
 import app from "../../app.js"
 import http from "http"
-import { commentVideo, deleteComment, likeVideo } from "../API/video.api.js"
+import { commentVideo, deleteComment, deleteVideo, likeVideo } from "../API/video.api.js"
 
 export const server = http.createServer(app)
 
@@ -31,6 +31,24 @@ io.on("connection",(socket) => {
         await deleteComment(commentId,userId,videoID,socket)
     })
 
+    socket.on("uploadvideo", async({ videoData }) => {
+        console.log("Video is upload on the server")
+         io.emit("newVideoUploaded", { videoData })
+    })
+
+    socket.on("deleteVideo", async({ videoId,userData }) => {
+        console.log("Receving Delete Video Event : ", { videoId,userData });
+        try {
+            if(userData?.userRole === "admin"){
+                await deleteVideo(videoId,userData,socket)
+                return;
+            }else {
+                socket.emit("ErrorInSocket", { message:"You are not authorized to delete the video"});
+            }     
+        } catch (error) {
+            console.log("Error While Deleting Video : ",error);
+        }
+    })
 
     socket.on("disconnect",() => {
         console.log("Socket is disconnected : ",socket.id)
