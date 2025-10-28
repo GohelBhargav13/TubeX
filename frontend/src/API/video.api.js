@@ -1,4 +1,5 @@
 import { api } from "../services/axios.js"
+import socket from "../Server/Server.js";
 
 // fetch all videos
 export const getAllVideos = async() => {
@@ -82,6 +83,7 @@ export const upoadVideo = async (formdata) => {
         })
 
         if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201){
+            socket.emit("uploadvideo", { videoData: res?.data });
             return { data:res?.data?.data, message:res?.data?.message, success:res?.data?.success }        
         }else {
             return { data:null, message:res?.data?.Message, success:res?.data?.success }
@@ -101,7 +103,8 @@ export const userRegister = async (formData) => {
        if(!formData) return;
 
        const res = await api.post("/user/register",formData, {
-            headers:{ "Content-Type":"multipart/form-data" }
+            headers:{ "Content-Type":"multipart/form-data" },
+            withCredentials:true
         })
 
         if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
@@ -113,5 +116,50 @@ export const userRegister = async (formData) => {
     } catch (error) {
         console.log("Error while user Register : ",error);
         return { data:null, message:error?.message || "Error from catch block register", success:false }
+    }
+}
+
+// update a video details { Title,description }
+export const updateVideo = async (videoId) => {
+    try {
+
+        if(!videoId){
+            return { StatusCode:404, message:"VideoId is not found", data:null }
+        }
+
+       const res = await api.post(`/update-video/${videoId}`)
+       if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201) {
+            console.log("Updated video details : ",  res?.data?.data)
+            return { StatusCode:res?.data?.StatusCode, data:res?.data?.data, success:res?.data?.success }
+       }else {
+         return { StatusCode: res?.data?.StatusCode, data:null, success:res?.data?.success || false } 
+       }
+    
+    } catch (error) {
+            console.log("Error while updating video details : ", error);
+            return { StatusCode:500, data:null, success:false }    
+    }
+}
+
+// delete a video details
+export const deleteVideo = async (videoId) => {
+    try {
+
+        // check if videoID is not found
+        if(!videoId){
+            return { StatusCode:404,message:"Video Id is not found", data:null }
+        }
+
+       const res = await api.delete(`/video/delete-video/${videoId}`);   
+       if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201) {
+            console.log("Deleted video details : ",  res?.data?.data)
+            return { StatusCode:res?.data?.StatusCode, data:res?.data?.data, success:res?.data?.success }
+       }else {
+         return { StatusCode: res?.data?.StatusCode, data:null, success:res?.data?.success || false } 
+       }
+
+    } catch (error) {
+        console.log("Error while deleting Data : ",error);
+        return;        
     }
 }
