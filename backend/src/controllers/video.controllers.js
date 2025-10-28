@@ -5,6 +5,7 @@ import Video from "../models/video.models.js";
 import ApiResponse from "../utills/api-response.js";
 import ApiError from "../utills/api-error.js";
 import Userm from "../models/user.models.js";
+import { resolveAny } from "dns";
 
 // Upload the data and core logic is here 
 export const uploadVideo = async (req, res) => {
@@ -284,6 +285,39 @@ export const deleteVideo = async (req,res) => {
   } catch (error) {
     console.log("Error while deleteing video : ",error);
     res.status(500).json(new ApiError(500,"Internal Error in deleting video"))
+  }
+
+}
+
+// update video details from platform
+export const updateVideo = async (req,res) => {
+  const { videoId } = req.params;
+  const { videoTitle,videoDescription } = req.body;
+
+  try {
+
+    // check if the videoId is not found
+    if(!videoId){
+      return res.status(404).json(new ApiError(404,"VideoId is required"))
+    }
+
+    // check the title and description of the video
+    if(!videoTitle || !videoDescription){
+      return res.status(404).json(new ApiError(404,"VideoTitle and VideoDescription is required"))
+    }
+
+   const updatedvideo = await Video.findByIdAndUpdate(videoId, {
+      $set:{
+        videoTitle,
+        videoDescription,
+      }
+    }, { new:true }).populate("videoOwner","userFirstName userLastName user_avatar")
+
+    res.status(200).json(new ApiResponse(200, updatedvideo, `${updatedvideo?._id} is updated`))
+    
+  } catch (error) {
+      console.log("Error in updating video : ", error);
+      res.status(500).json(new ApiError(500,"Internal Error in updating video"))
   }
 
 }
