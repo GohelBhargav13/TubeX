@@ -9,8 +9,9 @@ import UserVideos from "./pages/UserVideos.jsx"
 import { useUserAuthStore } from "./store/auth.store.js";
 import WatchVideo from "./pages/WatchVideo.jsx";
 import AdminProtectedRoute from "./utills/AdminProtectedRoute.jsx";
-import VideoUploadPage from "./pages/VideoUploadPage.jsx";
+import VideoUploadPage from "./pages/admin/VideoUploadPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import VideoUpdatePage from "./pages/admin/VideoUpdatePage.jsx";
 
 
 function App() {
@@ -33,7 +34,8 @@ function App() {
       <Route path="/liked" element={ <ProtectedRoute> <Liked /> </ProtectedRoute> } />
       <Route path="/uvideos" element={ <ProtectedRoute> <UserVideos /> </ProtectedRoute> } />
       <Route path="/watch/:videoId" element={ <ProtectedRoute> <WatchVideo /> </ProtectedRoute> } />
-      <Route path="/admin/video-upload" element={ <AdminProtectedRoute user={ userData }> <VideoUploadPage userData={userData} /> </AdminProtectedRoute>  } />
+      <Route path="/admin/video-upload" element={ <AdminProtectedRoute> <VideoUploadPage userData={userData} /> </AdminProtectedRoute>  } />
+      <Route path="/admin/video-update" element={ <AdminProtectedRoute> <VideoUpdatePage userData={userData } /> </AdminProtectedRoute> } />
       <Route path="*" element={ <Navigate to="/login" /> } />
     </Routes>
   );
