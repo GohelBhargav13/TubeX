@@ -20,7 +20,8 @@ export const useUserAuthStore = create((set) => ({
       set({ userData: user,isChecked:true });
 
       if (user) {
-        return toast.success(res?.data?.message || "Data fetched successfully");
+        // return toast.success(res?.data?.message || "Data fetched successfully");
+          console.log("User Data is already Fetched....")
       } else {
         toast.error("Failed to fetch user data");
       }
