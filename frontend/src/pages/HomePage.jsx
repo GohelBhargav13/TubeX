@@ -33,10 +33,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const userData = useUserAuthStore((state) => state.userData);
-  
+
   const [videos, setVideos] = useState([]);
-  const [fetchingVideos, setFetchingVideos] = useState(false)
-  const [newCommentCount, setNewCommentCount] = useState(0)
+  const [fetchingVideos, setFetchingVideos] = useState(false);
+  const [newCommentCount, setNewCommentCount] = useState(0);
+  const [searchWords, setSearchWords] = useState("");
+  const [searchedData, setSearchData] = useState([]);
 
   const naviagte = useNavigate();
 
@@ -48,18 +50,18 @@ export default function HomePage() {
 
         const res = await getAllVideos();
         if (res?.data !== null) {
-          setVideos(res.data);
+          setVideos(res?.data);
+          setSearchData(res?.data);
           // toast.success(res.message || "Videos fetched successfully");
           return;
         } else {
           toast.error(res.message || "Videos Can't Fetched");
         }
       } catch (error) {
-        setFetchingVideos(false)
-        console.log("Error in fetching all videos : ", error);
-      }finally {
         setFetchingVideos(false);
-
+        console.log("Error in fetching all videos : ", error);
+      } finally {
+        setFetchingVideos(false);
       }
     };
     fetchVideo();
@@ -76,10 +78,21 @@ export default function HomePage() {
               : video
           )
         );
+
+        if(searchWords || searchWords === ""){
+          setSearchData((prevvideos) =>
+          prevvideos.map((video) =>
+            video?._id === videoId
+              ? { ...video, VideoLikes: LikeCounts }
+              : video
+          )
+        );
+        }
         if (userData?._id === userId && message) toast.success(message);
       }
     );
 
+    // socket listen of the update comments
     socket.on(
       "VideoCommentUpdated",
       ({ New_Comment, commentCount, userId, videoId, message, commentId }) => {
@@ -91,37 +104,75 @@ export default function HomePage() {
               : video
           )
         );
+
+         if(searchWords || searchWords === ""){
+           setSearchData((prevVideos) =>
+            prevVideos.map((video) =>
+            video?._id === videoId
+              ? { ...video, VideoCommentsLike: commentCount }
+              : video
+          )
+        );
+        }
       }
     );
 
-    socket.on("VideoCommentDeleted",({ commentId,userId,videoID, message, success, r_comments, commentCounts }) =>{
-      setNewCommentCount(commentCounts)
-    })
+    socket.on(
+      "VideoCommentDeleted",
+      ({
+        commentId,
+        userId,
+        videoID,
+        message,
+        success,
+        r_comments,
+        commentCounts,
+      }) => {
+        setNewCommentCount(commentCounts);
+      }
+    );
 
     socket.on("newVideoUploaded", ({ videoData }) => {
-        console.log("Video Data is : ", { videoData })
-        console.log("Video URL is : ",videoData?.data?.videoUrl)
-        
-        if(videoData) {
-          toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`)
-          setVideos((prevVideos) => [videoData?.data,...prevVideos])
-          console.log(videos)
+      console.log("Video Data is : ", { videoData });
+      console.log("Video URL is : ", videoData?.data?.videoUrl);
+
+      if (videoData) {
+        toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`);
+        setVideos((prevVideos) => [videoData?.data, ...prevVideos]);
+
+        if(searchWords || searchWords === ""){
+            toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`);
+           setSearchData((prevVideos) => [videoData?.data, ...prevVideos]);
         }
-    })  
+        console.log(videos);
+      }
+    });
 
     // delete video and update UI
-    socket.on("videoDeleted", ({ videoId,userData,message }) => {
-      setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId ))
-    })
+    socket.on("videoDeleted", ({ videoId, userData, message }) => {
+      setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId));
+
+      if(searchWords || searchWords === ""){
+        setSearchData((prevVideos) => prevVideos.filter((v) => v?._id !== videoId));
+      }
+    });
 
     // listen update video details
-    socket.on("videoDetailsUpdated", ({ videoId,updatedData,message }) => {
-      console.log("video Data is with Updated Deatils : ",updatedData)
-      console.log("Message from Server :" , message)
+    socket.on("videoDetailsUpdated", ({ videoId, updatedData, message }) => {
+      console.log("video Data is with Updated Deatils : ", updatedData);
+      console.log("Message from Server :", message);
 
-      setVideos((prev) => prev.map((v) => v?._id === videoId ? {...v,...updatedData} : v ) )
-      if(message) toast.success(message, { duration:4000 })
-    })
+      setVideos((prev) =>
+        prev.map((v) => (v?._id === videoId ? { ...v, ...updatedData } : v))
+      );
+
+      if(searchWords || searchWords === ""){
+        setSearchData((prev) =>
+        prev.map((v) => (v?._id === videoId ? { ...v, ...updatedData } : v))
+      );
+      }
+      if (message) toast.success(message, { duration: 4000 });
+    });
 
     // listen Error from socket
     socket.on("ErrorInSocket", ({ message }) => {
@@ -131,14 +182,13 @@ export default function HomePage() {
     // unmounted sockets
     return () => {
       socket.off("VideoLikeUpdated");
-      socket.off("VideoCommentUpdated")
-      socket.off("VideoCommentDeleted")
-      socket.off("newVideoUploaded")
-      socket.off("videoDeleted")
-      socket.off("videoDetailsUpdated")
+      socket.off("VideoCommentUpdated");
+      socket.off("VideoCommentDeleted");
+      socket.off("newVideoUploaded");
+      socket.off("videoDeleted");
+      socket.off("videoDetailsUpdated");
       socket.off("ErrorInSocket");
     };
-
   }, []);
 
   // handle the like feature of the video
@@ -148,12 +198,26 @@ export default function HomePage() {
     socket.emit("likePost", { videoId, userId });
   };
 
-  if(fetchingVideos){
+  // handle a Dynamic Search
+  const handleSearch = () => {
+    if (searchWords.trim()) {
+      setSearchData(videos);
+      setSearchData((prev) =>
+        prev.filter((v) =>
+          v?.videoTitle.toLowerCase().includes(searchWords.toLowerCase())
+        )
+      );
+    } else {
+      setSearchData(videos);
+    }
+  };
+
+  if (fetchingVideos) {
     return (
       <div className="flex items-center justify-center h-screen">
-          <Loader2  className="animate-spin"/>
+        <Loader2 className="animate-spin" />
       </div>
-    )
+    );
   }
 
   return (
@@ -172,6 +236,29 @@ export default function HomePage() {
           />
         </div>
       </div>
+      <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+        {/* <p>Search Bar</p> */}
+        <p className="text-gray-950 p-3 bg-gray-200 rounded">
+          Search : {searchedData?.length}
+        </p>
+        <input
+          type="text"
+          id="search"
+          required
+          value={searchWords}
+          onChange={(e) => setSearchWords(e.target.value)}
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          placeholder="Search videos..."
+          autoComplete="username"
+        />
+        <button
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          onClick={handleSearch}
+        >
+          {" "}
+          🔍 Search
+        </button>
+      </div>
       <div className="flex h-screen overflow-hidden bg-gray-100 font-mono">
         {/*  Side bar Component Import */}
         <SideBar />
@@ -186,65 +273,70 @@ export default function HomePage() {
                 Learn New Things....
               </h2>
 
-              {!fetchingVideos  && videos.length === 0 ? (
-                <div className="text-gray-700 font-mono">No videos Yet</div>
+              {!fetchingVideos && searchedData?.length === 0 ? (
+                <div className="text-gray-700 font-mono">No Video's Found...</div>
               ) : (
-                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {videos.map((video, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-lg shadow hover:shadow-md transition p-2"
-                  >
-                  <div
-                      className="relative cursor-pointer"
-                      onClick={() => naviagte(`/watch/${video?._id}`)}
-                    >
-                      <VideoPlayer videoURL={video?.videoUrl} />
-                      
-                    <div className="flex items-center mt-2">
-                      <img
-                        src={
-                          video?.user_avatar ||
-                          "https://via.placeholder.com/320x180"
-                        }
-                        alt="User"
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <h4 className="ml-2 font-medium text-gray-600">
-                        {video?.videoOwner?.userFirstName}{" "}
-                        {video?.videoOwner?.userLastName}
-                      </h4>
-                    </div>
-                      </div>
-
-                    <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
-                      {video?.videoTitle}
-                    </h3>
-                    <p className="text-sm mt-2 text-gray-500 flex justify-items-center">
-                     {video?.videoDescription?.length > 35 ? video?.videoDescription?.slice(0,35) + "..." : video?.videoDescription + "..."}
-                    </p>
-
-                    <div className="flex flex-row gap-3 mt-2 justify-center items-center">
-                      <button
-                        className="text-sm text-gray-500 flex items-center cursor-pointer"
-                        onClick={() => handleLike(video?._id, userData?._id)}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {searchedData?.length > 0 &&
+                    searchedData?.map((video, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-white rounded-lg shadow hover:shadow-md transition p-2"
                       >
-                        <ThumbsUp className="mr-1" />{" "}
-                        {typeof video?.VideoLikes === "number"
-                          ? video?.VideoLikes
-                          : video?.videoLikes?.length}
-                      </button>
-                      <p className="text-sm text-gray-500 flex items-center">
-                        <MessageCircle className="mr-1" height={22} />{" "}
-                        { newCommentCount || video?.VideoCommentsLike ||
-                          video?.videoComments?.length}
-                      </p>
-                    </div>
-                  </div>
-                
-                ))}
-              </div>
-              ) }
+                        <div
+                          className="relative cursor-pointer"
+                          onClick={() => naviagte(`/watch/${video?._id}`)}
+                        >
+                          <VideoPlayer videoURL={video?.videoUrl} />
+
+                          <div className="flex items-center mt-2">
+                            <img
+                              src={
+                                video?.user_avatar ||
+                                "https://via.placeholder.com/320x180"
+                              }
+                              alt="User"
+                              className="w-10 h-10 rounded-full"
+                            />
+                            <h4 className="ml-2 font-medium text-gray-600">
+                              {video?.videoOwner?.userFirstName}{" "}
+                              {video?.videoOwner?.userLastName}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
+                          {video?.videoTitle}
+                        </h3>
+                        <p className="text-sm mt-2 text-gray-500 flex justify-items-center">
+                          {video?.videoDescription?.length > 35
+                            ? video?.videoDescription?.slice(0, 35) + "..."
+                            : video?.videoDescription + "..."}
+                        </p>
+
+                        <div className="flex flex-row gap-3 mt-2 justify-center items-center">
+                          <button
+                            className="text-sm text-gray-500 flex items-center cursor-pointer"
+                            onClick={() =>
+                              handleLike(video?._id, userData?._id)
+                            }
+                          >
+                            <ThumbsUp className="mr-1" />{" "}
+                            {typeof video?.VideoLikes === "number"
+                              ? video?.VideoLikes
+                              : video?.videoLikes?.length}
+                          </button>
+                          <p className="text-sm text-gray-500 flex items-center">
+                            <MessageCircle className="mr-1" height={22} />{" "}
+                            {newCommentCount ||
+                              video?.VideoCommentsLike ||
+                              video?.videoComments?.length}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
