@@ -120,17 +120,20 @@ export const userRegister = async (formData) => {
 }
 
 // update a video details { Title,description }
-export const updateVideo = async (videoId) => {
+export const updateVideo = async (videoId,formdata) => {
     try {
 
         if(!videoId){
             return { StatusCode:404, message:"VideoId is not found", data:null }
         }
 
-       const res = await api.post(`/update-video/${videoId}`)
+       const res = await api.post(`/video/update-video/${videoId}`,formdata)
        if(res?.data?.StatusCode === 200 || res?.data?.StatusCode === 201) {
             console.log("Updated video details : ",  res?.data?.data)
-            return { StatusCode:res?.data?.StatusCode, data:res?.data?.data, success:res?.data?.success }
+              console.log("Soscket is emitting....")
+
+             socket.emit("videoDetailsUpdate", { videoId, updatedData:res?.data?.data  })
+            return { StatusCode:res?.data?.StatusCode, data:res?.data?.data, success:res?.data?.success, message:"video Deatils Updated" }
        }else {
          return { StatusCode: res?.data?.StatusCode, data:null, success:res?.data?.success || false } 
        }
