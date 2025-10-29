@@ -61,7 +61,8 @@ const VideoUpdatePage = ({ userData }) => {
   // Handle Update Video
   const handleUpdateVideo = (videoId) => {
     console.log("handle updte function clicked.....");
-    updateVideo(videoId);
+    navigate(`/admin/update-video/${videoId}`, { state: { userData } })
+    return;
   };
 
   // Handle Remove Video
