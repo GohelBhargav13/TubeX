@@ -132,7 +132,7 @@ const UpdateAVideo = ({ userData }) => {
 
           {/* Right Section: Edit Form */}
           <div className="md:w-1/2 bg-white p-6 rounded-xl shadow-md">
-            <h2 className="text-xl font-bold mb-4 text-blue-600">
+            <h2 className="text-xl font-bold mb-4 text-gray-950">
               Edit Video Details
             </h2>
 

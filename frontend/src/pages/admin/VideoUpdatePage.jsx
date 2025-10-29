@@ -118,7 +118,7 @@ const VideoUpdatePage = ({ userData }) => {
                 <h2 className="text-xl font-semibold mb-4">Update Panel</h2>
 
                 {/* Grid container */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-[800px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-35 w-[900px]">
                 
                   {videos.map((video, idx) => (
                     <>
