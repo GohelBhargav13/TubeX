@@ -114,6 +114,15 @@ export default function HomePage() {
       setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId ))
     })
 
+    // listen update video details
+    socket.on("videoDetailsUpdated", ({ videoId,updatedData,message }) => {
+      console.log("video Data is with Updated Deatils : ",updatedData)
+      console.log("Message from Server :" , message)
+
+      setVideos((prev) => prev.map((v) => v?._id === videoId ? {...v,...updatedData} : v ) )
+      if(message) toast.success(message, { duration:4000 })
+    })
+
     // listen Error from socket
     socket.on("ErrorInSocket", ({ message }) => {
       toast.error(message);
@@ -126,6 +135,7 @@ export default function HomePage() {
       socket.off("VideoCommentDeleted")
       socket.off("newVideoUploaded")
       socket.off("videoDeleted")
+      socket.off("videoDetailsUpdated")
       socket.off("ErrorInSocket");
     };
 
@@ -210,7 +220,7 @@ export default function HomePage() {
                     <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
                       {video?.videoTitle}
                     </h3>
-                    <p className="text-sm text-gray-500 flex justify-items-center">
+                    <p className="text-sm mt-2 text-gray-500 flex justify-items-center">
                      {video?.videoDescription?.length > 35 ? video?.videoDescription?.slice(0,35) + "..." : video?.videoDescription + "..."}
                     </p>
 

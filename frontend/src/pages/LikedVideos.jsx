@@ -37,6 +37,8 @@ const LikedVideos = () => {
     }
     fetchVideo()
 
+    console.log("Liked Videos are : ",likedVideos)
+
   },[])
   
   return (
@@ -88,13 +90,13 @@ const LikedVideos = () => {
 
           { loading && <Loader2 className='animate-spin mx-auto text-blue-600 my-4' /> }
 
-          { !loading && likedVideos?.length === 0 ? (
+          {!loading && likedVideos?.length === 0 ? (
             <p className="text-gray-500 text-sm">
               You haven’t liked any videos yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {likedVideos.map((video) => (
+              {likedVideos?.length > 0 && likedVideos?.map((video) => (
                 <div
                   key={video._id}
                   className="bg-white rounded-lg shadow-sm hover:shadow-md transition p-3"
