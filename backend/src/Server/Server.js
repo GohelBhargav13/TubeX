@@ -50,6 +50,17 @@ io.on("connection",(socket) => {
         }
     })
 
+    socket.on("videoDetailsUpdate", async({ videoId,updatedData }) => {
+        console.log("Updated Data At Server Side :", updatedData)
+       try {
+         if(videoId){
+             io.emit("videoDetailsUpdated", { videoId,updatedData, message:`${updatedData?.videoTitle} video Details Updated` })
+         }
+       } catch (error) {
+        console.log(error)
+       }
+    })
+
     socket.on("disconnect",() => {
         console.log("Socket is disconnected : ",socket.id)
     })
