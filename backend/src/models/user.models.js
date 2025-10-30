@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import crypto from "crypto"
 import { AvailableUserRole, UserRole } from "../utills/constant.js";
 
 
@@ -89,16 +88,16 @@ userSchema.methods.generateAccessToken = function(){
         { expiresIn:process.env.JWT_EXPIRES_IN,algorithm:"HS256"})
 }
 
-userSchema.methods.generateEmailVerifiactionToken = function(){
-    const unhashedToken = crypto.randomBytes(32).toString("hex");
-    const hashedToken = crypto.createHash("sha256").update(unhashedToken).digest("hex");
+// userSchema.methods.generateEmailVerifiactionToken = function(){
+//     const unhashedToken = crypto.randomBytes(32).toString("hex");
+//     const hashedToken = crypto.createHash("sha256").update(unhashedToken).digest("hex");
 
-    const EmailVerificationTokenExpires = Date.now() + 10 * 60 * 1000; //10 minutes
-    this.EmailVerificationToken = hashedToken;
-    this.EmailVerficationExpiry = EmailVerificationTokenExpires;
+//     const EmailVerificationTokenExpires = Date.now() + 10 * 60 * 1000; //10 minutes
+//     this.EmailVerificationToken = hashedToken;
+//     this.EmailVerficationExpiry = EmailVerificationTokenExpires;
 
-    return { unhashedToken,hashedToken,EmailVerificationTokenExpires }
-}
+//     return { unhashedToken,hashedToken,EmailVerificationTokenExpires }
+// }
 
 
 const Userm = mongoose.model("Userm",userSchema);
