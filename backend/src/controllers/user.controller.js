@@ -247,3 +247,56 @@ export const getUserLikedVideos = async (req,res) => {
       res.status(500).json(new ApiError(500,"Internal Error in fetching user liked videos"))
     }
 }
+
+// Fetch All user for Admin
+export const getAllUsers = async(req,res) => {
+    try {
+
+     const result = await Userm.find().select("-password -__v -createdAt -updatedAt -EmailVerificationToken -EmailVerficationExpiry");
+     
+     console.log("User Found Result is : ", result)
+     // If no user found
+     if(result.length === 0){
+      return res.status(404).json(new ApiError(404,"No User Found"))
+     }
+
+     res.status(200).json(new ApiResponse(200,result,"All User's Fetch Successfully"))
+      
+    } catch (error) {
+      console.log("Error while fetch the All users : ",error);
+      return
+    }
+}
+
+// Change User Role
+export const chanegUserRole = async(req,res) => {
+
+  const { userId } = req.params;
+  const { userRole } = req.body;
+
+  console.log("UserID and UserRole in Controller : ", { userId,userRole })
+
+  try {
+
+      if(!userId){
+        return res.status(404).json(new ApiError(404,"User ID is not found"))
+      }
+       console.log("UserRole Value from backend : ", userRole)
+
+     const user = await Userm.findByIdAndUpdate(userId, {
+        $set:{
+          userRole:userRole
+        },
+     }, { new:true })
+
+     console.log("User after role change : ", user)
+
+     if(user){
+      return res.status(200).json(new ApiResponse(200,{ userData:user, UpdatedRole:user?.userRole }, "Role is Change"))
+     }
+    
+  } catch (error) {
+      console.log("Erorr While changing a role of user : ", error)
+      return;
+  }
+}
