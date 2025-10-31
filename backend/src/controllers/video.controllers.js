@@ -321,3 +321,20 @@ export const updateVideo = async (req,res) => {
   }
 
 }
+
+// fecth the recent videos and users
+export const fecthRecentVideosandUsers = async (req,res) => {
+  try {
+
+      const users =  await Userm.find().sort({ createdAt:-1 }).limit(5).select("-__v -updatedAt -isVerified -userPassword -userEmail -userVideos -userLikes" )
+      const videos = await Video.find().sort({ createdAt:-1 }).limit(5).populate("videoOwner","userFirstName userLastName user_avatar").select("-__v  -updatedAt -createdAt")
+
+      // console.log("No of users are : ", users);
+      // console.log("No of videos are : ", videos)
+      
+      res.status(200).json(new ApiResponse(200,{ users,videos }, "Data is fecthed"))
+  } catch (error) {
+    console.log("Erro while fetch the recent users and videos");
+    return;
+  }
+}
