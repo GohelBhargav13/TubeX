@@ -1,3 +1,4 @@
+
 import Userm from "../models/user.models.js";
 import Video from "../models/video.models.js";
 import { io } from "../Server/Server.js"
@@ -174,4 +175,35 @@ export const deleteVideo = async (videoId,userData,socket) => {
     console.log("Error while deleteing video : ",error);
     socket.emit("ErrorInSocket", { message:"Internal Error in deleting video"});
   }
+}
+
+export const updateUserRole = async (userId,userRole,socket) => {
+  try {
+  
+        if(!userId){
+          socket.emit("ErrorInSocket", { message:"user is not found"});
+          return
+        }
+         console.log("UserRole Value from backend : ", userRole)
+  
+       const user = await Userm.findByIdAndUpdate(userId, {
+          $set:{
+            userRole:userRole
+          },
+       }, { new:true })
+  
+       console.log("User after role change : ", user)
+  
+       if(user){
+         io.emit("UserRoleChanged", { newUserRole:userRole, userId, message:"Role Changed", success:true })
+          return;
+       }else {
+        socket.emit("ErrorInSocket", { message:"Error while changing the user Role in backend Server with socket"});
+         return
+       }
+      
+    } catch (error) {
+        console.log("Erorr While changing a role of user : ", error)
+        return;
+    }
 }
