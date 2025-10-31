@@ -2,6 +2,7 @@ import { Router } from "express"
 import { chanegUserRole, getAllUsers, getMe, getUserLikedVideos, getUserVideos, registerUser, userLogin, userLogout, verifyEmail } from "../controllers/user.controller.js";
 import { upload } from "../multer-config/multer_user_avatar.js";
 import IsLoggedIn from "../middleware/auth.middleware.js";
+import { UserCount, VideoCount } from "../Aggregation/User.Aggregation.js";
 
 
 const userRoutes = Router();
@@ -15,5 +16,6 @@ userRoutes.get("/user-videos",IsLoggedIn,getUserVideos)
 userRoutes.get("/all-users",IsLoggedIn,getAllUsers)
 userRoutes.post("/change-userRole/:userId",IsLoggedIn,chanegUserRole)
 userRoutes.get("/logout",IsLoggedIn,userLogout)
+userRoutes.get("/get-user-count",IsLoggedIn,UserCount)
 
 export default userRoutes
