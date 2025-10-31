@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 const VideoUpdatePage = ({ userData }) => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchWords, setSearchWords] = useState("");
+  const [searchedData, setSearchData] = useState([]);
 
   const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const VideoUpdatePage = ({ userData }) => {
         if (res?.data !== null) {
           console.log("Data is not null");
           setVideos(res?.data);
+          setSearchData(res?.data)
           return;
         } else {
           setVideos([]);
@@ -78,6 +81,17 @@ const VideoUpdatePage = ({ userData }) => {
 //     console.log("handle like function clicked.....")
 //   }
 
+// handle search filter function
+const handleSearch = async () => {
+    setSearchData(videos)
+    if(searchWords.trim()){
+       setSearchData((prev) => prev.filter((v) => v?.videoTitle.toLowerCase().includes(searchWords.toLowerCase())))
+    }else {
+      setSearchData(videos)
+    }
+   
+  }
+
 
   // check is fecthing than loader
   if (loading) {
@@ -105,6 +119,29 @@ const VideoUpdatePage = ({ userData }) => {
             />
           </div>
         </div>
+               <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+        {/* <p>Search Bar</p> */}
+        <p className="text-gray-950 p-3 bg-gray-200 rounded">
+          Search : {searchedData?.length}
+        </p>
+        <input
+          type="text"
+          id="search"
+          required
+          value={searchWords}
+          onChange={(e) => setSearchWords(e.target.value)}
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          placeholder="Search videos..."
+          autoComplete="username"
+        />
+        <button
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          onClick={handleSearch}
+        >
+          {" "}
+          🔍 Search
+        </button>
+      </div>
         <div className="flex h-screen overflow-hidden bg-gray-100 font-mono">
           {/*  Side bar Component Import */}
           <SideBar />
@@ -120,7 +157,7 @@ const VideoUpdatePage = ({ userData }) => {
                 {/* Grid container */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-35 w-[900px]">
                 
-                  {videos.map((video, idx) => (
+                  {searchedData.map((video, idx) => (
                     <>
                     <div
                       key={idx}

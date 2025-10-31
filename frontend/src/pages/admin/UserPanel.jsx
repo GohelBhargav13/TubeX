@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 
 const UserPanel = ({ userData }) => {
   const [userDetails, setUserData] = useState([]);
+    const [searchWords, setSearchWords] = useState("");
+    const [searchedData, setSearchData] = useState([]);
 
   useEffect(() => {
     // Fetch All data
@@ -14,7 +16,8 @@ const UserPanel = ({ userData }) => {
 
         if (res?.data) {
           console.log("User Details:", res.data);
-          setUserData(res.data);
+          setUserData(res?.data);
+          setSearchData(res?.data)
         } else {
           setUserData([]);
         }
@@ -43,6 +46,17 @@ const UserPanel = ({ userData }) => {
     }
   };
 
+  // handle Search method for filter search
+  const handleSearch = async () => {
+    setSearchData(userDetails)
+    if(searchWords.trim()){
+       setSearchData((prev) => prev.filter((ud) => ud?.userFirstName.toLowerCase().includes(searchWords.toLowerCase())))
+    }else {
+      setSearchData(userDetails)
+    }
+   
+  }
+
   return (
     <>
       {/* Header */}
@@ -59,6 +73,29 @@ const UserPanel = ({ userData }) => {
           />
         </div>
       </div>
+       <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+        {/* <p>Search Bar</p> */}
+        <p className="text-gray-950 p-3 bg-gray-200 rounded">
+          Search : {searchedData?.length}
+        </p>
+        <input
+          type="text"
+          id="search"
+          required
+          value={searchWords}
+          onChange={(e) => setSearchWords(e.target.value)}
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          placeholder="Search videos..."
+          autoComplete="username"
+        />
+        <button
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          onClick={handleSearch}
+        >
+          {" "}
+          🔍 Search
+        </button>
+      </div>
       <div className="flex h-screen bg-gray-50 font-mono">
         {/* Sidebar */}
         <SideBar />
@@ -71,7 +108,7 @@ const UserPanel = ({ userData }) => {
               Registered Users
             </h2>
 
-            {userDetails.length === 0 ? (
+            {searchedData.length === 0 ? (
               <p className="text-gray-500">No users found.</p>
             ) : (
               <div className="overflow-x-auto shadow-md rounded-lg">
@@ -88,7 +125,7 @@ const UserPanel = ({ userData }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {userDetails.map((u, idx) => (
+                    {searchedData.map((u, idx) => (
                       <tr
                         key={u._id}
                         className="hover:bg-gray-50 transition duration-150"

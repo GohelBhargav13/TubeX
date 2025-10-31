@@ -12,12 +12,14 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
     "axios": "^1.12.2",
+    "crypto": "^1.0.1",
     "lucide-react": "^0.547.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
     "react-player": "^3.3.3",
     "react-router-dom": "^7.9.4",
+    "recharts": "^3.3.0",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.16",
     "zustand": "^5.0.8"
