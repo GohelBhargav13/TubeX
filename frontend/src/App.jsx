@@ -14,6 +14,8 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import VideoUpdatePage from "./pages/admin/VideoUpdatePage.jsx";
 import UpdateAVideo from "./pages/admin/UpdateAVideo.jsx";
 import CheckRoute from "./utills/CheckRoute.jsx";
+import AdminDashBoard from "./pages/admin/AdminDashBoard.jsx";
+import UserPanel from "./pages/admin/UserPanel.jsx";
 
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
       <Route path="/admin/video-upload" element={ <AdminProtectedRoute> <VideoUploadPage userData={userData} /> </AdminProtectedRoute>  } />
       <Route path="/admin/video-update" element={ <AdminProtectedRoute> <VideoUpdatePage userData={userData } /> </AdminProtectedRoute> } />
       <Route path="/admin/update-video/:videoId" element={ <AdminProtectedRoute> <UpdateAVideo userData={userData } /> </AdminProtectedRoute> } />
+      <Route path="/admin/dashboard"  element={ <AdminProtectedRoute> <AdminDashBoard userData={userData} /> </AdminProtectedRoute> }/>
+      <Route path="/admin/user-data" element={ <AdminProtectedRoute> <UserPanel userData={userData} /> </AdminProtectedRoute> } />
       <Route path="*" element={ <CheckRoute userData={userData} /> } />
     </Routes>
   );
