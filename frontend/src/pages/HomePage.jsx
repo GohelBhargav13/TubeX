@@ -174,6 +174,14 @@ export default function HomePage() {
       if (message) toast.success(message, { duration: 4000 });
     });
 
+     socket.on("UserRoleChanged", ({ newUserRole,userId,message,success }) => {
+        if(userData?._id === userId){
+            toast.success(`You're Promoted to ${newUserRole}`)
+            console.log(message);
+            setTimeout(() => window.location.reload(), 2000)
+        }
+    })
+
     // listen Error from socket
     socket.on("ErrorInSocket", ({ message }) => {
       toast.error(message);
