@@ -9,6 +9,14 @@ const Routes = [
   { name: "Login", path: "/login" },
 ];
 
+// Admin Routes
+const AdminRoutes = [
+   { name:"Dashboard", path:"/admin/dashboard" },
+   { name:"User Data", path:"/admin/user-data" },
+  { name:"Video Upload", path:"/admin/video-upload" },
+  { name:"Video Update", path:"/admin/video-update" },
+]
+
 const SideBar = () => {
   const navigate = useNavigate();
   const { userData, userLogout } = useUserAuthStore();
@@ -46,22 +54,15 @@ const SideBar = () => {
           { userData?.userRole === "admin" ? (
             <>            
             <h1 className="text-gray-700 p-3 font-bold font-serif"> -- Admin Panel --</h1>
-            <button
-            type="submit"
-            className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
-            onClick={() => navigationTo("/admin/video-upload")}
-            title="Video Upload"
-            >
-              Video Upload
-            </button>
-            <button
-            type="submit"
-            className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
-            onClick={() => navigationTo("/admin/video-update")}
-            title="Video Update"
-            >
-              Video Update
-            </button>
+               { AdminRoutes.map((routes,idx) => (
+                <button
+                key={idx}
+                type="submit"
+                className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
+                onClick={() => navigate(routes.path)}  
+                 title={ routes.name }               
+                > { routes.name } </button>
+               )) }
             </>
 
           ) : (
