@@ -1,7 +1,8 @@
 import { Server } from "socket.io"
 import app from "../../app.js"
 import http from "http"
-import { commentVideo, deleteComment, deleteVideo, likeVideo } from "../API/video.api.js"
+import { commentVideo, deleteComment, deleteVideo, likeVideo, updateUserRole } from "../API/video.api.js"
+import { chanegUserRole } from "../controllers/user.controller.js"
 
 export const server = http.createServer(app)
 
@@ -51,7 +52,7 @@ io.on("connection",(socket) => {
     })
 
     socket.on("videoDetailsUpdate", async({ videoId,updatedData }) => {
-        console.log("Updated Data At Server Side :", updatedData)
+       console.log("Updated Data At Server Side :", updatedData)
        try {
          if(videoId){
              io.emit("videoDetailsUpdated", { videoId,updatedData, message:`${updatedData?.videoTitle} video Details Updated` })
@@ -59,6 +60,10 @@ io.on("connection",(socket) => {
        } catch (error) {
         console.log(error)
        }
+    })
+
+    socket.on("userRoleChange", async({ userId,userRole }) => {
+         await updateUserRole(userId,userRole,socket)
     })
 
     socket.on("disconnect",() => {
