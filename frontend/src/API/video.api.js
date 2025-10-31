@@ -166,3 +166,21 @@ export const deleteVideo = async (videoId) => {
         return;        
     }
 }
+
+// fetch the all recent videos and users
+export const fetchUsersAndVideos = async () => {
+    try {
+
+       const result = await api.get("/video/get-recents")
+
+       if(result?.data?.StatusCode === 200){
+            return { userData: result?.data?.data?.users, videoData: result?.data?.data?.videos, success:true, Status:"good"  }
+       }else {
+            return { userData:null, videoData:null, success:false, Status:"fail" }
+       }
+        
+    } catch (error) {
+            console.log("Error While fetching the users and videos data : ", error)
+            return;
+    }
+}
