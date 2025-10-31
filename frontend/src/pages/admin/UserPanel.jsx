@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SideBar from "../../component/SideBar.jsx";
 import { changeUsersRole, fetchAllUsers } from "../../API/user.api.js";
 import toast from "react-hot-toast";
+import socket from "../../Server/Server.js";
 
 const UserPanel = ({ userData }) => {
   const [userDetails, setUserData] = useState([]);
@@ -25,25 +26,42 @@ const UserPanel = ({ userData }) => {
         console.log("Error while fetching data:", error);
       }
     };
-
     fetchUsers();
+
+    socket.on("UserRoleChanged", ({ newUserRole,userId,message,success }) => {
+      console.log("flag is :", success)
+        if(success && userData?.userRole === "admin"){
+          console.log({ userId, newUserRole })
+          toast.success(message)
+          fetchUsers();
+          return;
+        }else {
+          toast.error("Error While Updating Role")
+        }
+    })
+
+    return () => {
+      socket.off("UserRoleChanged")
+    }
   }, []);
 
   // Handle UserRole
   const handleUserRole = async (userId, userRole) => {
     // e.preventDefault()
 
+    socket.emit("userRoleChange", { userId, userRole } )
+
     console.log("Enter into the userRole Changed : ", { userId, userRole });
-    const res = await changeUsersRole(userId, userRole);
+    // const res = await changeUsersRole(userId, userRole);
 
-    console.log("Response after change a UserRole : ", res);
+    // console.log("Response after change a UserRole : ", res);
 
-    if (res?.success) {
-      toast.success(res?.message);
-      setTimeout(() => window.location.reload(), 1500);
-    } else {
-      toast.error("Error while change a UserRole");
-    }
+    // if (res?.success) {
+    //   toast.success(res?.message);
+    //   setTimeout(() => window.location.reload(), 1500);
+    // } else {
+    //   toast.error("Error while change a UserRole");
+    // }
   };
 
   // handle Search method for filter search
