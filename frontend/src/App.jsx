@@ -16,6 +16,7 @@ import UpdateAVideo from "./pages/admin/UpdateAVideo.jsx";
 import CheckRoute from "./utills/CheckRoute.jsx";
 import AdminDashBoard from "./pages/admin/AdminDashBoard.jsx";
 import UserPanel from "./pages/admin/UserPanel.jsx";
+import PlayListPage from "./pages/PlayListPage.jsx";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
       <Route path="/liked" element={ <ProtectedRoute> <Liked /> </ProtectedRoute> } />
       <Route path="/uvideos" element={ <ProtectedRoute> <UserVideos /> </ProtectedRoute> } />
       <Route path="/watch/:videoId" element={ <ProtectedRoute> <WatchVideo /> </ProtectedRoute> } />
+      <Route path="/playlists" element={ <ProtectedRoute> <PlayListPage userData={userData} /> </ProtectedRoute> } />
       <Route path="/admin/video-upload" element={ <AdminProtectedRoute> <VideoUploadPage userData={userData} /> </AdminProtectedRoute>  } />
       <Route path="/admin/video-update" element={ <AdminProtectedRoute> <VideoUpdatePage userData={userData } /> </AdminProtectedRoute> } />
       <Route path="/admin/update-video/:videoId" element={ <AdminProtectedRoute> <UpdateAVideo userData={userData } /> </AdminProtectedRoute> } />
