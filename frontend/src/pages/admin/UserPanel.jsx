@@ -3,15 +3,18 @@ import SideBar from "../../component/SideBar.jsx";
 import { changeUsersRole, fetchAllUsers } from "../../API/user.api.js";
 import toast from "react-hot-toast";
 import socket from "../../Server/Server.js";
+import { Loader2 } from "lucide-react";
 
 const UserPanel = ({ userData }) => {
   const [userDetails, setUserData] = useState([]);
     const [searchWords, setSearchWords] = useState("");
     const [searchedData, setSearchData] = useState([]);
+    const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch All data
     const fetchUsers = async () => {
+      setLoading(true)
       try {
         const res = await fetchAllUsers();
 
@@ -23,7 +26,10 @@ const UserPanel = ({ userData }) => {
           setUserData([]);
         }
       } catch (error) {
+        setLoading(false)
         console.log("Error while fetching data:", error);
+      }finally {
+        setLoading(false)
       }
     };
     fetchUsers();
@@ -73,6 +79,14 @@ const UserPanel = ({ userData }) => {
       setSearchData(userDetails)
     }
    
+  }
+
+  if(loading){
+    return (
+      <div className="justify-center text-blue-600">
+        <Loader2 className="animate-spin" />
+      </div>
+    )
   }
 
   return (
