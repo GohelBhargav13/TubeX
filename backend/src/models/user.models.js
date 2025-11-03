@@ -66,6 +66,12 @@ const userSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Video"
         }
+    ],
+    userPlayLists: [
+        { 
+            type:mongoose.Schema.Types.ObjectId, 
+            ref:"PlayList"
+        }
     ]
 
 }, { timestamps:true })
