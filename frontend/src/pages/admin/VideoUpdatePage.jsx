@@ -155,13 +155,13 @@ const handleSearch = async () => {
                 <h2 className="text-xl font-semibold mb-4">Update Panel</h2>
 
                 {/* Grid container */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-35 w-[900px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-[950px]">
                 
                   {searchedData.map((video, idx) => (
                     <>
                     <div
                       key={idx}
-                      className="bg-white rounded-lg shadow hover:shadow-md transition p-2 w-[330px]"
+                      className="bg-white rounded-lg shadow hover:shadow-md transition p-2 w-[310px]"
                     >
                      <div className="flex justify-end cursor-pointer pt-1 gap-2">
                         <div className="hover:text-gray-600" onClick={() => handleUpdateVideo(video?._id)} ><Pen /></div>

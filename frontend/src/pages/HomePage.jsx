@@ -5,9 +5,10 @@ import SideBar from "../component/SideBar.jsx";
 import { getAllVideos } from "../API/video.api.js";
 import toast from "react-hot-toast";
 import VideoPlayer from "../component/VideoPlayer.jsx";
-import { Heart, Loader2, MessageCircle, ThumbsUp } from "lucide-react";
+import {  Loader2, MessageCircle, ThumbsUp, CrossIcon } from "lucide-react";
 import socket from "../Server/Server.js";
 import { useNavigate } from "react-router-dom";
+import PlayListSection from "../component/PlayListSection.jsx";
 
 // const videos = [
 //   {
@@ -65,19 +66,19 @@ export default function HomePage() {
       }
     };
     fetchVideo();
-
+    
     // Socket Listen
     socket.on(
       "VideoLikeUpdated",
       ({ LikeCounts, message, userId, videoId }) => {
         // console.log({  LikeCounts,message,userId,videoId })
-        setVideos((prevvideos) =>
-          prevvideos.map((video) =>
-            video?._id === videoId
-              ? { ...video, VideoLikes: LikeCounts }
-              : video
-          )
-        );
+        // setVideos((prevvideos) =>
+        //   prevvideos.map((video) =>
+        //     video?._id === videoId
+        //       ? { ...video, VideoLikes: LikeCounts }
+        //       : video
+        //   )
+        // );
 
         if(searchWords || searchWords === ""){
           setSearchData((prevvideos) =>
@@ -97,13 +98,13 @@ export default function HomePage() {
       "VideoCommentUpdated",
       ({ New_Comment, commentCount, userId, videoId, message, commentId }) => {
         // update the comment count
-        setVideos((prevVideos) =>
-          prevVideos.map((video) =>
-            video?._id === videoId
-              ? { ...video, VideoCommentsLike: commentCount }
-              : video
-          )
-        );
+        // setVideos((prevVideos) =>
+        //   prevVideos.map((video) =>
+        //     video?._id === videoId
+        //       ? { ...video, VideoCommentsLike: commentCount }
+        //       : video
+        //   )
+        // );
 
          if(searchWords || searchWords === ""){
            setSearchData((prevVideos) =>
@@ -137,8 +138,8 @@ export default function HomePage() {
       console.log("Video URL is : ", videoData?.data?.videoUrl);
 
       if (videoData) {
-        toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`);
-        setVideos((prevVideos) => [videoData?.data, ...prevVideos]);
+        // toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`);
+        // setVideos((prevVideos) => [videoData?.data, ...prevVideos]);
 
         if(searchWords || searchWords === ""){
             toast.success(`New video Uploded : ${videoData?.data?.videoTitle}`);
@@ -150,7 +151,7 @@ export default function HomePage() {
 
     // delete video and update UI
     socket.on("videoDeleted", ({ videoId, userData, message }) => {
-      setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId));
+      // setVideos((prevVideos) => prevVideos.filter((v) => v?._id !== videoId));
 
       if(searchWords || searchWords === ""){
         setSearchData((prevVideos) => prevVideos.filter((v) => v?._id !== videoId));
@@ -162,9 +163,9 @@ export default function HomePage() {
       console.log("video Data is with Updated Deatils : ", updatedData);
       console.log("Message from Server :", message);
 
-      setVideos((prev) =>
-        prev.map((v) => (v?._id === videoId ? { ...v, ...updatedData } : v))
-      );
+      // setVideos((prev) =>
+      //   prev.map((v) => (v?._id === videoId ? { ...v, ...updatedData } : v))
+      // );
 
       if(searchWords || searchWords === ""){
         setSearchData((prev) =>
@@ -340,6 +341,9 @@ export default function HomePage() {
                               video?.VideoCommentsLike ||
                               video?.videoComments?.length}
                           </p>
+                          
+                             <PlayListSection videoId={video?._id} />
+            
                         </div>
                       </div>
                     ))}
