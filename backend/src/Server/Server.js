@@ -2,7 +2,7 @@ import { Server } from "socket.io"
 import app from "../../app.js"
 import http from "http"
 import { commentVideo, deleteComment, deleteVideo, likeVideo, updateUserRole } from "../API/video.api.js"
-import { chanegUserRole } from "../controllers/user.controller.js"
+
 
 export const server = http.createServer(app)
 
