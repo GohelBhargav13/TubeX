@@ -38,9 +38,9 @@ const RelatedVideos = ({ videoId }) => {
           >
             {/* Video Info */}
             <div className="flex flex-col">
-                <div className="flex" onClick={() => navigate(`/watch/${video?._id}`)}>
+                <div onClick={() => navigate(`/watch/${video?._id}`)}>
                 <VideoPlayer videoURL={video?.videoUrl} height={150}/>
-                </div>
+                
               <p className="text-sm font-semibold text-gray-900 line-clamp-2">
                 {video?.videoTitle}
               </p>
@@ -50,6 +50,7 @@ const RelatedVideos = ({ videoId }) => {
               <p className="text-xs text-gray-500">
                 200K views • 1 week ago
               </p>
+              </div>
             </div>
           </div>
         ))}
