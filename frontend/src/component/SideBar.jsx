@@ -6,7 +6,8 @@ const Routes = [
   { name: "Home", path: "/home" },
   { name: "Liked Videos", path: "/liked" },
   { name: "User Videos", path: "/uvideos" },
-  { name: "Login", path: "/login" },
+   { name:"PlayLists", path:"/playlists" },
+  { name: "Login", path: "/login" }
 ];
 
 // Admin Routes

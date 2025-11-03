@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../services/axios";
-import { addVideoInPlayList, getAllUserPlayList } from "../API/playlist.api";
+import { addVideoInPlayList, checkVideoId, getAllUserPlayList } from "../API/playlist.api";
 import toast from "react-hot-toast";
 import { CrossIcon } from "lucide-react";
 
@@ -20,7 +20,6 @@ const PlayListSection = ({ videoId }) => {
             setPlayListNames([])
        }
     } 
-
     fetchData()
   },[])
 
@@ -93,10 +92,10 @@ const PlayListSection = ({ videoId }) => {
                         <p className="text-sm font-semibold">Videos:{ playlist?.videoId.length }</p>
                     </div>
 
-                      <button className="text-blue-600 text-sm font-medium hover:underline"
+                      <button className={`${playlist?.videoId.includes(videoId) ? 'text-slate-800 text-sm font-medium hover:underline cursor-pointer ' : "text-blue-600 text-sm font-medium hover:underline"}`}
                         onClick={() => handleAddVideoInPlayList(videoId,playlist?._id)}
                       >
-                        Add Video
+                        { checkVideoId(playlist?.videoId,videoId) ? 'Remove' : 'Add' }
                       </button>
                     </li>
                   ))}
