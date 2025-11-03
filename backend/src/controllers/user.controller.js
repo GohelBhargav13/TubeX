@@ -39,6 +39,10 @@ export const registerUser = async (req, res) => {
     //Generate email verification token
     const emailToken = await newUser.generateEmailVerifiactionToken();
 
+    if(!emailToken){
+        return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
+    }
+    
     await newUser.save();
 
     //Send verification email

@@ -124,7 +124,7 @@ export const addVideoInPlayList = async (req, res) => {
 export const getUserPlaylists = async (req, res) => {
   const { id } = req.user;
   try {
-    const userPlaylists = await PlayList.find({ playlistOwner: id })
+    const userPlaylists = await PlayList.find({ playlistOwner: id }).populate("videoId","playlistName _id videoTitle videoDescription videoUrl videoLikes videoComments")
     // console.log(userPlaylists[0].playlistOwner)
 
     const user = await Userm.findById(id).select("userFirstName userLastName __id userEmail");
