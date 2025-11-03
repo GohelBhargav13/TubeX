@@ -8,44 +8,68 @@ import Video from "../models/video.models.js";
 // Create a PlayList
 export const createPlayList = async (req, res) => {
   const { playListName } = req.body;
+  const userId = req.user?._id; // safer naming
+
   try {
+  
     if (!playListName) {
       return res
-        .status(404)
-        .json(new ApiError(404, "Playlist name is required"));
+        .status(400)
+        .json(new ApiError(400, "Playlist name is required"));
     }
 
+    if (!userId) {
+      return res
+        .status(401)
+        .json(new ApiError(401, "User authentication failed"));
+    }
+
+
+    const user = await Userm.findById(userId).populate("userPlayLists");
+    if (!user) {
+      return res
+        .status(404)
+        .json(new ApiError(404, "User not found"));
+    }
+
+    
     const existingPlayList = await PlayList.findOne({
       playlistName: playListName,
+      playlistOwner: userId,
     });
 
     if (existingPlayList) {
       return res
         .status(400)
-        .json(new ApiError(400, "PlayList is already exist"));
+        .json(new ApiError(400, "Playlist already exists"));
     }
 
-    const NewPlaylist = await PlayList.create({
+    
+    const newPlaylist = await PlayList.create({
       playlistName: playListName,
-      playlistOwner: req.user?._id,
+      playlistOwner: userId,
     });
 
-    if (!NewPlaylist) {
+    if (!newPlaylist) {
       return res
-        .status(400)
-        .json(new ApiError(400, "Error in creating PlayList"));
+        .status(500)
+        .json(new ApiError(500, "Error creating playlist"));
     }
 
-    res
+    await user.userPlayLists.push(newPlaylist?._id)
+    await user.save();
+
+    return res
       .status(201)
-      .json(new ApiResponse(201, NewPlaylist, "PlayList Created Successfully"));
+      .json(new ApiResponse(201, {newPlaylist, userPlayList:user?.userPlayLists}, "Playlist created successfully"));
   } catch (error) {
-    console.log("Error while creating PlayList : ", error);
-    res
+    console.error("Error while creating PlayList:", error);
+    return res
       .status(500)
-      .json(new ApiError(500, "Internal Error in creating PlayList"));
+      .json(new ApiError(500, "Internal server error while creating playlist"));
   }
 };
+
 
 // Add the video in the playlist
 export const addVideoInPlayList = async (req, res) => {
@@ -57,7 +81,7 @@ export const addVideoInPlayList = async (req, res) => {
         .json(new ApiError(404, "VideoId and PlayListId is required"));
     }
 
-    const playlist = await PlayList.findById(playlistId).populate("videoOwner","userFirstName");
+    const playlist = await PlayList.findById(playlistId).populate("playlistOwner","userFirstName");
     if (!playlist) {
       return res.status(404).json(new ApiError(404, "PlayList is not found"));
     }
