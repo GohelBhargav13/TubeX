@@ -112,6 +112,11 @@ export const userLogin = async (req, res) => {
   const { userEmail, userPassword } = req.body;
   // console.log({email,password})
   try {
+
+    if(!userEmail || !userPassword){
+        return res.status(404).json(new ApiError(404,"All Fields are required"))
+    }
+
     const user = await Userm.findOne({ userEmail });
     if (!user) {
       return res.status(404).json(new ApiError(404, "User Not Found"));
