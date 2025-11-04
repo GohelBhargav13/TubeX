@@ -9,32 +9,31 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setUserData,userData } = useUserAuthStore();
+  const { userLogin } = useUserAuthStore();
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Attempting to log in with:", { email, password });
+   try {
+     e.preventDefault();
+     console.log("Attempting to log in with:", { email, password });
+ 
+     // Calling the actual user login method with this credential
+     const formData = {
+       userEmail: email,
+       userPassword: password,
+     };
 
-    // Calling the actual user login method with this credential
-    const formData = {
-      userEmail: email,
-      userPassword: password,
-    };
-
-    const res = await api.post("/user/login", formData);
-    console.log(res);
-
-    if (res.data.StatusCode === 200 || res.data.StatusCode === 201) {
-        console.log("Login successful, updating Zustand store");
-      await setUserData(); // fetch /user/me and set user data
-        toast.success(res.data.message || "Login successful");
-        navigate("/home");
-
-    } else {
-      toast.error(res.data.message || "Login failed");
+    const { status } =  await userLogin(formData)
+     console.log(status)
+    if(status){
+      return navigate("/home")
     }
+     
+   } catch (error) {
+      console.log("Error While Login with zustand")
+      return;
+   }
   };
 
   return (
