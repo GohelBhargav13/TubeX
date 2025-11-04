@@ -8,6 +8,8 @@ const PlayListPage = ({ userData }) => {
   const [playLists, setPlayLists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
+  const [searchPlayList,setsearchPlayList] = useState("")
+  const [filterPlayList,setfilterPlayList] = useState([])
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,6 +20,7 @@ const PlayListPage = ({ userData }) => {
 
         if (res?.success) {
           setPlayLists(res?.data?.userPlaylists || []);
+          setfilterPlayList(res?.data?.userPlaylists || [])
         } else {
           setPlayLists([]);
         }
@@ -35,6 +38,23 @@ const PlayListPage = ({ userData }) => {
   // Handle a Toogle of the shoe menu
   const handleToogle = () => setIsShow((prev) => !prev);
 
+   // handle search playlist
+    const handleSearchPlayList = () => {
+        if(searchPlayList.length > 0){
+          setfilterPlayList(playLists)
+          // console.log("We here.....",filterPlayList)
+          
+          setfilterPlayList((prev) => { 
+            console.log("Previous Data : ", prev)
+            return prev.filter((pl) => pl.playlistName.toLowerCase().includes(searchPlayList.toLowerCase())) 
+          })
+
+          console.log("Filterd PlayLists : ", filterPlayList.length)
+        }else {
+          setfilterPlayList(playLists)
+        }
+    }
+
   return (
     <div className="min-h-screen bg-neutral-50 font-mono">
       {/* Header */}
@@ -51,7 +71,29 @@ const PlayListPage = ({ userData }) => {
           />
         </div>
       </header>
-
+  <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+        {/* <p>Search Bar</p> */}
+        <p className="text-gray-950 p-3 bg-gray-200 rounded">
+          Search : {filterPlayList?.length}
+        </p>
+        <input
+          type="text"
+          id="search"
+          required
+          value={searchPlayList}
+          onChange={(e) => setsearchPlayList(e.target.value) }
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          placeholder="Search PlayList..."
+          autoComplete="username"
+        />
+        <button
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          onClick={handleSearchPlayList}
+        >
+          {" "}
+          🔍 Search
+        </button>
+      </div>  
       {/* Body */}
       <div className="flex gap-3 w-full px-3">
         <SideBar />
@@ -64,7 +106,7 @@ const PlayListPage = ({ userData }) => {
 
           {loading ? (
             <p className="text-center text-gray-600">Loading playlists...</p>
-          ) : playLists.length === 0 ? (
+          ) : filterPlayList.length === 0 ? (
             <div className="text-center text-gray-600">
               <p>No playlists found 😕</p>
               <p className="text-sm mt-2">
@@ -73,7 +115,7 @@ const PlayListPage = ({ userData }) => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {playLists.map((playlist) => (
+              {filterPlayList.map((playlist) => (
                 <div
                   key={playlist?._id}
                   className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-all"
