@@ -24,9 +24,8 @@ const AdminDashBoard = ({ userData }) => {
         // Fetch user and admin counts
         const res = await fetchUserAndAdminCounts();
         if (res?.data) {
-          res.data.forEach((d) =>
-            d._id === "user" ? setUserCount(d.count) : setAdminCount(d.count)
-          );
+          setUserCount(res?.data?.user)
+          setAdminCount(res?.data?.admin)
         }
 
         // Fetch video count
