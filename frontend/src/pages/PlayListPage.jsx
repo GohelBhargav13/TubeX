@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SideBar from "../component/SideBar";
-import { FetchUserPlayLists } from "../API/playlist.api";
+import { deletePlayList, FetchUserPlayLists } from "../API/playlist.api";
 import VideoPlayer from "../component/VideoPlayer";
-import { useNavigate } from  "react-router-dom"
+import { data, useNavigate } from  "react-router-dom"
+import { Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const PlayListPage = ({ userData }) => {
   const [playLists, setPlayLists] = useState([]);
@@ -18,11 +20,19 @@ const PlayListPage = ({ userData }) => {
       try {
         const res = await FetchUserPlayLists();
 
-        if (res?.success) {
-          setPlayLists(res?.data?.userPlaylists || []);
-          setfilterPlayList(res?.data?.userPlaylists || [])
+        // checking if the playlist is not found
+        if(res?.StatusCode === 404){
+            setPlayLists([])
+            filterPlayList([])
+            console.log(res?.message)
+          return;
+        }
+
+        if (res?.success || res?.StatusCode === 200) {
+            setPlayLists(res?.data?.userPlaylists || []);
+            setfilterPlayList(res?.data?.userPlaylists || [])
         } else {
-          setPlayLists([]);
+            setPlayLists([]);
         }
       } catch (error) {
         console.log("❌ Error while fetching playlists:", error);
@@ -53,6 +63,28 @@ const PlayListPage = ({ userData }) => {
         }else {
           setfilterPlayList(playLists)
         }
+    }
+
+    // handle delete PlayList 
+    const handleDeletePlayList = async (playListId) => {
+       const res = await deletePlayList(playListId)
+
+       // Update a Users PlayList UI
+       if(res?.data !== null){
+            toast.success("PlayList is Deleted");
+            setfilterPlayList(prev => prev?._id !== playListId)
+            setLoading(true);
+
+              setTimeout(() => {
+                  setLoading(false)
+                  window.location.reload()
+              },1000)
+
+          return
+       }else {
+          toast.error(res?.message || "Error While Deleting a playList")
+          return
+       }
     }
 
   return (
@@ -106,7 +138,7 @@ const PlayListPage = ({ userData }) => {
 
           {loading ? (
             <p className="text-center text-gray-600">Loading playlists...</p>
-          ) : filterPlayList.length === 0 ? (
+          ) : filterPlayList?.length === 0 ? (
             <div className="text-center text-gray-600">
               <p>No playlists found 😕</p>
               <p className="text-sm mt-2">
@@ -115,14 +147,17 @@ const PlayListPage = ({ userData }) => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filterPlayList.map((playlist) => (
+              {filterPlayList?.length > 0 && filterPlayList?.map((playlist) => (
                 <div
                   key={playlist?._id}
                   className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-all"
                 >
-                  <h2 className="text-lg font-semibold text-indigo-600 mb-3">
-                    {playlist?.playlistName}
-                  </h2>
+                  <div className="flex gap-3">
+                    <h2 className="text-lg font-semibold text-indigo-600 mb-3 ml-2">
+                      {playlist?.playlistName}
+                    </h2>
+                    <button className="w-full h-2 justify-items-end cursor-pointer" onClick={() => handleDeletePlayList(playlist?._id)}> <Trash2 /> </button>
+                  </div>
 
                   {playlist?.videoId?.length > 0 ? (
                     <div className="flex flex-col gap-3">
