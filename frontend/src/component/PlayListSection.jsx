@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../services/axios";
-import { addVideoInPlayList, checkVideoId, getAllUserPlayList } from "../API/playlist.api";
+import { addVideoInPlayList, getAllUserPlayList } from "../API/playlist.api";
 import toast from "react-hot-toast";
 import { CrossIcon } from "lucide-react";
 
@@ -95,7 +95,7 @@ const PlayListSection = ({ videoId }) => {
                       <button className={`${playlist?.videoId.includes(videoId) ? 'text-slate-800 text-sm font-medium hover:underline cursor-pointer ' : "text-blue-600 text-sm font-medium hover:underline"}`}
                         onClick={() => handleAddVideoInPlayList(videoId,playlist?._id)}
                       >
-                        { checkVideoId(playlist?.videoId,videoId) ? 'Remove' : 'Add' }
+                        { playlist?.videoId?.includes(videoId) ? 'Remove' : 'Add' }
                       </button>
                     </li>
                   ))}
@@ -115,7 +115,7 @@ const PlayListSection = ({ videoId }) => {
                       type="submit"
                       className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-500 transition"
                     >
-                      Add
+                      Create
                     </button>
                   </div>
                 </form>
