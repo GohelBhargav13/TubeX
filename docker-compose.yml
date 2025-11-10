@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    networks:
+      - full-stack-net
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  
+  frontend:
+    build: ./frontend
+    networks:
+      - full-stack-net
+    ports:
+      - 5173:80
+    depends_on:
+      - backend
+
+networks:
+  full-stack-net:
+    driver: bridge
