@@ -4,6 +4,7 @@ import ApiResponse from "../utills/api-response.js";
 import crypto from "crypto";
 import Video from "../models/video.models.js"
 import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
+// import { redis } from "../Aggregation/User.Aggregation.js"
 
 export const registerUser = async (req, res) => {
   console.log(req.body);
@@ -297,6 +298,9 @@ export const chanegUserRole = async(req,res) => {
           userRole:userRole
         },
      }, { new:true })
+
+      // await redis.del("user-count")
+      // await redis.del("admin-count")
 
      console.log("User after role change : ", user)
 
