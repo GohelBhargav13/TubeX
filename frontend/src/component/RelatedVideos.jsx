@@ -34,17 +34,17 @@ const RelatedVideos = ({ videoId }) => {
          {relatedVideos.map((video) => (
           <div
             key={video?._id}
-            className="cursor-pointer hover:bg-gray-100 p-2 rounded-lg flex space-x-3"
+            className="cursor-pointer bg-slate-800 p-5 hover:scale-105 hover:bg-slate-950 hover:duration-500 hover:shadow-md hover:p-4  text-white rounded-lg flex space-x-3"
           >
             {/* Video Info */}
             <div className="flex flex-col">
                 <div onClick={() => navigate(`/watch/${video?._id}`)}>
                 <VideoPlayer videoURL={video?.videoUrl} height={150}/>
                 
-              <p className="text-sm font-semibold text-gray-900 line-clamp-2">
+              <p className="text-sm font-semibold line-clamp-2">
                 {video?.videoTitle}
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-neutral-400 mt-1">
                 {video?.videoDescription}
               </p>
               <p className="text-xs text-gray-500">
