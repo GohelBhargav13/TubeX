@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { api } from "../services/axios.js";
 import { useUserAuthStore } from "../store/auth.store.js";
 
 
@@ -38,13 +36,13 @@ export default function LoginPage() {
 
   return (
     // Centering the form in the middle of the screen
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 font-mono">
+    <div className="flex items-center justify-center min-h-screen bg-neutral-950 font-mono">
       {/* 💳 The Login Card: Mimics Google's clean, centered card */}
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+      <div className="w-full max-w-md p-8 bg-neutral-900 text-white rounded-xl shadow-lg border border-gray-200">
         {/* Header/Logo */}
         <div className="text-center mb-8">
           {/* Using a simple text logo, but you could embed the Google logo SVG */}
-          <h1 className="text-2xl font-medium text-gray-800">
+          <h1 className="text-2xl font-medium">
             <span className="text-blue-500">S</span>
             <span className="text-red-500">t</span>
             <span className="text-yellow-500">r</span>
@@ -53,7 +51,7 @@ export default function LoginPage() {
             <span className="text-red-500">m</span>
             Tube
           </h1>
-          <h2 className="text-xl font-normal text-gray-800 mt-4">Sign in</h2>
+          <h2 className="text-xl font-norma mt-4">Sign in</h2>
           <p className="text-gray-500 text-sm">to continue to StreamTube</p>
         </div>
 
@@ -70,7 +68,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
               placeholder="Email or phone"
               autoComplete="username"
             />
@@ -87,7 +85,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
               placeholder="Password"
               autoComplete="current-password"
             />

@@ -230,12 +230,12 @@ export default function HomePage() {
   }
 
   return (
-    <>
+    <div className="bg-gray-900">
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+      <div className="h-16 bg-gray-950 flex items-center border-b-2 border-b-white justify-between px-6 shadow-sm mb-6 font-mono">
+        <h1 className="text-2xl font-bold text-white">TubeX</h1>
         <div className="flex items-center space-x-4">
-          <p className="font-medium">
+          <p className="text-lg font-medium text-white">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
           <img
@@ -245,7 +245,7 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+      <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
         {/* <p>Search Bar</p> */}
         <p className="text-gray-950 p-3 bg-gray-200 rounded">
           Search : {searchedData?.length}
@@ -256,19 +256,19 @@ export default function HomePage() {
           required
           value={searchWords}
           onChange={(e) => setSearchWords(e.target.value)}
-          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
           placeholder="Search videos..."
           autoComplete="username"
         />
         <button
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
           onClick={handleSearch}
         >
           {" "}
           🔍 Search
         </button>
       </div>
-      <div className="flex h-screen overflow-hidden bg-gray-100 font-mono">
+      <div className="flex h-screen overflow-hidden bg-linear-to-b from-gray-900 to-black border-t-2 border-white font-mono">
         {/*  Side bar Component Import */}
         <SideBar />
 
@@ -278,7 +278,7 @@ export default function HomePage() {
           <div className="flex-1 overflow-y-auto p-6">
             {/* Container for padding left/right */}
             <div className="max-w-[1400px] mx-auto">
-              <h2 className="text-xl font-semibold mb-4">
+              <h2 className="text-xl font-semibold mb-4 text-white text-center">
                 Learn New Things....
               </h2>
 
@@ -290,7 +290,7 @@ export default function HomePage() {
                     searchedData?.map((video, idx) => (
                       <div
                         key={idx}
-                        className="bg-white rounded-lg shadow hover:shadow-md transition p-2"
+                        className="bg-gray-800 text-white hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                       >
                         <div
                           className="relative cursor-pointer"
@@ -307,17 +307,17 @@ export default function HomePage() {
                               alt="User"
                               className="w-10 h-10 rounded-full"
                             />
-                            <h4 className="ml-2 font-medium text-gray-600">
+                            <h4 className="ml-2 font-medium">
                               {video?.videoOwner?.userFirstName}{" "}
                               {video?.videoOwner?.userLastName}
                             </h4>
                           </div>
                         </div>
 
-                        <h3 className="mt-2 font-medium text-gray-800 flex justify-items-center">
+                        <h3 className="mt-2 font-medium text-neutral-400 flex justify-items-center">
                           {video?.videoTitle}
                         </h3>
-                        <p className="text-sm mt-2 text-gray-500 flex justify-items-center">
+                        <p className="text-sm mt-2 text-neutral-500 flex justify-items-center">
                           {video?.videoDescription?.length > 35
                             ? video?.videoDescription?.slice(0, 35) + "..."
                             : video?.videoDescription + "..."}
@@ -325,7 +325,7 @@ export default function HomePage() {
 
                         <div className="flex flex-row gap-3 mt-2 justify-center items-center">
                           <button
-                            className="text-sm text-gray-500 flex items-center cursor-pointer"
+                            className="text-sm text-neutral-50 flex items-center cursor-pointer"
                             onClick={() =>
                               handleLike(video?._id, userData?._id)
                             }
@@ -335,7 +335,7 @@ export default function HomePage() {
                               ? video?.VideoLikes
                               : video?.videoLikes?.length}
                           </button>
-                          <p className="text-sm text-gray-500 flex items-center">
+                          <p className="text-sm text-neutral-50 flex items-center">
                             <MessageCircle className="mr-1" height={22} />{" "}
                             {newCommentCount ||
                               video?.VideoCommentsLike ||
@@ -353,6 +353,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
