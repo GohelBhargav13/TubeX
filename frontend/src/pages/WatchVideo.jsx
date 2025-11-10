@@ -76,10 +76,10 @@ const WatchVideo = () => {
     }
 
   return (
-    <>
+    <div className='bg-gray-800'>
      {/* Header */}
-        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
-          <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+        <div className="h-16 bg-gray-950 text-white border-b-2 border-b-white font-mono flex items-center justify-between px-6 shadow-sm mb-6">
+          <h1 className="text-2xl font-bold text-white">TubeX</h1>
           <div className="flex items-center space-x-4">
             <p className="font-medium">
               {userData?.userFirstName} {userData?.userLastName}
@@ -93,7 +93,7 @@ const WatchVideo = () => {
             />
           </div>
         </div>
-   <div className="flex min-h-screen bg-white">
+   <div className="flex min-h-screen bg-gray-900 text-white border-t-2 border-t-white">
       {/* Left Sidebar - YouTube's main navigation */}
       {/* Keeping w-1/5 as per your original structure, though YouTube's is often narrower */}
         <SideBar />
@@ -108,11 +108,11 @@ const WatchVideo = () => {
         
         {/* Video Metadata */}
         <div className="pb-4 border-b border-gray-200">
-          <h1 className="font-bold text-2xl mb-2 text-gray-900 font-mono">
+          <h1 className="font-bold text-2xl mb-2 font-mono">
             {videoDetails?.videoTitle}
           </h1>
           
-          <div className="flex justify-between items-center text-gray-600 text-sm">
+          <div className="flex justify-between items-center text-sm">
             <div className='flex items-center space-x-4'>
                 <p className="font-semibold">{videoDetails.views || 1} views</p>
                 <span className="text-xs">•</span>
@@ -120,13 +120,13 @@ const WatchVideo = () => {
             </div>
             {/* Like/Dislike/Share Buttons Placeholder */}
             <div className='flex items-center space-x-5'>
-                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'
+                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-neutral-100 transition'
                 onClick={() => handleLikes(videoDetails?._id,userData?._id)}
                 >
                     <span className="text-xl"><ThumbsUp /></span>
                     <span className='font-medium'>{ videoDetails?.LikeCounts ?? videoDetails?.videoLikes?.length ?? 0}</span>
                 </button>
-                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-red-600 transition'>
+                <button className='flex items-center gap-0.5 cursor-pointer space-x-1 hover:text-neutral-100 transition'>
                     <span className="text-xl"><MessageCircle /></span>
                     <span className='font-medium'>{ newCommentCount ?? videoDetails?.CommentCounts ?? videoDetails?.videoComments?.length ?? 0}</span>
                 </button>
@@ -145,7 +145,7 @@ const WatchVideo = () => {
                         className="w-12 h-12 rounded-full cursor-pointer"
                     />
                     <div>
-                        <p className="font-bold text-md text-gray-900 hover:text-red-600 cursor-pointer">
+                        <p className="font-bold text-md hover:text-neutral-100 cursor-pointer">
                             {videoDetails?.videoOwner?.userFirstName} {videoDetails?.videoOwner?.userLastName}
                         </p>
                         <p className="text-xs text-gray-600">
@@ -161,13 +161,13 @@ const WatchVideo = () => {
             </div>
 
             {/* Video Description - Collapsible section placeholder */}
-            <p className="mt-4 text-sm whitespace-pre-line bg-gray-50 p-3 rounded-lg border border-gray-100 font-mono">
+            <p className="mt-4 text-sm whitespace-pre-line bg-slate-700 p-3 rounded-lg border border-gray-100 font-mono text-white">
                 {videoDetails?.videoDescription}
             </p>
         </div>
 
         {/* Comments Section Placeholder */}
-        <div className="mt-6 font-mono">
+        <div className="mt-6 font-mono text-center">
             <CommentSection comments={videoDetails?.videoComments} userInfo={userData} videoId={videoId} />
         </div>
 
@@ -175,14 +175,14 @@ const WatchVideo = () => {
 
       {/* Right Sidebar / Related Videos - YouTube's standard related videos column */}
       {/* Keeping w-1/4, which is appropriate for a related videos column */}
-      <div className="w-1/4 bg-white p-4 space-y-3 overflow-y-auto border-l border-gray-100 flex-col justify-items-center">
-        <h2 className="font-bold text-lg mb-4 text-gray-900">Related Videos</h2>
+      <div className="w-1/4 bg-gray-900 p-4 space-y-3 overflow-y-auto border-l-2 border-white flex-col justify-items-center">
+        <h2 className="font-bold text-lg mb-4">Related Videos</h2>
         
         <RelatedVideos videoId={videoId} />
       
       </div>
     </div>
-    </>
+    </div>
   )
 }
 

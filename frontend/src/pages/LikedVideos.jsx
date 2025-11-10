@@ -55,12 +55,12 @@ const LikedVideos = () => {
   }
   
   return (
-    <>
+    <div className='bg-gray-900'>
      {/* Header */}
-        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
-          <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+        <div className="h-16 bg-gray-950 flex items-center border-b-2 border-b-white justify-between px-6 shadow-sm mb-6 font-mono">
+          <h1 className="text-2xl font-bold text-white">TubeX</h1>
           <div className="flex items-center space-x-4">
-            <p className="font-medium">
+            <p className="font-medium text-white">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
             <img
@@ -68,12 +68,12 @@ const LikedVideos = () => {
                 userData?.user_avatar || "https://via.placeholder.com/320x180"
               }
               alt="User"
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full text-white"
             />
           </div>
         </div>
 
-        <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+        <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
         {/* <p>Search Bar</p> */}
          <p className="text-gray-950 p-3 bg-gray-200 rounded">Search : { searchedData?.length }</p>
         <input
@@ -82,15 +82,15 @@ const LikedVideos = () => {
               required
               value={searchWords}
               onChange={(e) => setSearchWords(e.target.value) }
-              className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+              className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
               placeholder="Search videos..."
               autoComplete="username"
             />
-            <button className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+            <button className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
             onClick={handleSearch}> 🔍 Search</button>
            
       </div>
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-linear-to-b from-slate-900 to-black text-white border-t-2 border-t-white text-center">
       {/* Sidebar */}
       <SideBar />
       {/* Main Content */}
@@ -98,7 +98,7 @@ const LikedVideos = () => {
 
         {/* Liked Videos Section */}
         <div className='font-mono'>
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">
+          <h2 className="text-xl font-semibold mb-4">
             ❤️ Liked Videos
           </h2>
 
@@ -113,7 +113,7 @@ const LikedVideos = () => {
               {searchedData?.length > 0 && searchedData?.map((video) => (
                 <div
                   key={video._id}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition p-3"
+                  className="bg-slate-800 hover:bg-slate-900 hover:scale-105 duration-700 rounded-lg shadow-sm hover:shadow-md transition p-3"
                 >
                   <div className="rounded-md overflow-hidden mb-2">
                     <VideoPlayer
@@ -133,20 +133,20 @@ const LikedVideos = () => {
                       className="w-8 h-8 rounded-full"
                     />
                     <div>
-                      <p className="font-semibold text-sm text-gray-800">
+                      <p className="font-semibold text-sm">
                         {video.videoOwner?.userFirstName}{" "}
                         {video.videoOwner?.userLastName}
                       </p>
                       <p className="text-xs text-gray-500">Uploader</p>
                     </div>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-sm line-clamp-1 flex justify-items-start">
+                  <h3 className="font-bold text-neutral-400 text-sm line-clamp-1 flex justify-items-start">
                     {video.videoTitle}
                   </h3>
-                  <p className="text-gray-600 text-xs mb-2 line-clamp-2 flex justify-items-start ">
+                  <p className="text-neutral-500 text-xs mb-2 line-clamp-2 flex justify-items-start ">
                     {video.videoDescription}
                   </p>
-                  <div className="flex items-center space-x-4 text-gray-500 text-sm gap-3 justify-center">
+                  <div className="flex items-center space-x-4 text-white text-sm gap-3 justify-center">
                     <div className="flex items-center space-x-1">
                       <span><ThumbsUp />  </span>
                       <p>{video.LikeCounts || video.videoLikes?.length}</p>
@@ -163,7 +163,7 @@ const LikedVideos = () => {
         </div>
       </div>
     </div>
-    </>
+    </div>
   )
 }
 
