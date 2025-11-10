@@ -57,8 +57,8 @@ const VideoUploadPage = ({ userData }) => {
   return (
     <>
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+      <div className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm border-b-2 border-b-white font-mono">
+        <h1 className="text-2xl font-bold">TubeX</h1>
         <div className="flex items-center space-x-4">
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
@@ -70,9 +70,9 @@ const VideoUploadPage = ({ userData }) => {
           />
         </div>
       </div>
-      <div className="flex gap-6 font-mono">
+      <div className="flex gap-6 font-mono min-h-screen bg-linear-to-b from-gray-800 to-black">
         <SideBar />
-        <div className="max-w-2xl bg-white p-6 rounded-2xl shadow-lg">
+        <div className="bg-slate-500 text-slate-950 font-bold p-6 rounded-2xl shadow-lg w-fit h-fit justify-center mt-12">
           <h2 className="text-xl font-semibold mb-4">Upload New Video</h2>
           <form onSubmit={handleForm} className="space-y-4">
             <input

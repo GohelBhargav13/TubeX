@@ -56,8 +56,8 @@ const AdminDashBoard = ({ userData }) => {
   return (
     <>
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+      <div className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm border-b-2 border-b-white font-mono">
+        <h1 className="text-2xl font-bold">TubeX</h1>
         <div className="flex items-center space-x-4">
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
@@ -75,7 +75,7 @@ const AdminDashBoard = ({ userData }) => {
           <Loader2 className="animate-spin text-blue-600 w-8 h-8" />
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex min-h-screen bg-linear-to-b from-gray-800 to-black">
           {/* Sidebar */}
           <SideBar />
 
@@ -83,29 +83,29 @@ const AdminDashBoard = ({ userData }) => {
           <div className="flex-1 p-6 space-y-8">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-6 text-center">
-                <p className="text-gray-600 font-semibold">User Count</p>
+              <div className="bg-linear-to-r from-slate-800 to-black shadow-md rounded-xl p-6 text-center">
+                <p className="text-white font-semibold">User Count</p>
                 <h2 className="text-2xl font-bold mt-2 text-blue-600">
                   {userCount}
                 </h2>
               </div>
 
-              <div className="bg-white shadow-md rounded-xl p-6 text-center">
-                <p className="text-gray-600 font-semibold">Admin Count</p>
+              <div className="bg-linear-to-r from-slate-800 to-black shadow-md rounded-xl p-6 text-center">
+                <p className="text-white font-semibold">Admin Count</p>
                 <h2 className="text-2xl font-bold mt-2 text-blue-600">
                   {adminCount}
                 </h2>
               </div>
 
-              <div className="bg-white shadow-md rounded-xl p-6 text-center">
-                <p className="text-gray-600 font-semibold">Video Count</p>
+              <div className="bg-linear-to-r from-slate-800 to-black shadow-md rounded-xl p-6 text-center">
+                <p className="text-white font-semibold">Video Count</p>
                 <h2 className="text-2xl font-bold mt-2 text-blue-600">
                   {videoCount}
                 </h2>
               </div>
 
-              <div className="bg-white shadow-md rounded-xl p-6 text-center">
-                <p className="text-gray-600 font-semibold">Highly Viewed</p>
+              <div className="bg-linear-to-r from-slate-800 to-black shadow-md rounded-xl p-6 text-center">
+                <p className="text-white font-semibold">Highly Viewed</p>
                 <h2 className="text-2xl font-bold mt-2 text-blue-600">Top 5</h2>
               </div>
             </div>
@@ -113,14 +113,14 @@ const AdminDashBoard = ({ userData }) => {
             {/* Recent Users & Videos Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Recent Users */}
-              <div className="bg-white shadow-md rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">
+              <div className="bg-slate-800 shadow-md rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-neutral-200 mb-4 border-b pb-2">
                   Recent Users
                 </h2>
                 {usersData.length > 0 ? (
                   <table className="min-w-full text-sm">
                     <thead>
-                      <tr className="text-center text-gray-600 border-b">
+                      <tr className="text-center text-neutral-300 border-b">
                         <th className="py-2">No.</th>
                         <th className="py-2">Name</th>
                         <th className="py-2">Email</th>
@@ -131,7 +131,7 @@ const AdminDashBoard = ({ userData }) => {
                       {usersData.map((u, idx) => (
                         <tr
                           key={idx}
-                          className="border-b hover:bg-gray-50 transition"
+                          className="border-b hover:bg-gray-50 hover:cursor-pointer hover:text-slate-950 text-white hover:scale-105 duration-500 hover:border-b-4  hover:border-blue-500 transition"
                         >
                           <td>{ idx + 1 }</td>
                           <td className="py-2 font-medium">
@@ -144,13 +144,13 @@ const AdminDashBoard = ({ userData }) => {
                     </tbody>
                   </table>
                 ) : (
-                  <p className="text-gray-500 text-sm">No recent users found.</p>
+                  <p className="text-white text-sm">No recent users found.</p>
                 )}
               </div>
 
               {/* Recent Videos */}
-              <div className="bg-white shadow-md rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">
+              <div className="bg-slate-800 shadow-md rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-neutral-100 mb-4 border-b pb-2">
                   Recent Videos
                 </h2>
                 {videosData.length > 0 ? (
@@ -158,12 +158,12 @@ const AdminDashBoard = ({ userData }) => {
                     {videosData.map((v, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-3 border-b pb-2 hover:bg-gray-50 transition rounded-lg p-2"
+                        className="flex items-center gap-3 border-b pb-2 hover:cursor-pointer hover:bg-gray-50 text-white hover:border-b-4 hover:border-b-blue-500 hover:scale-105 duration-500 hover:text-slate-950 transition rounded-lg p-2"
                       >
 
                       <VideoPlayer videoURL={v?.videoUrl} width={70} height={70} />
                         <div className="flex-1 justify-items-start">
-                          <p className="font-medium text-gray-800 truncate">
+                          <p className="font-medium truncate">
                             {v?.videoTitle.length > 30 ? v?.videoTitle.slice(0,30) + '...' : v?.videoTitle }
                           </p>
                           <p className="text-xs text-gray-500">

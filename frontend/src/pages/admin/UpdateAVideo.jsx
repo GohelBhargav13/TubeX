@@ -77,13 +77,13 @@ const UpdateAVideo = ({ userData }) => {
   }
 
   return (
-    <>
+    <div className="bg-linear-to-b from-gray-800 to-black min-h-screen">
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm font-mono sticky top-0 z-50">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+      <div className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm font-mono sticky top-0 z-50">
+        <h1 className="text-2xl font-bold">TubeX</h1>
         <div className="flex items-center space-x-4">
           <button
-            className="cursor-pointer bg-gray-500 p-1.5 text-white rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+            className="cursor-pointer bg-gray-800 hover:scale-105 duration-500 p-1.5 text-white rounded-md hover:bg-gray-900 transition duration-300 ease-in-out"
             onClick={() => navigate("/admin/video-update")}
           >
            ⬅️ Back
@@ -101,12 +101,12 @@ const UpdateAVideo = ({ userData }) => {
 
       {fetching ? (
        <div className="flex justify-center items-center">
-        <Loader2 className="animate-spin" />
+        <Loader2 className="animate-spin text-blue-600" />
        </div>
       ) : (
         <div className="flex flex-col md:flex-row p-6 space-y-6 md:space-y-0 md:space-x-6">
           {/* Left Section: Video Preview */}
-          <div className="md:w-1/2">
+          <div className="md:w-1/2  bg-slate-800 p-4 rounded-xl text-white hover:scale-105 duration-500 hover:border-l-4 border-l-blue-600 hover:border-b-4 border-b-blue-600">
             <h2 className="text-xl font-bold mb-4">Current Video Preview</h2>
             <div className="rounded-lg overflow-hidden shadow-lg mb-4">
               <VideoPlayer
@@ -116,7 +116,7 @@ const UpdateAVideo = ({ userData }) => {
               />
             </div>
 
-            <div className="text-gray-600 text-sm flex flex-row gap-3 justify-center">
+            <div className="text-sm flex flex-row gap-3 justify-center">
               <p>
                 <strong>Views:</strong> {videoDetails.views || 0}
               </p>
@@ -131,8 +131,8 @@ const UpdateAVideo = ({ userData }) => {
           </div>
 
           {/* Right Section: Edit Form */}
-          <div className="md:w-1/2 bg-white p-6 rounded-xl shadow-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-950">
+          <div className="md:w-1/2 bg-gray-800 text-white p-6 rounded-xl shadow-md">
+            <h2 className="text-xl font-bold mb-4">
               Edit Video Details
             </h2>
 
@@ -198,20 +198,20 @@ const UpdateAVideo = ({ userData }) => {
               <div className="pt-4 flex flex-row gap-5">
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
+                  className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
                 >
                   ✅ Save Changes
                 </button>
                 <button
                   type="submit"
-                  className="w-full bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-700 transition cursor-pointer"
+                  className="w-full bg-gray-400 font-bold text-white py-2 rounded-lg hover:bg-gray-700 transition cursor-pointer"
                   onClick={handleReset}
                 >
                   🔄️ Reset
                 </button>
                 <button
                   type="submit"
-                  className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition cursor-pointer"
+                  className="w-full bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition cursor-pointer"
                   onClick={handleCancle}
                 >
                   ❌ cancel
@@ -221,7 +221,7 @@ const UpdateAVideo = ({ userData }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

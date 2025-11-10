@@ -83,8 +83,8 @@ const UserPanel = ({ userData }) => {
 
   if(loading){
     return (
-      <div className="justify-center text-blue-600">
-        <Loader2 className="animate-spin" />
+      <div className="text-blue-500 items-center">
+        <Loader2 className="animate-spin text-blue-600" />
       </div>
     )
   }
@@ -92,8 +92,8 @@ const UserPanel = ({ userData }) => {
   return (
     <>
       {/* Header */}
-      <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX </h1>
+      <div className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm border-b-2 border-b-white">
+        <h1 className="text-2xl font-bold">TubeX </h1>
         <div className="flex items-center space-x-4">
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
@@ -105,7 +105,7 @@ const UserPanel = ({ userData }) => {
           />
         </div>
       </div>
-       <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+       <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
         {/* <p>Search Bar</p> */}
         <p className="text-gray-950 p-3 bg-gray-200 rounded">
           Search : {searchedData?.length}
@@ -116,19 +116,19 @@ const UserPanel = ({ userData }) => {
           required
           value={searchWords}
           onChange={(e) => setSearchWords(e.target.value)}
-          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
           placeholder="Search videos..."
           autoComplete="username"
         />
         <button
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
           onClick={handleSearch}
         >
           {" "}
           🔍 Search
         </button>
       </div>
-      <div className="flex h-screen bg-gray-50 font-mono">
+      <div className="flex h-screen bg-linear-to-b from-gray-800 to-black font-mono border-t-2 border-t-white">
         {/* Sidebar */}
         <SideBar />
 
@@ -136,16 +136,16 @@ const UserPanel = ({ userData }) => {
         <div className="flex-1 flex flex-col">
           {/* Table Section */}
           <div className="flex-1 overflow-y-auto px-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-xl font-semibold text-white text-center mt-4 mb-4">
               Registered Users
             </h2>
 
             {searchedData.length === 0 ? (
-              <p className="text-gray-500">No users found.</p>
+              <p className="text-white">No users found.</p>
             ) : (
               <div className="overflow-x-auto shadow-md rounded-lg">
-                <table className="min-w-full border border-gray-200 text-left bg-white">
-                  <thead className="bg-blue-100 text-gray-700">
+                <table className="min-w-full border border-gray-200 text-left bg-slate-800 text-white">
+                  <thead className="bg-blue-100 text-gray-950">
                     <tr>
                       <th className="py-3 px-4 border-b">#</th>
                       <th className="py-3 px-4 border-b">Avatar</th>
@@ -160,7 +160,7 @@ const UserPanel = ({ userData }) => {
                     {searchedData.map((u, idx) => (
                       <tr
                         key={u._id}
-                        className="hover:bg-gray-50 transition duration-150"
+                        className="hover:bg-neutral-400 hover:text-slate-950 font-bold transition duration-150"
                       >
                         <td className="py-3 px-4 border-b">{idx + 1}</td>
                         <td className="py-3 px-4 border-b">
