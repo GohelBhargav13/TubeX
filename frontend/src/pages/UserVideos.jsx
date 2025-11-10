@@ -40,10 +40,10 @@ const UserVideos = () => {
   return (
     <>
      {/* Header */}
-        <div className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6 font-mono">
-          <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+        <div className="h-16 bg-gray-950 border-b-2 border-b-white flex items-center justify-between px-6 shadow-sm  font-mono">
+          <h1 className="text-2xl font-bold text-white">TubeX</h1>
           <div className="flex items-center space-x-4">
-            <p className="font-medium">
+            <p className="font-medium text-white">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
             <img
@@ -55,7 +55,7 @@ const UserVideos = () => {
             />
           </div>
         </div>
-      <div className="flex min-h-screen bg-gray-50 font-mono">
+      <div className="flex min-h-screen bg-linear-to-b from-gray-900 to-black text-white text-center font-mono">
       {/* Sidebar */}
       <SideBar />
 
@@ -64,7 +64,7 @@ const UserVideos = () => {
     
         {/* Liked Videos Section */}
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">
+          <h2 className="text-xl font-semibold mb-4">
             ✅ User Videos
           </h2>
 
@@ -79,7 +79,7 @@ const UserVideos = () => {
               {userVideoslist.map((video) => (
                 <div
                   key={video._id}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition p-3"
+                  className="bg-slate-800 hover:bg-slate-900 hover:scale-105 duration-500 text-white rounded-lg shadow-sm hover:shadow-md transition p-3"
                 >
                   <div className="rounded-md overflow-hidden mb-2">
                     <VideoPlayer
@@ -99,20 +99,20 @@ const UserVideos = () => {
                       className="w-8 h-8 rounded-full"
                     />
                     <div>
-                      <p className="font-semibold text-sm text-gray-800">
+                      <p className="font-semibold text-sm">
                         {video.videoOwner?.userFirstName}{" "}
                         {video.videoOwner?.userLastName}
                       </p>
                       <p className="text-xs text-gray-500">Uploader</p>
                     </div>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-sm line-clamp-1 flex justify-items-start">
+                  <h3 className="font-bold text-neutral-400 text-sm line-clamp-1 flex justify-items-start">
                     {video.videoTitle}
                   </h3>
-                  <p className="text-gray-600 text-xs mb-2 line-clamp-2 flex justify-items-start">
+                  <p className="text-neutral-500 text-xs mb-2 line-clamp-2 flex justify-items-start">
                     {video.videoDescription}
                   </p>
-                  <div className="flex items-center space-x-4 text-gray-500 text-sm gap-3 justify-center">
+                  <div className="flex items-center space-x-4 text-sm gap-3 justify-center">
                     <div className="flex items-center space-x-1">
                       <span><ThumbsUp /></span>
                       <p>{video.LikeCounts || video.videoLikes?.length}</p>

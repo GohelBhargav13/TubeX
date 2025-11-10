@@ -88,10 +88,10 @@ const PlayListPage = ({ userData }) => {
     }
 
   return (
-    <div className="min-h-screen bg-neutral-50 font-mono">
+    <div className="min-h-screen bg-linear-to-b from-gray-800 to-black font-mono">
       {/* Header */}
-      <header className="h-16 bg-white flex items-center justify-between px-6 shadow-sm mb-6">
-        <h1 className="text-2xl font-bold text-blue-600">TubeX</h1>
+      <header className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm">
+        <h1 className="text-2xl font-bold">TubeX</h1>
         <div className="flex items-center space-x-3">
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
@@ -103,7 +103,7 @@ const PlayListPage = ({ userData }) => {
           />
         </div>
       </header>
-  <div className="bg-neutral-50 p-1 flex justify-center items-center font-mono">
+  <div className="bg-gray-900 p-1 flex justify-center items-center font-mono border-b-2 border-b-white">
         {/* <p>Search Bar</p> */}
         <p className="text-gray-950 p-3 bg-gray-200 rounded">
           Search : {filterPlayList?.length}
@@ -114,12 +114,12 @@ const PlayListPage = ({ userData }) => {
           required
           value={searchPlayList}
           onChange={(e) => setsearchPlayList(e.target.value) }
-          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
           placeholder="Search PlayList..."
           autoComplete="username"
         />
         <button
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
           onClick={handleSearchPlayList}
         >
           {" "}
@@ -127,19 +127,19 @@ const PlayListPage = ({ userData }) => {
         </button>
       </div>  
       {/* Body */}
-      <div className="flex gap-3 w-full px-3">
+      <div className="flex min-h-screen gap-3 w-fit px-3">
         <SideBar />
 
         {/* Playlist Section */}
-        <main className="flex-1">
-          <h1 className="text-2xl font-bold text-center mb-4">
+        <main className="flex-1 mt-6">
+          <h1 className="text-2xl font-bold text-center mb-4 text-white">
             Your Playlists
           </h1>
 
           {loading ? (
-            <p className="text-center text-gray-600">Loading playlists...</p>
+            <p className="text-center text-white">Loading playlists...</p>
           ) : filterPlayList?.length === 0 ? (
-            <div className="text-center text-gray-600">
+            <div className="text-center text-neutral-400">
               <p>No playlists found 😕</p>
               <p className="text-sm mt-2">
                 Create your first playlist from any video!
@@ -150,7 +150,7 @@ const PlayListPage = ({ userData }) => {
               {filterPlayList?.length > 0 && filterPlayList?.map((playlist) => (
                 <div
                   key={playlist?._id}
-                  className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-all"
+                  className="bg-slate-800 text-white cursor-pointer rounded-xl shadow-sm p-4 hover:shadow-md transition-all"
                 >
                   <div className="flex gap-3">
                     <h2 className="text-lg font-semibold text-indigo-600 mb-3 ml-2">
@@ -162,14 +162,13 @@ const PlayListPage = ({ userData }) => {
                   {playlist?.videoId?.length > 0 ? (
                     <div className="flex flex-col gap-3">
                       { !isShow && playlist?.videoId?.length > 2 ? (
-                        <div className="text-slate-500 text-sm">Videos Are In PlayList {playlist?.videoId?.length}</div>
+                        <div className="text-neutral-400 text-sm">Videos Are In PlayList {playlist?.videoId?.length}</div>
                       ) : (
-
                         playlist.videoId.map((video) => (
-                          <div key={video?._id}>
+                          <div key={video?._id} className=" hover:bg-slate-900 hover:scale-105 duration-500 p-2 rounded-xl">
                             <VideoPlayer videoURL={video?.videoUrl} />
                             <div className="cursor-pointer" onClick={() => navigate(`/watch/${video?._id}`)}>
-                            <p className="text-sm text-gray-700 mb-1 mt-2">
+                            <p className="text-sm mb-1 mt-2">
                               🎬 {video?.videoTitle}
                             </p>
                             </div>
@@ -188,7 +187,7 @@ const PlayListPage = ({ userData }) => {
                     } flex gap-2 text-sm cursor-pointer text-slate-600`}
                     onClick={handleToogle}
                   >
-                   <p className="hover:underline"> { !isShow && playlist?.videoId?.length > 2 ? 'show' : 'showLess' } </p>
+                   <p className="hover:underline text-white mt-2"> { !isShow && playlist?.videoId?.length > 2 ? 'show' : 'showLess' } </p>
                   </button>
                 </div>
               ))}
