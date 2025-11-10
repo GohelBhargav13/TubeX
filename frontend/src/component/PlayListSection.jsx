@@ -68,12 +68,12 @@ const PlayListSection = ({ videoId }) => {
       {/* Popup / Modal */}
       {isOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-black/40 z-50 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white w-[400px] h-[400px] rounded-2xl shadow-2xl p-5 relative overflow-hidden">
+          <div className="bg-slate-900 w-[400px] h-[400px] rounded-2xl text-white shadow-2xl p-5 relative overflow-hidden">
             
             {/* Gradient Header */}
-            <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-indigo-600 to-blue-500"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-l from-indigo-600 to-blue-500"></div>
 
-            <h2 className="text-lg font-semibold text-gray-800 mt-14 mb-3">
+            <h2 className="text-lg font-semibold mt-14 mb-3">
               🎵 Add to Playlist
             </h2>
 
@@ -85,14 +85,14 @@ const PlayListSection = ({ videoId }) => {
                   {playListNames.map((playlist, idx) => (
                     <li
                       key={idx}
-                      className="flex justify-between items-center bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition"
+                      className="flex justify-between items-center bg-gray-100 p-2 text-slate-900 rounded-md hover:bg-gray-200 transition"
                     >
                     <div className="flex gap-5">
                         <span className="text-sm font-bold">{playlist?.playlistName}</span>
                         <p className="text-sm font-semibold">Videos:{ playlist?.videoId.length }</p>
                     </div>
 
-                      <button className={`${playlist?.videoId.includes(videoId) ? 'text-slate-800 text-sm font-medium hover:underline cursor-pointer ' : "text-blue-600 text-sm font-medium hover:underline"}`}
+                      <button className={`${playlist?.videoId.includes(videoId) ? 'text-white text-sm font-medium hover:underline cursor-pointer ' : "text-blue-600 text-sm font-medium hover:underline"}`}
                         onClick={() => handleAddVideoInPlayList(videoId,playlist?._id)}
                       >
                         { playlist?.videoId?.includes(videoId) ? 'Remove' : 'Add' }
