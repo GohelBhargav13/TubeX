@@ -3,20 +3,23 @@ version: '3.9'
 services:
   backend:
     build: ./backend
+    container_name: backend-container
     networks:
       - full-stack-net
     ports:
       - 8080:8080
-    restart: unless-stopped
+  
   
   frontend:
     build: ./frontend
+    container_name: frontend-container
     networks:
       - full-stack-net
     ports:
-      - 5173:80
+      - 5174:80
     depends_on:
       - backend
+    restart: unless-stopped
 
 networks:
   full-stack-net:
