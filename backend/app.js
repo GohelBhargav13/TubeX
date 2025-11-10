@@ -7,7 +7,7 @@ dotenv.config({ path:"./.env" })
 const app = express()
 
 app.use(cors({
-    origin:["https://tube-x-1qp4.vercel.app","http://localhost:5173","http://localhost:5174"],
+    origin:["http://13.51.106.105:5173","http://localhost:5173","http://localhost:5174"],
     methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
     credentials:true
 }))
