@@ -31,7 +31,7 @@ export const useUserAuthStore = create((set,get) => ({
        if(StatusCode === 200 || StatusCode === 201){
           console.log("User data is set.....");
           await setUserData()
-          toast.success("Login Successfull")
+          toast.success("Login Successful")
           return { status:true };
        }
       
