@@ -2,49 +2,49 @@ import Userm from "../models/user.models.js";
 import Video from "../models/video.models.js";
 import ApiError from "../utills/api-error.js";
 import ApiResponse from "../utills/api-response.js";
-import Redis from "ioredis";
+// import Redis from "ioredis";
 
 // initialize redis for the caching
-const redis = new Redis({ host:'localhost', port:6379 });
+// export const redis = new Redis({ host:'localhost', port:6379 });
 
 // Fetch user counts
-export const UserCount = async (req, res) => {
-  const UserCount = "user-count";
-  const AdminCount = "admin-count";
+// export const UserCount = async (req, res) => {
+//   const UserCount = "user-count";
+//   const AdminCount = "admin-count";
 
-  try {
-    const checkIfexistUser = await redis.get(UserCount);
-    const checkIfexistAdmin = await redis.get(AdminCount);
+//   try {
+//     const checkIfexistUser = await redis.get(UserCount);
+//     const checkIfexistAdmin = await redis.get(AdminCount);
 
-    if(checkIfexistUser && checkIfexistAdmin){
-        console.log("User and Admin count is here : ", { checkIfexistAdmin, checkIfexistUser })
-        return res.status(200).json(new ApiResponse(200, { user:checkIfexistUser,admin:checkIfexistAdmin }, "User-Admin is fetched"))
-    }
+//     if(checkIfexistUser && checkIfexistAdmin){
+//         console.log("User and Admin count is here : ", { checkIfexistAdmin, checkIfexistUser })
+//         return res.status(200).json(new ApiResponse(200, { user:checkIfexistUser,admin:checkIfexistAdmin }, "User-Admin is fetched"))
+//     }
 
-    const UserC = await Userm.countDocuments({ userRole: "user" });
-    const AdminC = await Userm.countDocuments({ userRole: "admin" });
+//     const UserC = await Userm.countDocuments({ userRole: "user" });
+//     const AdminC = await Userm.countDocuments({ userRole: "admin" });
 
-    // set UserCount in the redis
-    await redis.set(UserCount, UserC);
-    await redis.set(AdminCount, AdminC);
+//     // set UserCount in the redis
+//     await redis.set(UserCount, UserC);
+//     await redis.set(AdminCount, AdminC);
 
-    // Set Expire Time on the both
-    await redis.expire(UserCount, 3600);
-    await redis.expire(AdminCount, 3600);
+//     // Set Expire Time on the both
+//     await redis.expire(UserCount, 3600);
+//     await redis.expire(AdminCount, 3600);
 
-    res
-      .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          { user: UserC, admin: AdminC },
-          "User Count Fetched Successfully 1"
-        )
-      );
-  } catch (error) {
-    console.log("Error While Count the User Count", error);
-  }
-};
+//     res
+//       .status(200)
+//       .json(
+//         new ApiResponse(
+//           200,
+//           { user: UserC, admin: AdminC },
+//           "User Count Fetched Successfully 1"
+//         )
+//       );
+//   } catch (error) {
+//     console.log("Error While Count the User Count", error);
+//   }
+// };
 
 // Fetch video counts
 export const VideoCount = async (req, res) => {
