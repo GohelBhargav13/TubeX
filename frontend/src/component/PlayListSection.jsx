@@ -61,8 +61,8 @@ const PlayListSection = ({ videoId }) => {
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-2 text-gray-500 cursor-pointer"
       >
-        <span className="text-lg"><CrossIcon /></span>
-        <span>{isOpen ? "Close Playlist" : "Add"}</span>
+        <span className="text-lg text-neutral-50"><CrossIcon /></span>
+        <span className="text-neutral-50">{isOpen ? "Close Playlist" : "Add"}</span>
       </button>
 
       {/* Popup / Modal */}

@@ -30,7 +30,7 @@ const SideBar = () => {
   return (
     <>
       {/* Side Panel */}
-      <div className="w-60 bg-white shadow-md p-4 flex flex-col space-y-4">
+      <div className="w-60 bg-gray-950 border-r-2 border-r-white shadow-md p-4 flex flex-col space-y-4 text-white">
         {/* <h2 className="text-2xl font-bold text-blue-600">TubeX</h2> */}
         <nav className="flex flex-col space-y-2 font-bold">
           {Routes.map((route,idx) =>
@@ -38,7 +38,7 @@ const SideBar = () => {
               <button
               key={idx}
                 type="submit"
-                className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
+                className="text-left px-3 py-2 hover:bg-gray-200 hover:text-slate-950 rounded cursor-pointer font-mono"
                 onClick={() => userLogout()}
                 title="Logout"
               > Logout</button>
@@ -46,7 +46,7 @@ const SideBar = () => {
               <button
               key={idx}
               type="submit"
-              className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
+              className="text-left px-3 py-2 hover:bg-gray-200 hover:text-slate-950 rounded cursor-pointer font-mono"
               onClick={() => navigationTo(route.path)}
               title={ route.name }
               >{ route.name }</button>
@@ -54,12 +54,12 @@ const SideBar = () => {
           )}
           { userData?.userRole === "admin" ? (
             <>            
-            <h1 className="text-gray-700 p-3 font-bold font-serif"> -- Admin Panel --</h1>
+            <h1 className="text-neutral-50 p-3 font-bold font-serif"> -- Admin Panel --</h1>
                { AdminRoutes.map((routes,idx) => (
                 <button
                 key={idx}
                 type="submit"
-                className="text-left px-3 py-2 hover:bg-gray-200 rounded cursor-pointer font-mono"
+                className="text-left px-3 py-2 hover:bg-gray-200 hover:text-slate-950 rounded cursor-pointer font-mono"
                 onClick={() => navigate(routes.path)}  
                  title={ routes.name }               
                 > { routes.name } </button>
