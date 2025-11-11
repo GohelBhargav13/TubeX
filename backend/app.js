@@ -7,7 +7,7 @@ dotenv.config({ path:"./.env" })
 const app = express()
 
 app.use(cors({
-    origin:["http://13.51.106.105:5173","http://localhost:5173","http://localhost:5174"],
+    origin:["http://51.20.98.141:5174","http://localhost:5173","http://localhost:5174"],
     methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
     credentials:true
 }))
