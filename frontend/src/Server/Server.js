@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 
-const socket = io("http://51.20.98.141:8080",{
+const socket = io("https://tubex-m576.onrender.com",{
     transports:["websocket"]
 })
 
