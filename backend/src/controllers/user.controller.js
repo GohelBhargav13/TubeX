@@ -148,8 +148,9 @@ export const userLogin = async (req, res) => {
     //set Access Token into cookies
     res.cookie("accesstoken", accessToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
+      sameSite:"none"
     }); // 24 hrs
 
     await user.save();
