@@ -25,7 +25,7 @@ const RegisterPage = () => {
       formdata.append("userLastName", userLastName);
       formdata.append("userEmail", email);
       formdata.append("userPassword", password);
-      formdata.append("user_avatar", userAvatar);
+      formdata.append("user_avatar", userAvatar || "");
 
       // send the form data to the backend
       const res = await userRegister(formdata);
@@ -149,7 +149,6 @@ const RegisterPage = () => {
               onChange={(e) => setAvatar(e.target.files[0])}
               placeholder="Please Upload Your Image"
               title="User Avatar"
-              required
             />
 
             {/* Helper Links */}

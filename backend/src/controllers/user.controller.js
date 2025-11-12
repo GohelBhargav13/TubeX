@@ -20,9 +20,9 @@ export const registerUser = async (req, res) => {
     console.log(req.file);
     const user_avatar_upload = req.file?.path;
 
-    if(!user_avatar_upload){
-        return res.status(400).json(new ApiError(400,"Image is not uploaded"))
-    }
+    // if(!user_avatar_upload){
+    //     return res.status(400).json(new ApiError(400,"Image is not uploaded"))
+    // }
 
     // const cloudPathImage = await uploadImageOnCloudinary(user_avatar_upload);
     // if(!cloudPathImage){
