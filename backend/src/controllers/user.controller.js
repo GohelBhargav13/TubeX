@@ -33,7 +33,7 @@ export const registerUser = async (req, res) => {
       userEmail,
       userFirstName,
       userLastName,
-      user_avatar:user_avatar_upload,
+      user_avatar:user_avatar_upload || "",
       userPassword,
     });
 
