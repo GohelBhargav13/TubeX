@@ -6,6 +6,7 @@ import { Loader2, MessageCircle, Pen, ThumbsUp, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom"
 import socket from "../../Server/Server.js";
 import toast from "react-hot-toast";
+import UserAvatar from "../../component/UserAvatar.jsx";
 
 const VideoUpdatePage = ({ userData }) => {
   const [videos, setVideos] = useState([]);
@@ -110,13 +111,7 @@ const handleSearch = async () => {
             <p className="font-medium">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
-            <img
-              src={
-                userData?.user_avatar || "https://via.placeholder.com/320x180"
-              }
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            />
+              <UserAvatar username={userData?.userFirstName} />
           </div>
         </div>
         <div className="bg-gray-800 p-1 flex justify-center items-center font-mono">
@@ -174,14 +169,7 @@ const handleSearch = async () => {
                         <VideoPlayer videoURL={video?.videoUrl} />
 
                         <div className="flex items-center mt-2">
-                          <img
-                            src={
-                              video?.user_avatar ||
-                              "https://via.placeholder.com/320x180"
-                            }
-                            alt="User"
-                            className="w-10 h-10 rounded-full"
-                          />
+                         <UserAvatar username={video?.videoOwner?.userFirstName} />
                           <h4 className="ml-2 font-medium">
                             {video?.videoOwner?.userFirstName}{" "}
                             {video?.videoOwner?.userLastName}

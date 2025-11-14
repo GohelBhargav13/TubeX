@@ -5,6 +5,7 @@ import VideoPlayer from "../../component/VideoPlayer";
 import { Loader2 } from "lucide-react";
 import socket from "../../Server/Server";
 import toast from "react-hot-toast";
+import UserAvatar from "../../component/UserAvatar";
 
 const UpdateAVideo = ({ userData }) => {
   const { videoId } = useParams();
@@ -91,11 +92,7 @@ const UpdateAVideo = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/320x180"}
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+            <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
 

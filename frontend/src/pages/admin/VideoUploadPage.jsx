@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SideBar from "../../component/SideBar.jsx";
 import { upoadVideo } from "../../API/video.api.js";
 import toast from "react-hot-toast";
+import UserAvatar from "../../component/UserAvatar.jsx";
 
 
 const VideoUploadPage = ({ userData }) => {
@@ -63,11 +64,7 @@ const VideoUploadPage = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/320x180"}
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+            <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
       <div className="flex gap-6 font-mono min-h-screen bg-linear-to-b from-gray-800 to-black">

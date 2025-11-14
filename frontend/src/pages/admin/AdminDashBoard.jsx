@@ -7,6 +7,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { fetchUsersAndVideos } from "../../API/video.api.js";
 import VideoPlayer from "../../component/VideoPlayer.jsx";
+import UserAvatar from "../../component/UserAvatar.jsx";
 
 const AdminDashBoard = ({ userData }) => {
   const [userCount, setUserCount] = useState(0);
@@ -62,11 +63,7 @@ const AdminDashBoard = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/320x180"}
-            alt="User"
-            className="w-10 h-10 rounded-full object-cover"
-          />
+          <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
 

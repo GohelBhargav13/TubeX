@@ -4,6 +4,7 @@ import { changeUsersRole, fetchAllUsers } from "../../API/user.api.js";
 import toast from "react-hot-toast";
 import socket from "../../Server/Server.js";
 import { Loader2 } from "lucide-react";
+import UserAvatar from "../../component/UserAvatar.jsx";
 
 const UserPanel = ({ userData }) => {
   const [userDetails, setUserData] = useState([]);
@@ -98,11 +99,7 @@ const UserPanel = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/40"}
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+            <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
        <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
@@ -164,18 +161,12 @@ const UserPanel = ({ userData }) => {
                       >
                         <td className="py-3 px-4 border-b">{idx + 1}</td>
                         <td className="py-3 px-4 border-b">
-                          <img
-                            src={
-                              u.user_avatar || "https://via.placeholder.com/40"
-                            }
-                            alt="Avatar"
-                            className="w-10 h-10 rounded-full"
-                          />
+                          <UserAvatar username={u?.userFirstName} />
                         </td>
                         <td className="py-3 px-4 border-b">
-                          {u.userFirstName} {u.userLastName}
+                          {u.userFirstName} {u?.userLastName}
                         </td>
-                        <td className="py-3 px-4 border-b">{u.userEmail}</td>
+                        <td className="py-3 px-4 border-b">{u?.userEmail}</td>
                         <td className="py-3 px-4 border-b">
 
                           <select
