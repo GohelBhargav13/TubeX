@@ -22,11 +22,6 @@ const userSchema = new mongoose.Schema({
         trim:true,
         required:[true,"Email is Required"]
     },
-    user_avatar:{
-        type:String,
-        trim:true,
-        required:false
-    },
     userPassword: {
             type:String,
             trim:true,
