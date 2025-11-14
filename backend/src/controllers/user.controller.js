@@ -18,7 +18,7 @@ export const registerUser = async (req, res) => {
 
     //check for the user_avatar is upload to the localpath
     console.log(req.file);
-    const user_avatar_upload = req.file?.path;
+    // const user_avatar_upload = req.file?.path;
 
     // if(!user_avatar_upload){
     //     return res.status(400).json(new ApiError(400,"Image is not uploaded"))
@@ -33,7 +33,6 @@ export const registerUser = async (req, res) => {
       userEmail,
       userFirstName,
       userLastName,
-      user_avatar:user_avatar_upload || "",
       userPassword,
     });
 
@@ -58,7 +57,7 @@ export const registerUser = async (req, res) => {
       .json(
         new ApiResponse(
           201,
-          { id: newUser?._id, email: newUser.userEmail,user_avatar:user_avatar_upload },
+          { id: newUser?._id, email: newUser.userEmail },
           "User registerd sucessfully please Verify Your Email"
         )
       );

@@ -36,6 +36,7 @@ const RegisterPage = () => {
       ) {
         console.log("Register data response : ", res?.data);
         toast.success(res?.message || "User Registered Successfully");
+        return;
       } else {
         console.log(res?.message);
         toast.error(res?.message || "User Can't Register");
@@ -51,9 +52,9 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-[90vh] bg-gray-100">
+      <div className="flex items-center justify-center bg-gray-950 min-h-screen">
         {/* 💳 The Login Card: Mimics Google's clean, centered card */}
-        <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+        <div className="w-full max-w-md p-8 bg-gray-900 rounded-xl shadow-lg border text-white border-gray-200">
           {/* Header/Logo */}
           <div className="text-center mb-8">
             {/* Using a simple text logo, but you could embed the Google logo SVG */}
@@ -63,8 +64,8 @@ const RegisterPage = () => {
               <span className="text-yellow-500">b</span>
               <span className="text-blue-500">e</span>X
             </h1>
-            <h2 className="text-xl font-normal text-gray-800 mt-4">Sign up</h2>
-            <p className="text-gray-500 text-sm">
+            <h2 className="text-xl font-bold mt-4">Sign up</h2>
+            <p className="text-gray-300 text-sm">
               Unlock New Video Experience With TubeX
             </p>
           </div>
@@ -82,7 +83,7 @@ const RegisterPage = () => {
                 value={userFirstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
-                className="w-full px-4 py-3 cursor-pointer border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+                className="w-full px-4 py-3 cursor-pointer border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
                 placeholder="First Name"
                 autoComplete="username"
                 title="FirstName"
@@ -99,7 +100,7 @@ const RegisterPage = () => {
                 value={userLastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
-                className="w-full px-4 cursor-pointer py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+                className="w-full px-4 cursor-pointer py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
                 placeholder="Last Name"
                 autoComplete="username"
                 title="LastName"
@@ -116,7 +117,7 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full cursor-pointer px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+                className="w-full cursor-pointer px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
                 placeholder="Email"
                 autoComplete="username"
                 title="Email"
@@ -134,7 +135,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full cursor-pointer px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-gray-800"
+                className="w-full cursor-pointer px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
                 placeholder="Password"
                 autoComplete="current-password"
                 title="Password"
