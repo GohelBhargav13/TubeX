@@ -9,6 +9,7 @@ import {  Loader2, MessageCircle, ThumbsUp, CrossIcon } from "lucide-react";
 import socket from "../Server/Server.js";
 import { useNavigate } from "react-router-dom";
 import PlayListSection from "../component/PlayListSection.jsx";
+import UserAvatar from "../component/UserAvatar.jsx";
 
 // const videos = [
 //   {
@@ -238,11 +239,7 @@ export default function HomePage() {
           <p className="text-lg font-medium text-white">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/320x180"}
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+            <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
       <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
@@ -283,7 +280,7 @@ export default function HomePage() {
               </h2>
 
               {!fetchingVideos && searchedData?.length === 0 ? (
-                <div className="text-gray-700 font-mono">No Video's Found...</div>
+                <div className="text-white font-mono">No Video's Found...</div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {searchedData?.length > 0 &&
@@ -299,14 +296,7 @@ export default function HomePage() {
                           <VideoPlayer videoURL={video?.videoUrl} />
 
                           <div className="flex items-center mt-2">
-                            <img
-                              src={
-                                video?.user_avatar ||
-                                "https://via.placeholder.com/320x180"
-                              }
-                              alt="User"
-                              className="w-10 h-10 rounded-full"
-                            />
+                            <UserAvatar username={video?.videoOwner?.userFirstName} />
                             <h4 className="ml-2 font-medium">
                               {video?.videoOwner?.userFirstName}{" "}
                               {video?.videoOwner?.userLastName}

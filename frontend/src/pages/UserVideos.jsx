@@ -4,6 +4,7 @@ import SideBar from '../component/SideBar'
 import { useUserAuthStore } from  "../store/auth.store.js"
 import VideoPlayer from '../component/VideoPlayer'
 import { Loader2, MessageCircle, ThumbsUp } from 'lucide-react'
+import UserAvatar from '../component/UserAvatar.jsx'
 
 const UserVideos = () => {
 
@@ -46,13 +47,7 @@ const UserVideos = () => {
             <p className="font-medium text-white">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
-            <img
-              src={
-                userData?.user_avatar || "https://via.placeholder.com/320x180"
-              }
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            />
+              <UserAvatar username={userData?.userFirstName} />
           </div>
         </div>
       <div className="flex min-h-screen bg-linear-to-b from-gray-900 to-black text-white text-center font-mono">
@@ -90,14 +85,7 @@ const UserVideos = () => {
                     />
                   </div>
                   <div className="flex items-center space-x-3 mb-2">
-                    <img
-                      src={
-                        video.videoOwner?.user_avatar ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt="Uploader"
-                      className="w-8 h-8 rounded-full"
-                    />
+                    <UserAvatar username={video.videoOwner?.userFirstName} />
                     <div>
                       <p className="font-semibold text-sm">
                         {video.videoOwner?.userFirstName}{" "}

@@ -3,7 +3,8 @@ import { useUserAuthStore } from "../store/auth.store.js"
 import { getAllVideos, userLikedVideos } from "../API/video.api.js"
 import SideBar from '../component/SideBar.jsx';
 import VideoPlayer from '../component/VideoPlayer.jsx';
-import { Loader2, MessageCircle, ThumbsUp } from 'lucide-react';
+import { Loader2, MessageCircle, ThumbsUp, User } from 'lucide-react';
+import UserAvatar from '../component/UserAvatar.jsx';
 
 const LikedVideos = () => {
 
@@ -63,13 +64,7 @@ const LikedVideos = () => {
             <p className="font-medium text-white">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
-            <img
-              src={
-                userData?.user_avatar || "https://via.placeholder.com/320x180"
-              }
-              alt="User"
-              className="w-10 h-10 rounded-full text-white"
-            />
+             <UserAvatar username={userData?.userFirstName} />
           </div>
         </div>
 
@@ -124,14 +119,7 @@ const LikedVideos = () => {
                     />
                   </div>
                   <div className="flex items-center space-x-3 mb-2">
-                    <img
-                      src={
-                        video.videoOwner?.user_avatar ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt="Uploader"
-                      className="w-8 h-8 rounded-full"
-                    />
+                    <UserAvatar username={video.videoOwner?.userFirstName} />
                     <div>
                       <p className="font-semibold text-sm">
                         {video.videoOwner?.userFirstName}{" "}

@@ -5,6 +5,7 @@ import VideoPlayer from "../component/VideoPlayer";
 import { data, useNavigate } from  "react-router-dom"
 import { Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import UserAvatar from "../component/UserAvatar";
 
 const PlayListPage = ({ userData }) => {
   const [playLists, setPlayLists] = useState([]);
@@ -96,11 +97,7 @@ const PlayListPage = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-          <img
-            src={userData?.user_avatar || "https://via.placeholder.com/40"}
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+              <UserAvatar username={userData?.userFirstName} />
         </div>
       </header>
   <div className="bg-gray-900 p-1 flex justify-center items-center font-mono border-b-2 border-b-white">
@@ -139,7 +136,7 @@ const PlayListPage = ({ userData }) => {
           {loading ? (
             <p className="text-center text-white">Loading playlists...</p>
           ) : filterPlayList?.length === 0 ? (
-            <div className="text-center text-neutral-400">
+            <div className="text-center text-neutral-300">
               <p>No playlists found 😕</p>
               <p className="text-sm mt-2">
                 Create your first playlist from any video!

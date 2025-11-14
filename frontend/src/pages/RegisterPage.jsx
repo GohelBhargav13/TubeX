@@ -8,7 +8,6 @@ const RegisterPage = () => {
   const [userLastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userAvatar, setAvatar] = useState(null);
   const [registerLoading, setRegisterLoading] = useState(false)
 
 
@@ -25,7 +24,6 @@ const RegisterPage = () => {
       formdata.append("userLastName", userLastName);
       formdata.append("userEmail", email);
       formdata.append("userPassword", password);
-      formdata.append("user_avatar", userAvatar || "");
 
       // send the form data to the backend
       const res = await userRegister(formdata);
@@ -142,7 +140,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <input
+            {/* <input
               type="file"
               name="UserAvatar"
               accept="image/*"
@@ -150,7 +148,7 @@ const RegisterPage = () => {
               onChange={(e) => setAvatar(e.target.files[0])}
               placeholder="Please Upload Your Image"
               title="User Avatar"
-            />
+            /> */}
 
             {/* Helper Links */}
             <div className="flex justify-between text-sm">
