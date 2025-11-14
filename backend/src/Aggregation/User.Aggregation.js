@@ -46,6 +46,24 @@ import ApiResponse from "../utills/api-response.js";
 //   }
 // };
 
+export const userCount = async (req,res) => {
+  try {
+
+       const userCount = await Userm.countDocuments({ userRole:"user" })
+       const adminCount = await Userm.countDocuments({ userRole:"admin" })
+
+       if(!userCount && !adminCount){
+          return res.status(404).json(new ApiResponse(404,"User Count is not Proper"))
+       }
+
+       res.status(200).json(new ApiResponse(200,{ userCount,adminCount },"User count is fetched"))
+  } catch (error) {
+        console.log("Something error while fetch the user count")
+        res.status(500).json(new ApiError(500,"Internal Error in fetching the user counts"))
+        return;
+  }
+} 
+
 // Fetch video counts
 export const VideoCount = async (req, res) => {
   try {
