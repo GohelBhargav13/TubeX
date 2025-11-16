@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
         <Navigate to="/home" />
     }
     
-    if(isFetching || !isChecked) return <h1>Loading...</h1>
+    if(isFetching || !isChecked) return <h1 className="text-blue-600 text-center">Loading...</h1>
 
     return userData ? children : <Navigate to="/login" />
 }
