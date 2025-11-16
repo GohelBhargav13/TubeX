@@ -60,7 +60,7 @@ export const verificationEmailTemplate = (username, verifyURL) => {
         button: {
           color: "#22BC66", // Green like in screenshot
           text: "Confirm your account",
-          link: `https://tubex-m576.onrender.com/api/v1/user/verify-email/${verifyURL}`,
+          link: `https://tube-x.vercel.app/user/email-verify/${verifyURL}`,
         },
       },
       outro:
