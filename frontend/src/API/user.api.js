@@ -45,3 +45,25 @@ export const changeUsersRole = async (userId,userRole) => {
         return;
     }
 }
+
+// user varification
+export const UserEmailVerification = async (verifyURL) => {
+    try {
+
+        if(!verifyURL) return;
+
+        const res = await api.get(`https://tubex-m576.onrender.com/api/v1/user/verify-email/${verifyURL}`)
+        
+        if(res?.data?.StatusCode === 400){
+            return { StatusCode:res?.data?.StatusCode, message:"Not Verified", success:false }
+        }
+
+        if(res?.data?.StatusCode === 200){
+            return { StatusCode:res?.data?.StatusCode, message:res?.data?.data?.message, success:true }
+        }
+        
+    } catch (error) {
+        console.log("Error while user email verification:", error?.message)
+        return;
+    }
+}
