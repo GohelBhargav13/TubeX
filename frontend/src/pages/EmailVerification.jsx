@@ -39,7 +39,7 @@ const EmailVerification = () => {
             return;
         }finally {
             setIsLoading(false)
-            setIsVerified(false)
+            // setIsVerified(false)
         }
       }  
       verifyEmail()

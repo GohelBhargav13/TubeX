@@ -114,7 +114,7 @@ const UserPanel = ({ userData }) => {
           value={searchWords}
           onChange={(e) => setSearchWords(e.target.value)}
           className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
-          placeholder="Search videos..."
+          placeholder="Search Users..."
           autoComplete="username"
         />
         <button
