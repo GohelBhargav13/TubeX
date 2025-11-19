@@ -52,7 +52,7 @@ export const UserEmailVerification = async (verifyURL) => {
 
         if(!verifyURL) return;
 
-        const res = await api.get(`https://tubex-m576.onrender.com/api/v1/user/verify-email/${verifyURL}`)
+        const res = await api.get(`/user/verify-email/${verifyURL}`)
         
         if(res?.data?.StatusCode === 400){
             return { StatusCode:res?.data?.StatusCode, message:"Not Verified", success:false }
@@ -64,6 +64,35 @@ export const UserEmailVerification = async (verifyURL) => {
         
     } catch (error) {
         console.log("Error while user email verification:", error?.message)
+        return;
+    }
+}
+
+// delete user profile 
+
+export const UserDeleteProfile = async (userId) => {
+
+    if(!userId) return
+
+    try {
+
+       const res = await api.delete(`/user/delete-user/${userId}`)
+       const full_response = res?.data
+
+       if(full_response?.StatusCode === 403){
+            return { StatusCode:403,data:null,message:full_response?.Message || "You're not accessing this route" }
+       }
+
+       if(full_response?.StatusCode === 404){
+            return { StatusCode:404,data:null,message:full_response?.Message || "User Not Found" }
+       }
+
+       if(full_response?.StatusCode === 200){
+            return { StatusCode:200,data:full_response?.data, message:full_response?.message, success:full_response?.success }
+       }
+        
+    } catch (error) {
+        console.log("Error while deleting the user")
         return;
     }
 }
