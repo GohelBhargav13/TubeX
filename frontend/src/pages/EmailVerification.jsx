@@ -48,8 +48,8 @@ const EmailVerification = () => {
     // Loding state if the page is load
     if(loading){
         return (
-            <div className='text-black font-bold text-center justify-items-center'>
-                <div className='flex gap-4'>
+            <div className='h-screen text-black font-bold text-center'>
+                <div className='flex gap-4 items-center justify-center'>
                     <Loader2 className='animate-spin' />
                     <p className='font-bold text-white font-mono text-xl'>Authenticating...</p>
                 </div>
@@ -60,9 +60,9 @@ const EmailVerification = () => {
   return (
     <>
         <div className='bg-linear-to-b from-slate-900 to-black h-screen text-white font-mono font-bold'>
-            <div className='bg-slate-900 text-xl justify-center items-center flex flex-col gap-4'>
+            <div className='min-h-screen text-xl justify-center items-center flex flex-col gap-4'>
                 { isVerified ? <p>IsAutheticated</p> : <p>Not Verified</p> }
-                { isVerified && <button onClick={() => navigate("/login")} className='p-2 bg-slate-800 text-lg text-white rounded-lg hover:bg-slate-900 hover:scale-105 duration-500 hover:font-bold'> Sign In</button> }
+                { isVerified && <button onClick={() => navigate("/login")} className='p-2 bg-slate-800 cursor-pointer text-lg text-white rounded-lg hover:bg-slate-900 hover:scale-105 duration-500 hover:font-bold'> Sign In</button> }
             </div>
         </div>
     </>

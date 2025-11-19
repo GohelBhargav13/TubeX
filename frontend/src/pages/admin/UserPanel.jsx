@@ -1,62 +1,69 @@
 import React, { useEffect, useState } from "react";
 import SideBar from "../../component/SideBar.jsx";
-import { changeUsersRole, fetchAllUsers } from "../../API/user.api.js";
+import {
+  changeUsersRole,
+  fetchAllUsers,
+  UserDeleteProfile,
+} from "../../API/user.api.js";
 import toast from "react-hot-toast";
 import socket from "../../Server/Server.js";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import UserAvatar from "../../component/UserAvatar.jsx";
 
 const UserPanel = ({ userData }) => {
   const [userDetails, setUserData] = useState([]);
-    const [searchWords, setSearchWords] = useState("");
-    const [searchedData, setSearchData] = useState([]);
-    const [loading,setLoading] = useState(false);
+  const [searchWords, setSearchWords] = useState("");
+  const [searchedData, setSearchData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch All data
     const fetchUsers = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const res = await fetchAllUsers();
 
         if (res?.data) {
           console.log("User Details:", res.data);
           setUserData(res?.data);
-          setSearchData(res?.data)
+          setSearchData(res?.data);
         } else {
           setUserData([]);
         }
       } catch (error) {
-        setLoading(false)
+        setLoading(false);
         console.log("Error while fetching data:", error);
-      }finally {
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     };
     fetchUsers();
 
-    socket.on("UserRoleChanged", ({ newUserRole,userId,message,success }) => {
-      console.log("flag is :", success)
-        if(success && userData?.userRole === "admin"){
-          console.log({ userId, newUserRole })
-          toast.success(message)
+    socket.on(
+      "UserRoleChanged",
+      ({ newUserRole, userId, message, success }) => {
+        console.log("flag is :", success);
+        if (success && userData?.userRole === "admin") {
+          console.log({ userId, newUserRole });
+          toast.success(message);
           fetchUsers();
           return;
-        }else {
-          toast.error("Error While Updating Role")
+        } else {
+          toast.error("Error While Updating Role");
         }
-    })
+      }
+    );
 
     return () => {
-      socket.off("UserRoleChanged")
-    }
+      socket.off("UserRoleChanged");
+    };
   }, []);
 
   // Handle UserRole
   const handleUserRole = async (userId, userRole) => {
     // e.preventDefault()
 
-    socket.emit("userRoleChange", { userId, userRole } )
+    socket.emit("userRoleChange", { userId, userRole });
 
     console.log("Enter into the userRole Changed : ", { userId, userRole });
     // const res = await changeUsersRole(userId, userRole);
@@ -73,21 +80,46 @@ const UserPanel = ({ userData }) => {
 
   // handle Search method for filter search
   const handleSearch = async () => {
-    setSearchData(userDetails)
-    if(searchWords.trim()){
-       setSearchData((prev) => prev.filter((ud) => ud?.userFirstName.toLowerCase().includes(searchWords.toLowerCase())))
-    }else {
-      setSearchData(userDetails)
+    setSearchData(userDetails);
+    if (searchWords.trim()) {
+      setSearchData((prev) =>
+        prev.filter((ud) =>
+          ud?.userFirstName.toLowerCase().includes(searchWords.toLowerCase())
+        )
+      );
+    } else {
+      setSearchData(userDetails);
     }
-   
-  }
+  };
 
-  if(loading){
+  // delete user function
+  const deleteUser = async (userId) => {
+    if (!userId) {
+      console.log("User id is not found");
+      return;
+    }
+    const res = await UserDeleteProfile(userId);
+
+    if (res?.StatusCode >= 400 || !res?.success) {
+      toast.error(res?.message || "Error in deleting the user details");
+      return;
+    }
+
+    if (res?.StatusCode === 200 && res?.success) {
+      toast.success(res?.message || "User is deleted");
+      setUserData((prev) =>
+        prev.filter((user) => user?._id !== res?.data?.userId)
+      );
+      return;
+    }
+  };
+
+  if (loading) {
     return (
       <div className="text-blue-500 items-center">
         <Loader2 className="animate-spin text-blue-600" />
       </div>
-    )
+    );
   }
 
   return (
@@ -99,10 +131,10 @@ const UserPanel = ({ userData }) => {
           <p className="font-medium">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
-            <UserAvatar username={userData?.userFirstName} />
+          <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
-       <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
+      <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
         {/* <p>Search Bar</p> */}
         <p className="text-gray-950 p-3 bg-gray-200 rounded">
           Search : {searchedData?.length}
@@ -157,7 +189,7 @@ const UserPanel = ({ userData }) => {
                     {searchedData.map((u, idx) => (
                       <tr
                         key={u._id}
-                        className="hover:bg-neutral-400 hover:text-slate-950 font-bold transition duration-150"
+                        className="hover:bg-neutral-200 hover:text-slate-950 font-bold transition duration-150"
                       >
                         <td className="py-3 px-4 border-b">{idx + 1}</td>
                         <td className="py-3 px-4 border-b">
@@ -168,32 +200,49 @@ const UserPanel = ({ userData }) => {
                         </td>
                         <td className="py-3 px-4 border-b">{u?.userEmail}</td>
                         <td className="py-3 px-4 border-b">
-
                           <select
                             className="py-2 px-3 border-b-2 border-t-2 cursor-pointer"
                             value={u?.userRole}
                             onChange={(e) =>
                               handleUserRole(u?._id, e.target.value)
                             }
-
-                            disabled={ u?._id === userData?._id }
+                            disabled={u?._id === userData?._id}
                           >
-                            <option value="admin" className="cursor-pointer">
+                            <option
+                              value="admin"
+                              className="cursor-pointer text-black"
+                            >
                               Admin
                             </option>
-                            <option value="user" className="cursor-pointer">
+                            <option
+                              value="user"
+                              className="cursor-pointer text-black"
+                            >
                               User
                             </option>
                           </select>
                           {/* {u.userRole || "User"} */}
                         </td>
                         <td className="py-3 px-4 border-b">
-                          {new Date(u.createdAt).toLocaleDateString()}
+                          {new Date(u?.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-4 border-b">
-                          <select>
-                            <option>ACTIVE</option>
-                          </select>
+                          <div>
+                            <button
+                              className={`text-white hover:scale-110 duration-400 
+                                hover:shadow-lg bg-slate-900 p-2 rounded-xl
+                                hover:text-white
+                                ${
+                                  u?._id === userData?._id
+                                    ? "cursor-not-allowed opacity-50"
+                                    : "cursor-pointer"
+                                }`}
+                              onClick={() => deleteUser(u?._id)}
+                              disabled={u?._id === userData?._id}
+                            >
+                              <Trash2 />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
