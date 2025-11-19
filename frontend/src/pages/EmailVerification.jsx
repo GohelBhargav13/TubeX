@@ -25,7 +25,9 @@ const EmailVerification = () => {
             }
 
             if(res?.StatusCode === 200){
-                setIsVerified(true)
+                setTimeout(() => {
+                    setIsVerified(true)
+                }, 1500)
                 toast.success(res?.message)
                 return;
             }
@@ -55,7 +57,7 @@ const EmailVerification = () => {
   return (
     <>
         <div className='bg-slate-900 text-white text-center font-mono font-bold'>
-            { isVerified ? <p>IsAutheticated</p> : <p>Processing....</p> }
+            { isVerified ? <p>IsAutheticated</p> : <p>Not Verified</p> }
             { isVerified && <button onClick={() => navigate("/login")} className='p-2 bg-blue-500 text-white rounded-lg'> Sign In</button> }
         </div>
     </>

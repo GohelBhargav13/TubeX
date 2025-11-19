@@ -107,6 +107,10 @@ export const userRegister = async (formData) => {
             withCredentials:true
         })
 
+        if(res?.data?.StatusCode === 400){
+            return { data:null, message:res?.data?.Message || "User is already Exist Please Try With New Id", success:false }
+        }
+
         if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
             return { data:res.data.data, message:res.data.message, success:res.data.success }
         }else{
