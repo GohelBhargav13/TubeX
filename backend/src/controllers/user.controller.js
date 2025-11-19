@@ -4,6 +4,7 @@ import ApiResponse from "../utills/api-response.js";
 import crypto from "crypto";
 import Video from "../models/video.models.js"
 import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
+
 // import { redis } from "../Aggregation/User.Aggregation.js"
 
 export const registerUser = async (req, res) => {
@@ -37,20 +38,28 @@ export const registerUser = async (req, res) => {
     });
 
     //Generate email verification token
-    const emailToken = await newUser.generateEmailVerifiactionToken();
+    // const emailToken = await newUser.generateEmailVerifiactionToken();
 
-    if(!emailToken){
-        return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
-    }
+    const emailVerificationToken = crypto.randomBytes(32).toString("hex")
+    const hashedToken = crypto.createHash("sha256").update(emailVerificationToken).digest("hex");
+
+    // if(!emailToken){
+    //     return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
+    // }
+
+    newUser.EmailVerificationToken = hashedToken
+    newUser.EmailVerficationExpiry = Date.now() + 10 * 60 * 1000
     
     await newUser.save();
 
     //Send verification email
     await sendEmail({
-      email: newUser.userEmail,
+      email: newUser?.userEmail,
       subject: "Verification Email",
-      mailgencontent: verificationEmailTemplate(userFirstName, emailToken.unhashedToken),
+      mailgencontent: verificationEmailTemplate(userFirstName, emailVerificationToken),
     });
+
+    console.log(newUser)
 
     res
       .status(201)
@@ -310,6 +319,27 @@ export const chanegUserRole = async(req,res) => {
     
   } catch (error) {
       console.log("Erorr While changing a role of user : ", error)
+      return;
+  }
+}
+
+// delete a user 
+export const deleteUser = async(req,res) => {
+  try {
+
+      const { userId } = req.params;
+      if(!userId){
+        return res.status(404).json(new ApiError(404,"User ID is not found"))
+      }
+     const user = await Userm.findByIdAndDelete(userId)
+
+     if(!user){
+        return res.status(400).json(new ApiError(400,"User is not found"))
+     }
+
+     res.status(200).json(new ApiResponse(200,{ userId:user?._id }, "User deleted Successfully"))
+  } catch (error) {
+      console.log("Error while user delete")
       return;
   }
 }

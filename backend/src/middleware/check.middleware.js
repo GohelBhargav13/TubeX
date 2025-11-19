@@ -1,6 +1,7 @@
 import Userm from "../models/user.models.js"
 import ApiError from "../utills/api-error.js"
 
+// checking the user role
 export const checkUserRole = (availableRoles = []) => {
     return async (req,res,next) => {
         const { id,userRole:role } = req.user

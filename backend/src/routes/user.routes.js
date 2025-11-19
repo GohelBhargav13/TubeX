@@ -1,8 +1,10 @@
 import { Router } from "express"
-import { chanegUserRole, getAllUsers, getMe, getUserLikedVideos, getUserVideos, registerUser, userLogin, userLogout, verifyEmail } from "../controllers/user.controller.js";
+import { chanegUserRole, deleteUser, getAllUsers, getMe, getUserLikedVideos, getUserVideos, registerUser, userLogin, userLogout, verifyEmail } from "../controllers/user.controller.js";
 import { upload } from "../multer-config/multer_user_avatar.js";
 import IsLoggedIn from "../middleware/auth.middleware.js";
 import {  userCount, VideoCount } from "../Aggregation/User.Aggregation.js";
+import { checkUserRole } from "../middleware/check.middleware.js";
+import { UserRole } from "../utills/constant.js";
 
 
 const userRoutes = Router();
@@ -17,5 +19,6 @@ userRoutes.get("/all-users",IsLoggedIn,getAllUsers)
 userRoutes.post("/change-userRole/:userId",IsLoggedIn,chanegUserRole)
 userRoutes.get("/logout",IsLoggedIn,userLogout)
 userRoutes.get("/get-user-count",IsLoggedIn,userCount)
+userRoutes.delete("/delete-user/:userId",IsLoggedIn,checkUserRole([ UserRole.ADMIN ]),deleteUser)
 
 export default userRoutes
