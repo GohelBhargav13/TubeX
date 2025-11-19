@@ -9,6 +9,7 @@ import VideoPlayer from '../component/VideoPlayer.jsx'
 import CommentSection from '../component/CommentSection.jsx'
 import socket from '../Server/Server.js'
 import RelatedVideos from '../component/RelatedVideos.jsx'
+import UserAvatar from '../component/UserAvatar.jsx'
 
 const WatchVideo = () => {
     
@@ -84,13 +85,7 @@ const WatchVideo = () => {
             <p className="font-medium">
               {userData?.userFirstName} {userData?.userLastName}
             </p>
-            <img
-              src={
-                userData?.user_avatar || "https://via.placeholder.com/320x180"
-              }
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            />
+            <UserAvatar username={userData?.userFirstName} />
           </div>
         </div>
    <div className="flex min-h-screen bg-gray-900 text-white border-t-2 border-t-white">

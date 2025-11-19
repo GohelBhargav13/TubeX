@@ -48,17 +48,22 @@ const EmailVerification = () => {
     // Loding state if the page is load
     if(loading){
         return (
-            <div className='text-black font-bold text-center'>
-                <Loader2 className='animate-spin' />
+            <div className='text-black font-bold text-center justify-items-center'>
+                <div className='flex gap-4'>
+                    <Loader2 className='animate-spin' />
+                    <p className='font-bold text-white font-mono text-xl'>Authenticating...</p>
+                </div>
             </div>
         )
     }
 
   return (
     <>
-        <div className='bg-slate-900 text-white text-center font-mono font-bold'>
-            { isVerified ? <p>IsAutheticated</p> : <p>Not Verified</p> }
-            { isVerified && <button onClick={() => navigate("/login")} className='p-2 bg-blue-500 text-white rounded-lg'> Sign In</button> }
+        <div className='bg-linear-to-b from-slate-900 to-black h-screen text-white font-mono font-bold'>
+            <div className='bg-slate-900 text-xl justify-center items-center flex flex-col gap-4'>
+                { isVerified ? <p>IsAutheticated</p> : <p>Not Verified</p> }
+                { isVerified && <button onClick={() => navigate("/login")} className='p-2 bg-slate-800 text-lg text-white rounded-lg hover:bg-slate-900 hover:scale-105 duration-500 hover:font-bold'> Sign In</button> }
+            </div>
         </div>
     </>
   )
