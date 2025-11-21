@@ -8,7 +8,7 @@ export const server = http.createServer(app)
 
 export const io = new Server(server,{
     cors:{
-        origin:["http://localhost:5173","http://localhost:5174",'http://13.51.106.105:5174'],
+        origin:["http://localhost:5173","http://localhost:5174",'https://tube-x.vercel.app' ],
         credentials:true,
         methods:["GET","POST","DELETE","OPTION","PUT","PATCH"]
     }
@@ -64,6 +64,10 @@ io.on("connection",(socket) => {
 
     socket.on("userRoleChange", async({ userId,userRole }) => {
          await updateUserRole(userId,userRole,socket)
+    })
+
+    socket.on("newUserJoin", async({ userData }) => {
+          io.emit("newUserJoined",{ userdata:userData, message:`${userData?.userFirstName} is onboarding` })  
     })
 
     socket.on("disconnect",() => {
