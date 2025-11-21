@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
     // const emailToken = await newUser.generateEmailVerifiactionToken();
 
     const verifiactionToken = crypto.randomBytes(32).toString("hex")
-    const hashedToken = crypto.createHash("sha256").update(verifiactionToken).digest("hex");
+    const hashedToken = await crypto.createHash("sha256").update(verifiactionToken).digest("hex");
 
     // if(!emailToken){
     //     return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
@@ -53,6 +53,10 @@ export const registerUser = async (req, res) => {
 
     newUser.EmailVerificationToken = hashedToken
     newUser.EmailVerficationExpiry = Date.now() + 10 * 60 * 1000
+
+    if(!newUser.EmailVerificationToken || !newUser.EmailVerficationExpiry){
+         return res.status(404).json(new ApiError(404,"Email Token is not set"))
+    }
     
     await newUser.save();
 
@@ -110,6 +114,7 @@ export const verifyEmail = async (req, res) => {
 
     res.status(200).json(
       new ApiResponse(200, {
+        userData: userToken,
         message: "User Email Verification Successfully",
       })
     );
@@ -277,7 +282,7 @@ export const getUserLikedVideos = async (req,res) => {
 export const getAllUsers = async(req,res) => {
     try {
 
-     const result = await Userm.find().select("-password -__v -createdAt -updatedAt -EmailVerificationToken -EmailVerficationExpiry");
+     const result = await Userm.find({ isVerified:true }).select("-password -__v -createdAt -updatedAt -EmailVerificationToken -EmailVerficationExpiry").limit(2)
      
      console.log("User Found Result is : ", result)
      // If no user found
