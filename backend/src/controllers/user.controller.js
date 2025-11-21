@@ -18,7 +18,7 @@ export const registerUser = async (req, res) => {
     }
 
     //check for the user_avatar is upload to the localpath
-    console.log(req.file);
+    // console.log(req.file);
     // const user_avatar_upload = req.file?.path;
 
     // if(!user_avatar_upload){
@@ -37,26 +37,32 @@ export const registerUser = async (req, res) => {
       userPassword,
     });
 
+    console.log(newUser)
+
     //Generate email verification token
     // const emailToken = await newUser.generateEmailVerifiactionToken();
 
-    const emailVerificationToken = crypto.randomBytes(32).toString("hex")
+    const verifiactionToken = crypto.randomBytes(32).toString("hex")
     const hashedToken = crypto.createHash("sha256").update(emailVerificationToken).digest("hex");
 
     // if(!emailToken){
     //     return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
     // }
 
+    console.log(newUser)
+
     newUser.EmailVerificationToken = hashedToken
     newUser.EmailVerficationExpiry = Date.now() + 10 * 60 * 1000
     
     await newUser.save();
 
+    console.log(newUser)
+
     //Send verification email
     await sendEmail({
       email: newUser?.userEmail,
       subject: "Verification Email",
-      mailgencontent: verificationEmailTemplate(userFirstName, emailVerificationToken),
+      mailgencontent: verificationEmailTemplate(userFirstName, verifiactionToken),
     });
 
     console.log(newUser)
