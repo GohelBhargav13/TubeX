@@ -59,7 +59,7 @@ export const UserEmailVerification = async (verifyURL) => {
         }
 
         if(res?.data?.StatusCode === 200){
-            return { StatusCode:res?.data?.StatusCode, message:res?.data?.data?.message, success:true }
+            return { StatusCode:res?.data?.StatusCode, message:res?.data?.data?.message, success:true, data:res?.data?.userData }
         }
         
     } catch (error) {
