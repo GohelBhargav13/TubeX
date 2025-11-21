@@ -20,17 +20,17 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 // Send the mail Using Nodemailer
 
 let transporter = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port: 587,
+    host:process.env.MAIL_TRAP_HOSTNAME || "" ,
+    port: 2525,
     secure: false,
     auth: {
-        user: "gohelbhargav401@gmail.com",
-        pass: "aqknaoglmxclkvct"
+        user: process.env.MAIL_TARP_USER,
+        pass: process.env.MAIL_TARP_PASS
     }
 });
 
 const MailOptions = {
-    from:"gohelbhargav401@gmail.com" || "",
+    from:process.env.SMTP_MAIL || "",
     to:options.email,
     subject:options.subject,
     text:textMail,
