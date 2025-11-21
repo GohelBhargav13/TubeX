@@ -20,18 +20,22 @@ const RegisterPage = () => {
 
       // make a form data object to send the data to the backend
       const formdata = new FormData();
+      formdata.append("userEmail", email);
       formdata.append("userFirstName", userFirstName);
       formdata.append("userLastName", userLastName);
-      formdata.append("userEmail", email);
       formdata.append("userPassword", password);
+
+      console.log(formdata);    
 
       // send the form data to the backend
       const res = await userRegister(formdata);
 
-      if (
-        (res?.data !== null && res?.StatusCode === 200) ||
-        res?.StatusCode === 201
-      ) {
+      if(res?.StatusCode === 400){
+        console.log("User is registerd")
+        toast.error(res?.message || "User is already registerd")
+        return;
+      }
+      if (res?.StatusCode === 201) {
         console.log("Register data response : ", res?.data);
         toast.success(res?.message || "User Registered Successfully");
         return;

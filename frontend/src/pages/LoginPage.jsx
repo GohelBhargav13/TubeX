@@ -43,13 +43,11 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           {/* Using a simple text logo, but you could embed the Google logo SVG */}
           <h1 className="text-2xl font-medium">
-            <span className="text-blue-500">S</span>
-            <span className="text-red-500">t</span>
-            <span className="text-yellow-500">r</span>
+            <span className="text-blue-500">T</span>
+            <span className="text-red-500">u</span>
+            <span className="text-yellow-500">b</span>
             <span className="text-blue-500">e</span>
-            <span className="text-green-500">a</span>
-            <span className="text-red-500">m</span>
-            Tube
+            <span className="text-green-500">X</span>
           </h1>
           <h2 className="text-xl font-norma mt-4">Sign in</h2>
           <p className="text-gray-500 text-sm">to continue to StreamTube</p>

@@ -98,6 +98,8 @@ const UserPanel = ({ userData }) => {
       console.log("User id is not found");
       return;
     }
+
+    console.log("Button clicked")
     const res = await UserDeleteProfile(userId);
 
     if (res?.StatusCode >= 400 || !res?.success) {
@@ -107,8 +109,7 @@ const UserPanel = ({ userData }) => {
 
     if (res?.StatusCode === 200 && res?.success) {
       toast.success(res?.message || "User is deleted");
-      setUserData((prev) =>
-        prev.filter((user) => user?._id !== res?.data?.userId)
+      setUserData((prev) => prev.filter((user) => user?._id !== res?.data?.userId)
       );
       return;
     }
