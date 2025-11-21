@@ -17,7 +17,8 @@ const UserPanel = ({ userData }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch All data
+    
+    // Fetch All data when page is load
     const fetchUsers = async () => {
       setLoading(true);
       try {
@@ -39,6 +40,7 @@ const UserPanel = ({ userData }) => {
     };
     fetchUsers();
 
+    // User Role changed socket event
     socket.on(
       "UserRoleChanged",
       ({ newUserRole, userId, message, success }) => {
@@ -54,8 +56,19 @@ const UserPanel = ({ userData }) => {
       }
     );
 
+    // New user joined socket event
+    socket.on("newUserJoined",({ userdata,message }) => {
+        console.log("New User Joined : ",userdata)
+
+        // update the user details state
+        userDetails((prev) => [...prev,userdata])
+        if(userData?.userRole === 'admin' && message) toast.success(message)
+    })
+
+    // unmount the socket 
     return () => {
       socket.off("UserRoleChanged");
+      socket.off("newUserJoined")
     };
   }, []);
 

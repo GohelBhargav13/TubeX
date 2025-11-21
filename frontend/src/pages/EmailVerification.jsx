@@ -4,6 +4,7 @@ import { UserEmailVerification } from '../API/user.api'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
+import socket from '../Server/Server.js'
 
 const EmailVerification = () => {
 
@@ -25,9 +26,12 @@ const EmailVerification = () => {
             }
 
             if(res?.StatusCode === 200){
-                setTimeout(() => {
-                    setIsVerified(true)
-                }, 1500)
+                console.log("User is verified")
+                setIsVerified(true)
+                // new socket of the new user join
+
+                socket.emit("newUserJoin", { userData:userData})
+
                 toast.success(res?.message)
                 return;
             }

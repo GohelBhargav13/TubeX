@@ -49,6 +49,10 @@ const RegisterPage = () => {
       console.log(error);
     }finally {
       setRegisterLoading(false);
+      setFirstName("")
+      setEmail("")
+      setLastName("")
+      setPassword("")
     }
   };
 
