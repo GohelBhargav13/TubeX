@@ -102,17 +102,21 @@ export const userRegister = async (formData) => {
 
        if(!formData) return;
 
+       console.log(formData)
+
        const res = await api.post("/user/register",formData, {
             headers:{ "Content-Type":"multipart/form-data" },
             withCredentials:true
         })
 
+        console.log("Data response:",res)
+
         if(res?.data?.StatusCode === 400){
-            return { data:null, message:res?.data?.Message || "User is already Exist Please Try With New Id", success:false }
+            return { StatusCode:400,data:null, message:res?.data?.Message || "User is already Exist Please Try With New Id", success:false }
         }
 
-        if(res.data.StatusCode === 200 || res.data.StatusCode === 201){
-            return { data:res.data.data, message:res.data.message, success:res.data.success }
+        if(res?.data?.StatusCode === 201){
+            return { data:res.data.data, message:res.data.message, success:res.data.success,StatusCode:res?.data?.StatusCode }
         }else{
             return { data:null, message:res.data.Message || "User Can't Register", success:res.data.success || false }
         }
