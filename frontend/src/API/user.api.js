@@ -53,7 +53,7 @@ export const UserEmailVerification = async (verifyURL) => {
         if(!verifyURL) return;
 
         const res = await api.get(`/user/verify-email/${verifyURL}`)
-        console.log("response userdata is : ", res?.data?.userData)
+        console.log("response userdata is : ", res?.data)
         if(res?.data?.StatusCode === 400){
             return { StatusCode:res?.data?.StatusCode, message:"Not Verified", success:false }
         }
