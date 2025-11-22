@@ -65,10 +65,17 @@ const UserPanel = ({ userData }) => {
         if(userData?.userRole === 'admin' && message) toast.success(message)
     })
 
+    socket.on("userpanelupdated",({ userId, message }) => {
+        console.log("User Deleted : ",userId)
+        setUserData((prev) => prev.filter((user) => user?._id !== res?.data?.userId));
+        if(userData?.userRole === 'admin' && message) toast.success(message)
+    })
+
     // unmount the socket 
     return () => {
       socket.off("UserRoleChanged");
       socket.off("newUserJoined")
+      socket.off("userpanelupdated")
     };
   }, []);
 
@@ -115,6 +122,8 @@ const UserPanel = ({ userData }) => {
     console.log("Button clicked")
     const res = await UserDeleteProfile(userId);
 
+    console.log("response is :", res)
+
     if (res?.StatusCode >= 400 || !res?.success) {
       toast.error(res?.message || "Error in deleting the user details");
       return;
@@ -122,8 +131,7 @@ const UserPanel = ({ userData }) => {
 
     if (res?.StatusCode === 200 && res?.success) {
       toast.success(res?.message || "User is deleted");
-      setUserData((prev) => prev.filter((user) => user?._id !== res?.data?.userId)
-      );
+      socket.emit("userDeleted",{ userId })
       return;
     }
   };
