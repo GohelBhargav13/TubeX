@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
     // const emailToken = await newUser.generateEmailVerifiactionToken();
 
     const verifiactionToken = crypto.randomBytes(32).toString("hex")
-    const hashedToken = await crypto.createHash("sha256").update(verifiactionToken).digest("hex");
+    const hashedToken =  crypto.createHash("sha256").update(verifiactionToken).digest("hex");
 
     // if(!emailToken){
     //     return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
