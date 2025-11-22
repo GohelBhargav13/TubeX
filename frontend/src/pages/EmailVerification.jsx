@@ -30,7 +30,7 @@ const EmailVerification = () => {
                 setIsVerified(true)
 
                 // new socket of the new user join
-                // socket.emit("newUserJoin", { userData:userData})
+                socket.emit("newUserJoin", { userData:userData})
 
                 toast.success(res?.message)
                 return;

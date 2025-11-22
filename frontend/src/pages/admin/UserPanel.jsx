@@ -17,7 +17,7 @@ const UserPanel = ({ userData }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    
+
     // Fetch All data when page is load
     const fetchUsers = async () => {
       setLoading(true);
@@ -57,18 +57,17 @@ const UserPanel = ({ userData }) => {
     );
 
     // New user joined socket event
-    socket.on("newUserJoined",({ userdata,message }) => {
-        console.log("New User Joined : ",userdata)
-
-        // update the user details state
-        userDetails((prev) => [...prev,userdata])
-        if(userData?.userRole === 'admin' && message) toast.success(message)
+    socket.on("newUserjoined", ({ userdata, message }) => {
+      console.log("New User Joined : ", userdata)
+      // update the user details state
+      setSearchData((prev) => [...prev, userdata])
+      if (userData?.userRole === 'admin' && message) toast.success(message)
     })
 
-    socket.on("userpanelupdated",({ userId, message }) => {
-        console.log("User Deleted : ",userId)
-        setUserData((prev) => prev.filter((user) => user?._id !== userId));
-        if(userData?.userRole === 'admin' && message) toast.success(message)
+    socket.on("userpanelupdated", ({ userId, message }) => {
+      console.log("User Deleted : ", userId)
+      setSearchData((prev) => prev.filter((user) => user?._id !== userId));
+      if (userData?.userRole === 'admin' && message) toast.success(message)
     })
 
     // unmount the socket 
@@ -131,7 +130,7 @@ const UserPanel = ({ userData }) => {
 
     if (res?.StatusCode === 200 && res?.success) {
       toast.success(res?.message || "User is deleted");
-      socket.emit("userDeleted",{ userId })
+      socket.emit("userDeleted", { userId })
       return;
     }
   };
@@ -254,10 +253,9 @@ const UserPanel = ({ userData }) => {
                               className={`text-white hover:scale-110 duration-400 
                                 hover:shadow-lg bg-slate-900 p-2 rounded-xl
                                 hover:text-white
-                                ${
-                                  u?._id === userData?._id
-                                    ? "cursor-not-allowed opacity-50"
-                                    : "cursor-pointer"
+                                ${u?._id === userData?._id
+                                  ? "cursor-not-allowed opacity-50"
+                                  : "cursor-pointer"
                                 }`}
                               onClick={() => deleteUser(u?._id)}
                               disabled={u?._id === userData?._id}

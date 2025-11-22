@@ -78,7 +78,7 @@ export const UserDeleteProfile = async (userId) => {
        const res = await api.delete(`/user/delete-user/${userId}`)
        const full_response = res?.data
 
-       console.log(full_response?.data)
+       console.log("Delete User Response : ",full_response?.data)
 
        if(full_response?.StatusCode === 403){
             return { StatusCode:403,data:null,message:full_response?.Message || "You're not accessing this route" }
