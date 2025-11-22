@@ -66,8 +66,8 @@ io.on("connection",(socket) => {
          await updateUserRole(userId,userRole,socket)
     })
 
-    socket.on("newUserJoin", async({ userData }) => {
-          io.emit("newUserJoined",{ userdata:userData, message:`${userData?.userFirstName} is onboarding` })  
+    socket.on("userDeleted",({ userId }) => {
+        socket.emit("userpanelupdated",{ userId,message:`${userId} is deleted` })
     })
 
     socket.on("disconnect",() => {
