@@ -67,7 +67,7 @@ const UserPanel = ({ userData }) => {
 
     socket.on("userpanelupdated",({ userId, message }) => {
         console.log("User Deleted : ",userId)
-        setUserData((prev) => prev.filter((user) => user?._id !== res?.data?.userId));
+        setUserData((prev) => prev.filter((user) => user?._id !== userId));
         if(userData?.userRole === 'admin' && message) toast.success(message)
     })
 
