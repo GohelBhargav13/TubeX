@@ -209,7 +209,7 @@ const UserPanel = ({ userData }) => {
                   <tbody>
                     {searchedData.map((u, idx) => (
                       <tr
-                        key={u._id}
+                        key={u?._id}
                         className="hover:bg-neutral-200 hover:text-slate-950 font-bold transition duration-150"
                       >
                         <td className="py-3 px-4 border-b">{idx + 1}</td>
@@ -217,7 +217,7 @@ const UserPanel = ({ userData }) => {
                           <UserAvatar username={u?.userFirstName} />
                         </td>
                         <td className="py-3 px-4 border-b">
-                          {u.userFirstName} {u?.userLastName}
+                          {u?.userFirstName} {u?.userLastName}
                         </td>
                         <td className="py-3 px-4 border-b">{u?.userEmail}</td>
                         <td className="py-3 px-4 border-b">
@@ -245,7 +245,7 @@ const UserPanel = ({ userData }) => {
                           {/* {u.userRole || "User"} */}
                         </td>
                         <td className="py-3 px-4 border-b">
-                          {new Date(u?.createdAt).toLocaleDateString()}
+                          {u?.createdAt || new Date(u?.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-4 border-b">
                           <div>
