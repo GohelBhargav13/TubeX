@@ -71,6 +71,13 @@ export const registerUser = async (req, res) => {
 
     console.log(newUser)
 
+  console.log("ENV check:",{
+  host:process.env.MAIL_HOSTNAME,
+  port: process.env.MAIL_PORT,
+  email: process.env.SMTP_EMAIL,
+  pass: process.env.SMTP_PASSWORD ? "✔" : "❌"
+})
+
     res
       .status(201)
       .json(

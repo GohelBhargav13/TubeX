@@ -19,7 +19,7 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOSTNAME || "",
+    host: process.env.MAIL_HOSTNAME,
     port: process.env.MAIL_PORT,
     secure: false,
     auth: {
@@ -29,7 +29,7 @@ let transporter = nodemailer.createTransport({
 });
 
 const MailOptions = {
-    from: process.env.SMTP_EMAIL,
+    from: process.env.SMTP_EMAIL, 
     to:options.email,
     subject:options.subject,
     text:textMail,
