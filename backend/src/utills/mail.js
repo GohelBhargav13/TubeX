@@ -19,12 +19,12 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host: process.env.MAIL_TRAP_HOSTNAME || "",
-    port: process.env.MAIL_TRAP_PORT || 2525,
+    host: process.env.MAIL_HOSTNAME || "",
+    port: process.env.MAIL_PORT,
     secure: false,
     auth: {
-        user: process.env.MAIL_TARP_USER,
-        pass: process.env.MAIL_TARP_PASS
+        user: process.env.SMTP_EMAIL,
+        pass: process.env.SMTP_PASSWORD
     }
 });
 
