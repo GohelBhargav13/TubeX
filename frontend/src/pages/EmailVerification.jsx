@@ -28,7 +28,7 @@ const EmailVerification = () => {
             if(res?.StatusCode === 200){
                 console.log("User is verified")
                 setIsVerified(true)
-
+                console.log("User Data : ",res?.userData)
                 // new socket of the new user join
                 socket.emit("newUserJoin", { userData:res?.userData})
 
