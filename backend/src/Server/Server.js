@@ -67,7 +67,7 @@ io.on("connection",(socket) => {
     })
 
     socket.on("newUserJoin",({ userData }) => {
-        console.log("New user is joined:", userData?.userFirstName)
+        console.log("New user is joined:", userData)
         io.emit("newUserjoined",{ userData,message:`${userData?.userFirstName} is onboarding..` })
     })
 
