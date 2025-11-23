@@ -246,7 +246,7 @@ const UserPanel = ({ userData }) => {
                           {/* {u.userRole || "User"} */}
                         </td>
                         <td className="py-3 px-4 border-b">
-                          {u?.createdAt || new Date(u?.createdAt).toLocaleDateString()}
+                          {u?.createdAt}
                         </td>
                         <td className="py-3 px-4 border-b">
                           <div>
