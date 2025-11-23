@@ -57,11 +57,12 @@ const UserPanel = ({ userData }) => {
     );
 
     // New user joined socket event
-    socket.on("newUserjoined", ({ userdata, message }) => {
-      console.log("New User Joined : ", userdata)
+    socket.on("newUserjoined", ({ userData, message }) => {
+      console.log("New User Joined : ", userData)
       // update the user details state
-      setSearchData((prev) => [...prev, userdata])
+      setSearchData((prev) => [...prev, userData])
       if (userData?.userRole === 'admin' && message) toast.success(message)
+        console.log(userDetails)
     })
 
     socket.on("userpanelupdated", ({ userId, message }) => {
@@ -129,7 +130,7 @@ const UserPanel = ({ userData }) => {
     }
 
     if (res?.StatusCode === 200 && res?.success) {
-      toast.success(res?.message || "User is deleted");
+      // toast.success(res?.message || "User is deleted");
       socket.emit("userDeleted", { userId })
       return;
     }
