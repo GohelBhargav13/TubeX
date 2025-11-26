@@ -44,7 +44,7 @@ const UserPanel = ({ userData }) => {
     socket.on(
       "UserRoleChanged",
       ({ newUserRole, userId, message, success }) => {
-        console.log("flag is :", success);
+        // console.log("flag is :", success);
         if (success && userData?.userRole === "admin") {
           console.log({ userId, newUserRole });
           toast.success(message);
@@ -57,10 +57,10 @@ const UserPanel = ({ userData }) => {
     );
 
     // New user joined socket event
-    socket.on("newUserjoined", ({ userData, message }) => {
-      console.log("New User Joined : ", userData)
+    socket.on("newUserjoined", ({ user, message }) => {
+      console.log("New User Joined : ", user)
       // update the user details state
-      setSearchData((prev) => [...prev, userData])
+      setSearchData((prev) => [...prev, user])
       if (userData?.userRole === 'admin' && message) toast.success(message)
         console.log(userDetails)
     })
@@ -74,7 +74,7 @@ const UserPanel = ({ userData }) => {
     // unmount the socket 
     return () => {
       socket.off("UserRoleChanged");
-      socket.off("newUserJoined")
+      socket.off("newUserjoined")
       socket.off("userpanelupdated")
     };
   }, []);
