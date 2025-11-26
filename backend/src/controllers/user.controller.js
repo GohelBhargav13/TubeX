@@ -289,7 +289,7 @@ export const getUserLikedVideos = async (req,res) => {
 export const getAllUsers = async(req,res) => {
     try {
 
-     const result = await Userm.find({ isVerified:true }).select("-password -__v -createdAt -updatedAt -EmailVerificationToken -EmailVerficationExpiry").limit(2)
+     const result = await Userm.find({ isVerified:true }).select("-password -__v -createdAt -updatedAt -EmailVerificationToken -EmailVerficationExpiry").limit(8)
      
      console.log("User Found Result is : ", result)
      // If no user found
