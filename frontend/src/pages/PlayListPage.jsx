@@ -3,7 +3,7 @@ import SideBar from "../component/SideBar";
 import { deletePlayList, FetchUserPlayLists } from "../API/playlist.api";
 import VideoPlayer from "../component/VideoPlayer";
 import { data, useNavigate } from  "react-router-dom"
-import { Trash2 } from "lucide-react";
+import { MenuIcon, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserAvatar from "../component/UserAvatar";
 
@@ -13,6 +13,7 @@ const PlayListPage = ({ userData }) => {
   const [isShow, setIsShow] = useState(false);
   const [searchPlayList,setsearchPlayList] = useState("")
   const [filterPlayList,setfilterPlayList] = useState([])
+  const [sidebarShow,setSideBar] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -100,36 +101,45 @@ const PlayListPage = ({ userData }) => {
               <UserAvatar username={userData?.userFirstName} />
         </div>
       </header>
-  <div className="bg-gray-900 p-1 flex justify-center items-center font-mono border-b-2 border-b-white">
+ <div className="bg-gray-900 flex font-mono lg:items-center lg:justify-center">
+      <button className="text-white p-1 mr-10 justify-items-start hover:cursor-pointer" onClick={() => setSideBar((prev) => !prev) }>
+          <MenuIcon />
+        </button>
         {/* <p>Search Bar</p> */}
-        <p className="text-gray-950 p-3 bg-gray-200 rounded">
-          Search : {filterPlayList?.length}
+        <p className="text-gray-950 text-sm md:p-2 hidden md:block py-1 px-2 bg-gray-200 rounded">
+          Search: {filterPlayList?.length}
         </p>
         <input
           type="text"
           id="search"
           required
           value={searchPlayList}
-          onChange={(e) => setsearchPlayList(e.target.value) }
-          className="w-1/2 px-4 py-3 m-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150 text-white"
-          placeholder="Search PlayList..."
+          onChange={(e) => setsearchPlayList(e.target.value)}
+          className="w-1/2 h-1/2 px-2 py-1 md:px-3 md:py-3 lg:px-3 lg:py-4 m-2 justify-items-center border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150"
+          placeholder="Search videos..."
           autoComplete="username"
         />
         <button
-          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-700 text-white font-bold py-1 px-2 md:py-2 md:px-3 rounded cursor-pointer"
           onClick={handleSearchPlayList}
         >
           {" "}
-          🔍 Search
+          <div className="flex">🔍 <p className="sm:hidden hidden md:block">Search</p></div>
         </button>
-      </div>  
+      </div>
       {/* Body */}
       <div className="flex min-h-screen gap-3 w-fit px-3">
-        <SideBar />
+       { 
+        sidebarShow && 
+          <div className="w-0.5/4 bg-gray-950 relative z-20 border-r-2 border-white text-sm md:text-lg">
+            <SideBar />
+          </div>
+        }
 
         {/* Playlist Section */}
-        <main className="flex-1 mt-6">
-          <h1 className="text-2xl font-bold text-center mb-4 text-white">
+        <main className={`flex-1 flex flex-col transition-all duration-300 
+               ${sidebarShow ? "absolute w-3/4" : "relative left-0 w-full"}`}>
+          <h1 className={`text-sm md:text-lg mt-2 md:mt-1  font-bold text-center mb-4 text-white`}>
             Your Playlists
           </h1>
 
@@ -143,11 +153,11 @@ const PlayListPage = ({ userData }) => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {filterPlayList?.length > 0 && filterPlayList?.map((playlist) => (
                 <div
                   key={playlist?._id}
-                  className="bg-slate-800 text-white cursor-pointer rounded-xl shadow-sm p-4 hover:shadow-md transition-all"
+                  className="bg-gray-800 text-white w-[345px] md:w-[500px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                 >
                   <div className="flex gap-3">
                     <h2 className="text-lg font-semibold text-indigo-600 mb-3 ml-2">

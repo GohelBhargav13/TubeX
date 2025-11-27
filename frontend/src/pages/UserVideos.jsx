@@ -3,67 +3,83 @@ import { userVideos } from '../API/video.api.js'
 import SideBar from '../component/SideBar'
 import { useUserAuthStore } from  "../store/auth.store.js"
 import VideoPlayer from '../component/VideoPlayer'
-import { Loader2, MessageCircle, ThumbsUp } from 'lucide-react'
+import { Loader2, MenuIcon, MessageCircle, ThumbsUp } from 'lucide-react'
 import UserAvatar from '../component/UserAvatar.jsx'
 
 const UserVideos = () => {
 
   const { userData } = useUserAuthStore();
 
-  const [userVideoslist,setUserVideos] = useState([])
-  const [loading,setLoading] = useState(false)
+  const [userVideoslist, setUserVideos] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [sidebarShow, setSideBar] = useState(false)
 
   useEffect(() => {
     const getUserVideos = async () => {
       try {
-          setLoading(true)
-         const res =  await userVideos()
-         console.log("User videos are : ", res?.data)
+        setLoading(true)
+        const res = await userVideos()
 
-        if(res?.data?.StatusCode === 404 || res?.data === undefined) return setUserVideos([])
+        if (res?.data?.StatusCode === 404 || res?.data === undefined)
+          return setUserVideos([])
 
-        // set first all videos than filter
-        if(res?.data !== null || res?.data?.length > 0 || res?.data !== undefined){
-             setUserVideos(res?.data);
+        if (res?.data !== null || res?.data?.length > 0 || res?.data !== undefined) {
+          setUserVideos(res?.data);
         }
 
       } catch (error) {
         setLoading(false)
-        console.log("Error from the catch part of user videos : ",error)
-      }finally {
-          setLoading(false)
+        console.log("Error from user videos : ", error)
+      } finally {
+        setLoading(false)
       }
     }
     getUserVideos();
 
-  },[])
+  }, [])
 
   return (
     <>
-     {/* Header */}
-        <div className="h-16 bg-gray-950 border-b-2 border-b-white flex items-center justify-between px-6 shadow-sm  font-mono">
-          <h1 className="text-2xl font-bold text-white">TubeX</h1>
-          <div className="flex items-center space-x-4">
-            <p className="font-medium text-white">
-              {userData?.userFirstName} {userData?.userLastName}
-            </p>
-              <UserAvatar username={userData?.userFirstName} />
-          </div>
+      {/* Header */}
+      <div className="h-16 bg-gray-950 flex items-center border-b-2 border-b-white justify-between px-6 shadow-sm font-mono">
+        <h1 className="text-sm md:text-xl font-bold text-white">TubeX</h1>
+        <div className="flex items-center space-x-4">
+          <p className="text-sm md:text-xl font-medium text-white">
+            {userData?.userFirstName} {userData?.userLastName}
+          </p>
+          <UserAvatar username={userData?.userFirstName} />
         </div>
-      <div className="flex min-h-screen bg-linear-to-b from-gray-900 to-black text-white text-center font-mono">
-      {/* Sidebar */}
-      <SideBar />
+      </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
-    
-        {/* Liked Videos Section */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">
-            ✅ User Videos
-          </h2>
+      {/* Body Layout */}
+      <div className="bg-linear-to-b from-gray-900 to-black flex h-screen bg-gray-900 border-t-2 border-white font-mono relative">
 
-          {loading && <Loader2 className='animate-spin mx-auto text-blue-500'/> }
+        {/* Sidebar */}
+        {sidebarShow && (
+          <div className={`w-1/4 h-full bg-gray-950 relative z-20 border-r-2 border-white text-sm md:text-lg`}>
+            <SideBar />
+          </div>
+        )}
+
+        {/* Main Content with absolute/relative */}
+        <div
+          className={`flex-1 p-6 overflow-y-auto transition-all duration-300 
+            ${sidebarShow ? "absolute left-1/4 w-3/4" : "relative left-0 w-full"}`}
+        >
+          <div className='flex'>
+            <button
+              className="text-white p-1 mr-10 mb-10 hover:cursor-pointer"
+              onClick={() => setSideBar(prev => !prev)}
+            >
+              <MenuIcon />
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4">
+              ✅ User Videos
+            </h2>
+          </div>
+
+          {loading && <Loader2 className='animate-spin mx-auto text-blue-500' />}
 
           {!loading && userVideoslist?.length === 0 ? (
             <p className="text-gray-500 text-sm">
@@ -84,6 +100,7 @@ const UserVideos = () => {
                       controls
                     />
                   </div>
+
                   <div className="flex items-center space-x-3 mb-2">
                     <UserAvatar username={video.videoOwner?.userFirstName} />
                     <div>
@@ -94,29 +111,34 @@ const UserVideos = () => {
                       <p className="text-xs text-gray-500">Uploader</p>
                     </div>
                   </div>
+
                   <h3 className="font-bold text-neutral-400 text-sm line-clamp-1 flex justify-items-start">
                     {video.videoTitle}
                   </h3>
+
                   <p className="text-neutral-500 text-xs mb-2 line-clamp-2 flex justify-items-start">
                     {video.videoDescription}
                   </p>
+
                   <div className="flex items-center space-x-4 text-sm gap-3 justify-center">
                     <div className="flex items-center space-x-1">
-                      <span><ThumbsUp /></span>
+                      <ThumbsUp />
                       <p>{video.LikeCounts || video.videoLikes?.length}</p>
                     </div>
+
                     <div className="flex items-center space-x-1">
-                      <span><MessageCircle /></span>
+                      <MessageCircle />
                       <p>{video.CommentCounts || video.videoComments?.length}</p>
                     </div>
                   </div>
+
                 </div>
               ))}
             </div>
           )}
         </div>
+
       </div>
-    </div>
     </>
   )
 }
