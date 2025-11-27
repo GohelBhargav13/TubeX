@@ -266,7 +266,7 @@ export default function HomePage() {
           onClick={handleSearch}
         >
           {" "}
-          <div className="flex">🔍 <p className="sm:hidden hidden md:block ">Search</p></div>
+          <div className="flex">🔍 <p className="sm:hidden hidden md:block">Search</p></div>
         </button>
       </div>
       <div className="bg-linear-to-b from-gray-900 to-black flex h-screen overflow-hidden bg-gray-900 border-t-2  border-white font-mono relative">
@@ -280,7 +280,7 @@ export default function HomePage() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Video Grid */}
-          <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 
+          <div className={`flex-1 flex flex-col transition-all duration-300 
                ${sidebarShow ? "absolute left-1/4 w-3/4" : "relative left-0 w-full"}`}>
             {/* Container for padding left/right */}
             <div className="max-w-[1400px] mx-auto">
@@ -296,7 +296,7 @@ export default function HomePage() {
                     searchedData?.map((video, idx) => (
                       <div
                         key={idx}
-                        className="bg-gray-800 text-white w-[340px] md:w-[500px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
+                        className="bg-gray-800 text-white w-[345px] md:w-[500px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                       >
                         <div
                           className="relative cursor-pointer"
@@ -304,7 +304,7 @@ export default function HomePage() {
                         >
                           <VideoPlayer videoURL={video?.videoUrl} />
                           
-                          <div className="flex items-center mt-2">
+                          <div className="flex items-center mt-1 md:mt-2">
                             <UserAvatar username={video?.videoOwner?.userFirstName} />
                             <h4 className="ml-2 font-medium">
                               {video?.videoOwner?.userFirstName}{" "}
@@ -313,10 +313,10 @@ export default function HomePage() {
                           </div>
                         </div>
 
-                        <h3 className="mt-2 font-medium text-neutral-400 flex justify-items-center">
+                        <h3 className="mt-1 md:mt-2 font-normal text-sm md:text-[14px] md:font-medium text-neutral-400 flex justify-items-center">
                           {video?.videoTitle}
                         </h3>
-                        <p className="text-sm mt-2 text-neutral-500 flex justify-items-center">
+                        <p className="text-sm mt-1 md:mt-2 md:text-[14px] text-neutral-500 flex justify-items-center">
                           {video?.videoDescription?.length > 35
                             ? video?.videoDescription?.slice(0, 35) + "..."
                             : video?.videoDescription + "..."}
