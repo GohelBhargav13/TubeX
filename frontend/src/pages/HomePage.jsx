@@ -235,16 +235,16 @@ export default function HomePage() {
     <div className="bg-gray-900">
       {/* Header */}
       <div className="h-16 bg-gray-950 flex items-center border-b-2 border-b-white justify-between px-6 shadow-sm font-mono">
-        <h1 className="text-xl md:text-2xl font-bold text-white">TubeX</h1>
+        <h1 className="text-sm md:text-xl font-bold text-white">TubeX</h1>
         <div className="flex items-center space-x-4">
-          <p className="text-lg md:text-xl font-medium text-white">
+          <p className="text-sm md:text-xl font-medium text-white">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
             <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
-      <div className="bg-gray-900 flex font-mono">
-      <button className="text-white p-1 mr-10 justify-items-start" onClick={() => setSideBar((prev) => !prev) }>
+      <div className="bg-gray-900 flex font-mono lg:items-center lg:justify-center">
+      <button className="text-white p-1 mr-10 justify-items-start hover:cursor-pointer" onClick={() => setSideBar((prev) => !prev) }>
           <MenuIcon />
         </button>
         {/* <p>Search Bar</p> */}
@@ -257,7 +257,7 @@ export default function HomePage() {
           required
           value={searchWords}
           onChange={(e) => setSearchWords(e.target.value)}
-          className="w-1/2 px-2 py-1 md:px-3 md:py-3 lg:px-3 lg:py-4 m-2 justify-items-center border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150"
+          className="w-1/2 h-1/2 px-2 py-1 md:px-3 md:py-3 lg:px-3 lg:py-4 m-2 justify-items-center border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150"
           placeholder="Search videos..."
           autoComplete="username"
         />
@@ -273,7 +273,7 @@ export default function HomePage() {
         {/*  Side bar Component Import */}
         { 
         sidebarShow && 
-          <div className="w-0.5/4 bg-gray-950 relative z-20 border-r-2 border-white">
+          <div className="w-0.5/4 bg-gray-950 relative z-20 border-r-2 border-white text-sm md:text-lg">
             <SideBar />
           </div>
         }
@@ -284,19 +284,19 @@ export default function HomePage() {
                ${sidebarShow ? "absolute left-1/4 w-3/4" : "relative left-0 w-full"}`}>
             {/* Container for padding left/right */}
             <div className="max-w-[1400px] mx-auto">
-              <h2 className="text-xl font-semibold mb-2 mt-1 md:mb-3 md:mt-2 lg:mb-4 ld:mt-3 text-white text-center">
+              <h2 className="text-sm md:text-xl font-semibold mb-2 mt-1 md:mb-3 md:mt-2 lg:mb-4 ld:mt-3 text-white text-center">
                 Learn New Things....
               </h2>
 
               {!fetchingVideos && searchedData?.length === 0 ? (
                 <div className="text-white font-mono">No Video's Found...</div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 gap-4">
                   {searchedData?.length > 0 &&
                     searchedData?.map((video, idx) => (
                       <div
                         key={idx}
-                        className="bg-gray-800 text-white relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
+                        className="bg-gray-800 text-white w-[340px] md:w-[500px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                       >
                         <div
                           className="relative cursor-pointer"
