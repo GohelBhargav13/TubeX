@@ -5,7 +5,7 @@ import SideBar from "../component/SideBar.jsx";
 import { getAllVideos } from "../API/video.api.js";
 import toast from "react-hot-toast";
 import VideoPlayer from "../component/VideoPlayer.jsx";
-import {  Loader2, MessageCircle, ThumbsUp, CrossIcon } from "lucide-react";
+import {  Loader2, MessageCircle, ThumbsUp, CrossIcon, MenuIcon } from "lucide-react";
 import socket from "../Server/Server.js";
 import { useNavigate } from "react-router-dom";
 import PlayListSection from "../component/PlayListSection.jsx";
@@ -41,6 +41,7 @@ export default function HomePage() {
   const [newCommentCount, setNewCommentCount] = useState(0);
   const [searchWords, setSearchWords] = useState("");
   const [searchedData, setSearchData] = useState([]);
+  const [sidebarShow,setSideBar] = useState(false)
 
   const naviagte = useNavigate();
 
@@ -234,18 +235,21 @@ export default function HomePage() {
     <div className="bg-gray-900">
       {/* Header */}
       <div className="h-16 bg-gray-950 flex items-center border-b-2 border-b-white justify-between px-6 shadow-sm font-mono">
-        <h1 className="text-2xl font-bold text-white">TubeX</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-white">TubeX</h1>
         <div className="flex items-center space-x-4">
-          <p className="text-lg font-medium text-white">
+          <p className="text-lg md:text-xl font-medium text-white">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
             <UserAvatar username={userData?.userFirstName} />
         </div>
       </div>
-      <div className="bg-gray-900 p-1 flex justify-center items-center font-mono">
+      <div className="bg-gray-900 flex font-mono">
+      <button className="text-white p-1 mr-10 justify-items-start" onClick={() => setSideBar((prev) => !prev) }>
+          <MenuIcon />
+        </button>
         {/* <p>Search Bar</p> */}
-        <p className="text-gray-950 p-3 bg-gray-200 rounded">
-          Search : {searchedData?.length}
+        <p className="text-gray-950 text-sm md:p-2 hidden md:block py-1 px-2 bg-gray-200 rounded">
+          Search: {searchedData?.length}
         </p>
         <input
           type="text"
@@ -253,29 +257,34 @@ export default function HomePage() {
           required
           value={searchWords}
           onChange={(e) => setSearchWords(e.target.value)}
-          className="w-1/2 px-4 py-3 m-3 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150"
+          className="w-1/2 px-2 py-1 md:px-3 md:py-3 lg:px-3 lg:py-4 m-2 justify-items-center border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-150"
           placeholder="Search videos..."
           autoComplete="username"
         />
         <button
-          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-gray-800 hover:bg-gray-950 hover:scale-105 duration-700 text-white font-bold py-1 px-2 md:py-2 md:px-3 rounded cursor-pointer"
           onClick={handleSearch}
         >
           {" "}
-          🔍 Search
+          <div className="flex">🔍 <p className="sm:hidden hidden md:block ">Search</p></div>
         </button>
       </div>
-      <div className="flex h-screen overflow-hidden bg-linear-to-b from-gray-900 to-black border-t-2 border-white font-mono">
+      <div className="bg-linear-to-b from-gray-900 to-black flex h-screen overflow-hidden bg-gray-900 border-t-2  border-white font-mono relative">
         {/*  Side bar Component Import */}
-        <SideBar />
-
+        { 
+        sidebarShow && 
+          <div className="w-0.5/4 bg-gray-950 relative z-20 border-r-2 border-white">
+            <SideBar />
+          </div>
+        }
         {/* Main Content */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-hidden">
           {/* Video Grid */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 
+               ${sidebarShow ? "absolute left-1/4 w-3/4" : "relative left-0 w-full"}`}>
             {/* Container for padding left/right */}
             <div className="max-w-[1400px] mx-auto">
-              <h2 className="text-xl font-semibold mb-4 text-white text-center">
+              <h2 className="text-xl font-semibold mb-2 mt-1 md:mb-3 md:mt-2 lg:mb-4 ld:mt-3 text-white text-center">
                 Learn New Things....
               </h2>
 
@@ -287,14 +296,14 @@ export default function HomePage() {
                     searchedData?.map((video, idx) => (
                       <div
                         key={idx}
-                        className="bg-gray-800 text-white hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
+                        className="bg-gray-800 text-white relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                       >
                         <div
                           className="relative cursor-pointer"
                           onClick={() => naviagte(`/watch/${video?._id}`)}
                         >
                           <VideoPlayer videoURL={video?.videoUrl} />
-
+                          
                           <div className="flex items-center mt-2">
                             <UserAvatar username={video?.videoOwner?.userFirstName} />
                             <h4 className="ml-2 font-medium">

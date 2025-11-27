@@ -38,7 +38,7 @@ export default function LoginPage() {
     // Centering the form in the middle of the screen
     <div className="flex items-center justify-center min-h-screen bg-neutral-950 font-mono">
       {/* 💳 The Login Card: Mimics Google's clean, centered card */}
-      <div className="w-full max-w-md p-8 bg-neutral-900 text-white rounded-xl shadow-lg border border-gray-200">
+      <div className="w-[350px] md:w-[400px] lg:w-full max-w-md p-6 md:p-6 lg:p-8 bg-neutral-900 text-white rounded-xl shadow-lg border border-gray-200">
         {/* Header/Logo */}
         <div className="text-center mb-8">
           {/* Using a simple text logo, but you could embed the Google logo SVG */}

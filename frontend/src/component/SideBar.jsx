@@ -30,7 +30,7 @@ const SideBar = () => {
   return (
     <>
       {/* Side Panel */}
-      <div className="w-60 bg-gray-950 border-r-2 border-r-white shadow-md p-4 flex flex-col space-y-4 text-white">
+      <div className="w-60 bg-gray-950 shadow-md p-4 flex flex-col space-y-4 text-white">
         {/* <h2 className="text-2xl font-bold text-blue-600">TubeX</h2> */}
         <nav className="flex flex-col space-y-2 font-bold">
           {Routes.map((route,idx) =>
