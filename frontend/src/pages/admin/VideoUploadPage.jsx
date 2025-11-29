@@ -16,7 +16,7 @@ const VideoUploadPage = ({ userData }) => {
   const handleForm = async (e) => {
     e.preventDefault();
     console.log("Video Upload initiated...");
-    
+
     try {
       setVideoUpload(true);
 
@@ -25,6 +25,7 @@ const VideoUploadPage = ({ userData }) => {
       formdata.append("videoDescription", desc);
       formdata.append("video", video);
 
+      console.log("formadata from the frontend : ",formdata)
       const res = await upoadVideo(formdata);
 
       if (res?.StatusCode === 404) {
