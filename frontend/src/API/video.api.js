@@ -77,7 +77,7 @@ export const upoadVideo = async (formdata) => {
     try {
 
         if(!formdata) return {StatusCode:404, data:null, message:"Video Details is not found", success:false };
-
+        console.log(formdata)
         const res = await api.post("/video/upload-videos",formdata, {
             headers:{ "Content-Type":"multipart/form-data" }
         })
