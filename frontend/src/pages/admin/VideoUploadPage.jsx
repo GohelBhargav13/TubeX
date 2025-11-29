@@ -15,7 +15,8 @@ const VideoUploadPage = ({ userData }) => {
   // handle the form data for the video upload
   const handleForm = async (e) => {
     e.preventDefault();
-
+    console.log("Video Upload initiated...");
+    
     try {
       setVideoUpload(true);
 
