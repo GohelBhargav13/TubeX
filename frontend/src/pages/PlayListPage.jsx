@@ -13,7 +13,7 @@ const PlayListPage = ({ userData }) => {
   const [isShow, setIsShow] = useState(false);
   const [searchPlayList,setsearchPlayList] = useState("")
   const [filterPlayList,setfilterPlayList] = useState([])
-  const [sidebarShow,setSideBar] = useState(false)
+  const [sidebarShow,setSideBar] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const PlayListPage = ({ userData }) => {
        // Update a Users PlayList UI
        if(res?.data !== null){
             toast.success("PlayList is Deleted");
-            setfilterPlayList(prev => prev?._id !== playListId)
+            setfilterPlayList(prev => prev.filter(v => v?._id !== playListId))
             setLoading(true);
 
               setTimeout(() => {
@@ -92,16 +92,16 @@ const PlayListPage = ({ userData }) => {
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-800 to-black font-mono">
       {/* Header */}
-      <header className="h-16 bg-gray-950 text-white flex items-center justify-between px-6 shadow-sm">
-        <h1 className="text-2xl font-bold">TubeX</h1>
+      <header className="h-16 bg-gray-950 text-white border-b-2 border-white flex items-center justify-between px-6 shadow-sm">
+        <h1 className="text-sm md:text-lg font-bold">TubeX</h1>
         <div className="flex items-center space-x-3">
-          <p className="font-medium">
+          <p className="font-medium text-sm md:text-lg">
             {userData?.userFirstName} {userData?.userLastName}
           </p>
               <UserAvatar username={userData?.userFirstName} />
         </div>
       </header>
- <div className="bg-gray-900 flex font-mono lg:items-center lg:justify-center">
+ <div className="bg-gray-900 flex font-mono lg:items-center lg:justify-center border-b-2 border-white">
       <button className="text-white p-1 mr-10 justify-items-start hover:cursor-pointer" onClick={() => setSideBar((prev) => !prev) }>
           <MenuIcon />
         </button>
@@ -146,7 +146,7 @@ const PlayListPage = ({ userData }) => {
           {loading ? (
             <p className="text-center text-white">Loading playlists...</p>
           ) : filterPlayList?.length === 0 ? (
-            <div className="text-center text-neutral-300">
+            <div className="text-neutral-300 w-full text-center">
               <p>No playlists found 😕</p>
               <p className="text-sm mt-2">
                 Create your first playlist from any video!
@@ -157,7 +157,7 @@ const PlayListPage = ({ userData }) => {
               {filterPlayList?.length > 0 && filterPlayList?.map((playlist) => (
                 <div
                   key={playlist?._id}
-                  className="bg-gray-800 text-white w-[345px] md:w-[500px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
+                  className="bg-gray-800 text-white w-[310px] md:w-[480px] lg:w-[350px]  relative hover:scale-105 duration-500 hover:bg-slate-900 hover:font-bold rounded-lg shadow hover:shadow-md transition p-2"
                 >
                   <div className="flex gap-3">
                     <h2 className="text-lg font-semibold text-indigo-600 mb-3 ml-2">

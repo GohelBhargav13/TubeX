@@ -12,7 +12,7 @@ const LikedVideos = () => {
   const [loading, setLoading] = useState(false);
   const [searchWords, setSearchWords] = useState("");
   const [searchedData, setSearchData] = useState([]);
-  const [sidebarShow, setSideBar] = useState(false);
+  const [sidebarShow, setSideBar] = useState(true);
 
   useEffect(() => {
     const fetchVideo = async () => {

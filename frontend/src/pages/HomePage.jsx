@@ -41,7 +41,7 @@ export default function HomePage() {
   const [newCommentCount, setNewCommentCount] = useState(0);
   const [searchWords, setSearchWords] = useState("");
   const [searchedData, setSearchData] = useState([]);
-  const [sidebarShow,setSideBar] = useState(false)
+  const [sidebarShow,setSideBar] = useState(true)
 
   const naviagte = useNavigate();
 

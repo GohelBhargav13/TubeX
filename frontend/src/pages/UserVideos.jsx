@@ -12,7 +12,7 @@ const UserVideos = () => {
 
   const [userVideoslist, setUserVideos] = useState([])
   const [loading, setLoading] = useState(false)
-  const [sidebarShow, setSideBar] = useState(false)
+  const [sidebarShow, setSideBar] = useState(true)
 
   useEffect(() => {
     const getUserVideos = async () => {
@@ -66,7 +66,7 @@ const UserVideos = () => {
           className={`flex-1 p-6 overflow-y-auto transition-all duration-300 
             ${sidebarShow ? "absolute left-1/4 w-3/4" : "relative left-0 w-full"}`}
         >
-          <div className='flex'>
+          <div className='flex w-full'>
             <button
               className="text-white p-1 mr-10 mb-10 hover:cursor-pointer"
               onClick={() => setSideBar(prev => !prev)}
@@ -74,7 +74,7 @@ const UserVideos = () => {
               <MenuIcon />
             </button>
 
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-sm md:text-lg text-white justify-items-center font-semibold mb-4">
               ✅ User Videos
             </h2>
           </div>
@@ -86,11 +86,11 @@ const UserVideos = () => {
               You haven’t any videos yet.
             </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${sidebarShow ? "gap-25" : "gap-[-20px] left-0"} `}>
               {userVideoslist.map((video) => (
                 <div
                   key={video._id}
-                  className="bg-slate-800 hover:bg-slate-900 hover:scale-105 duration-500 text-white rounded-lg shadow-sm hover:shadow-md transition p-3"
+                  className="bg-slate-800 w-[380px] md:w-[360px] hover:bg-slate-900 hover:scale-105 duration-500 text-white rounded-lg shadow-sm hover:shadow-md transition p-3"
                 >
                   <div className="rounded-md overflow-hidden mb-2">
                     <VideoPlayer
