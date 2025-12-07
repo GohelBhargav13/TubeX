@@ -6,7 +6,7 @@ export const sendEmail = async(options) => {
     theme: 'default',
     product: {
         // Appears in header & footer of e-mails
-        name: 'Mailgen',
+        name: 'TubeX',
         link: 'https://mailgen.js/'
         // Optional product logo
         // logo: 'https://mailgen.js/img/logo.png'
@@ -19,17 +19,17 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOSTNAME,
-    port: process.env.MAIL_PORT,
+    host: "smtp.gmail.com",
+    port: 587,
     secure: false,
     auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD
+        user: "gohelbhargav401@gmail.com",
+        pass: "aqknaoglmxclkvct"
     }
 });
 
 const MailOptions = {
-    from: process.env.SMTP_EMAIL, 
+    from: "gohelbhargav401@gmail.com", 
     to:options.email,
     subject:options.subject,
     text:textMail,
