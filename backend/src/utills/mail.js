@@ -42,7 +42,7 @@ try {
     console.log("Mail Sent.....")
     
 } catch (error) {
-    console.log("Error in Mail Sending")
+    console.log("Error in Mail Sending",error)
 }
 
 }
