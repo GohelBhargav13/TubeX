@@ -17,12 +17,11 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host:process.env.BREVO_MAIL,
+    host:process.env.MAIL_HOSTNAME,
     port: process.env.MAIL_PORT,
-    secure: false,
     auth: {
-        user:process.env.BREVO_LOGIN,
-        pass:process.env.SMTP_KEY
+        user:process.env.SMTP_EMAIL,
+        pass:process.env.SMTP_PASSWORD
     }
 });
 
