@@ -74,13 +74,14 @@ export const userVideos = async() => {
 
 // video upload api function
 export const upoadVideo = async (formData) => {
+  if(!formData) console.log("Data is not available")
   try {
-    const res = await api.post("/user/upload-video", formData, {
+     const res = await api.post("/video/upload-videos", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-
+    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log("Error uploading video:", error);
