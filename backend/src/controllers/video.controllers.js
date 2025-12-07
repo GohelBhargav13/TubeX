@@ -12,6 +12,7 @@ export const uploadVideo = async (req, res) => {
   const { videoTitle, videoDescription } = req.body;
 
   console.log("This is the video files : ", req.file);
+  console.log("Video details: ", req.body);
 
   // take the path of the input video file
   const { path } = req.file;
