@@ -14,48 +14,46 @@ const VideoUploadPage = ({ userData }) => {
 
   // handle the form data for the video upload
   const handleForm = async (e) => {
-    e.preventDefault();
-    console.log("Video Upload initiated...");
+  e.preventDefault();
+  console.log("Video Upload initiated...");
 
-    try {
-      setVideoUpload(true);
+  try {
+    setVideoUpload(true);
 
-      const formdata = new FormData();
-      formdata.append("videoTitle", title);
-      formdata.append("videoDescription", desc);
-      formdata.append("video", video);
+    const formData = new FormData();
+    formData.append("videoTitle", title);
+    formData.append("videoDescription", desc);
+    formData.append("video", video); 
 
-      console.log("formadata from the frontend : ",formdata)
-      const res = await upoadVideo(formdata);
+    console.log("FormData prepared:", {
+      title,
+      desc,
+      video
+    });
 
-      if (res?.StatusCode === 404) {
-        toast.error(res.message || "Video Details is not found");
-        return;
-      }
+    const res = await upoadVideo(formData); // send formdata
 
-      if (res?.data !== null) {
-        console.log(res?.data);
-        // console.log("Now the socket line is trigger....")
-        // socket.emit("uploadvideo", { videoId:res?.data?._id, videoData:res?.data })
-        toast.success(res.message || "Video Uploaded Successfully");
-      
-        return;
-      } else {
-        toast.error(res.message || "Video Can't Uploaded");
-        return;
-      }
-    } catch (error) {
-        setVideoUpload(false);
-        console.error("Error in video uploading:", error);
-        toast.error("Something went wrong while uploading the video");
-
-    } finally {
-      setVideoUpload(false);
-      setTitle("");
-      setDesc("");
-      setVideo(null);
+    if (res?.StatusCode === 404) {
+      toast.error(res.message || "Video details are missing");
+      return;
     }
-  };
+
+    if (res?.data !== null && (res?.StatusCode === 200 || res?.StatusCode === 201)) {
+      toast.success(res?.data?.message || "Video Uploaded Successfully");
+      return;
+    } else {
+      toast.error(res?.data?.message || "Video Upload Failed");
+    }
+  } catch (error) {
+    console.error("Error in video uploading:", error);
+    toast.error("Something went wrong while uploading the video");
+  } finally {
+    setVideoUpload(false);
+    setTitle("");
+    setDesc("");
+    setVideo(null);
+  }
+};
 
   return (
     <>
@@ -101,7 +99,7 @@ const VideoUploadPage = ({ userData }) => {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+              className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${videoUpload ? `opacity-50 cursor-not-allowed` : `cursor-pointer` }`}
               disabled={!title || !desc || !video || videoUpload}
             >
             { videoUpload ? "Uploading..." : "Upload" }
