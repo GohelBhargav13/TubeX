@@ -27,7 +27,7 @@ let transporter = nodemailer.createTransport({
 });
 
 const MailOptions = {
-    from:"gohelbhargav401@gmail.com", 
+    from:"Tubex <no-reply@tubex>", 
     to:options.email,
     subject:options.subject,
     text:textMail,
