@@ -67,7 +67,7 @@ const RegisterPage = () => {
               <span className="text-blue-500">T</span>
               <span className="text-red-500">u</span>
               <span className="text-yellow-500">b</span>
-              <span className="text-blue-500">e</span>X 
+              <span className="text-blue-500">e</span>X
             </h1>
             <h2 className="text-xl font-bold mt-4">Sign up</h2>
             <p className="text-gray-300 text-sm">

@@ -25,14 +25,8 @@ const VideoUploadPage = ({ userData }) => {
     formData.append("videoDescription", desc);
     formData.append("video", video); 
 
-    console.log("FormData prepared:", {
-      title,
-      desc,
-      video
-    });
-
     const res = await upoadVideo(formData); // send formdata
-
+    console.log(res)
     if (res?.StatusCode === 404) {
       toast.error(res.message || "Video details are missing");
       return;
@@ -42,7 +36,7 @@ const VideoUploadPage = ({ userData }) => {
       toast.success(res?.data?.message || "Video Uploaded Successfully");
       return;
     } else {
-      toast.error(res?.data?.message || "Video Upload Failed");
+      toast.error(res?.Message || "Video Upload Failed");
     }
   } catch (error) {
     console.error("Error in video uploading:", error);
