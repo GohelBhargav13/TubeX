@@ -49,7 +49,7 @@ export const registerUser = async (req, res) => {
     //     return res.status(404).json(new ApiError(404,"Email Token is not Generated"))
     // }
 
-    console.log(newUser)
+    // console.log(newUser)
 
     newUser.EmailVerificationToken = hashedToken
     newUser.EmailVerficationExpiry = Date.now() + 10 * 60 * 1000

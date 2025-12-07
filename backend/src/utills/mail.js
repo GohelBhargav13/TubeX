@@ -19,17 +19,16 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port: 587,
-    secure: false,
+    host:"sandbox.smtp.mailtrap.io",
+    port: 2525,
     auth: {
-        user:"gohelbhargav401@gmail.com",
-        pass:"aqknaoglmxclkvct"
+        user:"ba4e43cadba9b2",
+        pass:"c550a1e400f881"
     }
 });
 
 const MailOptions = {
-    from:"gohelbhargav401@gmail.com", 
+    from:"Tubx <no-reply@mg.mailtrap.io>", 
     to:options.email,
     subject:options.subject,
     text:textMail,
@@ -42,7 +41,7 @@ try {
     console.log("Mail Sent.....")
     
 } catch (error) {
-    console.log("Error in Mail Sending")
+    console.log("Error in Mail Sending",error)
 }
 
 }
