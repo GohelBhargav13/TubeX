@@ -11,6 +11,13 @@ const s3 = new AWS.S3({
 
 export const uploadVideoToS3 = async (folderPath,videoTitle) => {
   const pathUrl = [];
+  console.log(folderPath)
+  if(!folderPath){
+      fs.mkdirSync(folderPath,{ recursive:true })
+  }
+  if(!videoTitle){
+      throw new Error("video title is missing");
+  }
   try {
     const files = fs.readdirSync(folderPath);
     console.log("Files in folder:", files);
