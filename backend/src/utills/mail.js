@@ -19,17 +19,17 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host:"smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
-        user: "gohelbhargav401@gmail.com",
-        pass: "aqknaoglmxclkvct"
+        user:"gohelbhargav401@gmail.com",
+        pass:"aqknaoglmxclkvct"
     }
 });
 
 const MailOptions = {
-    from: "gohelbhargav401@gmail.com", 
+    from:"gohelbhargav401@gmail.com", 
     to:options.email,
     subject:options.subject,
     text:textMail,
