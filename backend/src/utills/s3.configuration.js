@@ -11,19 +11,22 @@ const s3 = new AWS.S3({
 
 export const uploadVideoToS3 = async (folderPath,videoTitle) => {
   const pathUrl = [];
-  console.log(folderPath)
-  if(!folderPath){
-      fs.mkdirSync(folderPath,{ recursive:true })
-  }
-  if(!videoTitle){
+  const folderPath_output = folderPath.split("\\").pop()
+
+   if(!videoTitle){
       throw new Error("video title is missing");
+   }
+
+  if(!folderPath_output){
+      fs.mkdirSync(folderPath_output,{ recursive:true })
   }
+
   try {
-    const files = fs.readdirSync(folderPath);
+    const files = fs.readdirSync(folderPath_output);
     console.log("Files in folder:", files);
 
     for (let file of files) {
-      const file_path = path.join(folderPath, file);
+      const file_path = path.join(folderPath_output, file);
       console.log("Uploading file:", file_path);
 
       if (file.endsWith(".m3u8") || file.endsWith(".ts")) {
