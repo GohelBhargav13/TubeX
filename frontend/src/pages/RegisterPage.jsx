@@ -19,16 +19,15 @@ const RegisterPage = () => {
       setRegisterLoading(true);
 
       // make a form data object to send the data to the backend
-      const formdata = new FormData();
-      formdata.append("userEmail", email);
-      formdata.append("userFirstName", userFirstName);
-      formdata.append("userLastName", userLastName);
-      formdata.append("userPassword", password);
-
-      console.log(formdata);    
+    const formData = {
+       userEmail:email,
+       userFirstName: userFirstName,
+       userLastName: userLastName,
+       userPassword: password
+    } 
 
       // send the form data to the backend
-      const res = await userRegister(formdata);
+      const res = await userRegister(formData);
 
       if(res?.StatusCode === 400){
         console.log("User is registerd")
@@ -68,7 +67,7 @@ const RegisterPage = () => {
               <span className="text-blue-500">T</span>
               <span className="text-red-500">u</span>
               <span className="text-yellow-500">b</span>
-              <span className="text-blue-500">e</span>X
+              <span className="text-blue-500">e</span>X 
             </h1>
             <h2 className="text-xl font-bold mt-4">Sign up</h2>
             <p className="text-gray-300 text-sm">

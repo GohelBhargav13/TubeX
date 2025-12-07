@@ -104,26 +104,23 @@ export const userRegister = async (formData) => {
 
        console.log(formData)
 
-       const res = await api.post("/user/register",formData, {
-            headers:{ "Content-Type":"multipart/form-data" },
-            withCredentials:true
-        })
+       const res = await api.post("/user/register",formData)
 
-        console.log("Data response:",res)
+        console.log("Data response:",res.data)
 
         if(res?.data?.StatusCode === 400){
             return { StatusCode:400,data:null, message:res?.data?.Message || "User is already Exist Please Try With New Id", success:false }
         }
 
         if(res?.data?.StatusCode === 201){
-            return { data:res.data.data, message:res.data.message, success:res.data.success,StatusCode:res?.data?.StatusCode }
+            return { data:res.data.data, message:res.data.message, success:res?.data?.success,StatusCode:res?.data?.StatusCode }
         }else{
+            console.log(res?.data)
             return { data:null, message:res.data.Message || "User Can't Register", success:res.data.success || false }
         }
         
     } catch (error) {
         console.log("Error while user Register : ",error);
-        return { data:null, message:error?.message || "Error from catch block register", success:false }
     }
 }
 
