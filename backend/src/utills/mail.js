@@ -7,9 +7,7 @@ export const sendEmail = async(options) => {
     product: {
         // Appears in header & footer of e-mails
         name: 'TubeX',
-        link: 'https://mailgen.js/'
-        // Optional product logo
-        // logo: 'https://mailgen.js/img/logo.png'
+        link: 'https://tube-x.vercel.app/'
     }
 });
 
@@ -19,12 +17,12 @@ const htmlMail = mailGenerator.generate(options.mailgencontent);
 
 // Send the mail Using Nodemailer
 let transporter = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port: 587,
+    host:process.env.BREVO_MAIL,
+    port: process.env.MAIL_PORT,
     secure: false,
     auth: {
-        user:"gohelbhargav401@gmail.com",
-        pass:"aqknaoglmxclkvct"
+        user:process.env.BREVO_LOGIN,
+        pass:process.env.SMTP_KEY
     }
 });
 
@@ -42,7 +40,7 @@ try {
     console.log("Mail Sent.....")
     
 } catch (error) {
-    console.log("Error in Mail Sending",error)
+    console.log("Error in Mail Sending using Brevo",error)
 }
 
 }
