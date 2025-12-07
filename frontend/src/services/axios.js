@@ -5,7 +5,7 @@ const API_BASE = import.meta.env.DEV
   : "https://tubex-m576.onrender.com/api/v1";
 
 export const api = axios.create({
-    baseURL:API_BASE,
+    baseURL:"https://tubex-m576.onrender.com/api/v1",
     headers:{"Content-Type":"application/json"},
     withCredentials:true
 })
