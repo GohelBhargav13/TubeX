@@ -17,19 +17,6 @@ export const registerUser = async (req, res) => {
       return res.status(400).json(new ApiError(400, "User already exists"));
     }
 
-    //check for the user_avatar is upload to the localpath
-    // console.log(req.file);
-    // const user_avatar_upload = req.file?.path;
-
-    // if(!user_avatar_upload){
-    //     return res.status(400).json(new ApiError(400,"Image is not uploaded"))
-    // }
-
-    // const cloudPathImage = await uploadImageOnCloudinary(user_avatar_upload);
-    // if(!cloudPathImage){
-    //     return res.status(400).json(new ApiError(400,"File is not uploaded in cloud"))
-    // }
-
     const newUser = await Userm.create({
       userEmail,
       userFirstName,
@@ -62,23 +49,7 @@ export const registerUser = async (req, res) => {
 
     console.log(newUser)
 
-    //Send verification email
-    await sendEmail({
-      email: newUser?.userEmail,
-      subject: "Verification Email",
-      mailgencontent: verificationEmailTemplate(userFirstName, verifiactionToken),
-    });
-
-    console.log(newUser)
-
-  console.log("ENV check:",{
-  host:process.env.MAIL_HOSTNAME,
-  port: process.env.MAIL_PORT,
-  email: process.env.SMTP_EMAIL,
-  pass: process.env.SMTP_PASSWORD ? "✔" : "❌"
-})
-
-    res
+        res
       .status(201)
       .json(
         new ApiResponse(
@@ -87,6 +58,22 @@ export const registerUser = async (req, res) => {
           "User registerd sucessfully please Verify Your Email"
         )
       );
+    console.log(newUser)
+
+      console.log("ENV check:",{
+      host:process.env.MAIL_HOSTNAME,
+      port: process.env.MAIL_PORT,
+      email: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD ? "✔" : "❌"
+    })
+
+    //Send verification email
+    sendEmail({
+      email: newUser?.userEmail,
+      subject: "Verification Email",
+      mailgencontent: verificationEmailTemplate(userFirstName, verifiactionToken),
+    });
+
   } catch (error) {
     res
       .status(500)

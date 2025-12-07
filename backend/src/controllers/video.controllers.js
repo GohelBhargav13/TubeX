@@ -5,7 +5,6 @@ import Video from "../models/video.models.js";
 import ApiResponse from "../utills/api-response.js";
 import ApiError from "../utills/api-error.js";
 import Userm from "../models/user.models.js";
-import { resolveAny } from "dns";
 
 // Upload the data and core logic is here 
 export const uploadVideo = async (req, res) => {
