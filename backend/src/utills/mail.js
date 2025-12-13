@@ -1,8 +1,15 @@
-import nodemailer from "nodemailer"
-import mailgen from "mailgen"
+import Mailgen from "mailgen"
+import * as brevo from '@getbrevo/brevo';
+import "dotenv/config"
+
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
 
 export const sendEmail = async(options) => {
-    const mailGenerator = new mailgen({
+    const mailGenerator = new Mailgen({
     theme: 'default',
     product: {
         // Appears in header & footer of e-mails
@@ -14,37 +21,27 @@ export const sendEmail = async(options) => {
 const textMail = mailGenerator.generatePlaintext(options.mailgencontent);
 const htmlMail = mailGenerator.generate(options.mailgencontent);
 
-
-// Send the mail Using Nodemailer
-let transporter = nodemailer.createTransport({
-    host:process.env.MAIL_HOSTNAME,
-    port: process.env.MAIL_PORT,
-    auth: {
-        user:process.env.SMTP_EMAIL,
-        pass:process.env.SMTP_PASSWORD
-    },
-    tls:{
-      rejectUnauthorized:false
-    }
-});
-
-const MailOptions = {
-    from:"Tubex <no-reply@tubex>", 
-    to:options.email,
-    subject:options.subject,
-    text:textMail,
-    html:htmlMail
-}
-
 try {
-
-    await transporter.sendMail(MailOptions)
-    console.log("Mail Sent.....")
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
     
-} catch (error) {
-    console.log("Error in Mail Sending using Brevo",error)
-}
+    sendSmtpEmail.sender = { 
+      name: "TubeX", 
+      email: process.env.SMTP_EMAIL // Use your verified email
+    };
+    sendSmtpEmail.to = [{ email: options.email }];
+    sendSmtpEmail.subject = options.subject;
+    sendSmtpEmail.htmlContent = htmlMail;
+    sendSmtpEmail.textContent = textMail;
 
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    
+    console.log("✅ Email sent successfully", data);
+    return { success: true, data };
+
+  } catch (error) {
+    console.error("❌ Brevo email error:", error);
+    return { success: false, error: error.message };
+  }
 }
 
 export const verificationEmailTemplate = (username, verifyURL) => {
