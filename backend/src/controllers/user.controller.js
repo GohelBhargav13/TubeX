@@ -49,6 +49,13 @@ export const registerUser = async (req, res) => {
 
     console.log(newUser)
 
+    //Send verification email
+    await sendEmail({
+        email: newUser?.userEmail,
+        subject: "Verification Email",
+        mailgencontent: verificationEmailTemplate(userFirstName, verifiactionToken),
+      });
+
         res
       .status(201)
       .json(
@@ -64,15 +71,9 @@ export const registerUser = async (req, res) => {
       host:process.env.MAIL_HOSTNAME,
       port: process.env.MAIL_PORT,
       email: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD ? "✔" : "❌"
+      pass: process.env.SMTP_PASSWORD ? "✔" : "❌",
+      api: process.env.RESEND_API
     })
-
-    //Send verification email
-    sendEmail({
-      email: newUser?.userEmail,
-      subject: "Verification Email",
-      mailgencontent: verificationEmailTemplate(userFirstName, verifiactionToken),
-    });
 
   } catch (error) {
     res
