@@ -15,10 +15,13 @@ export const uploadVideo = async (req, res) => {
 
   // take the path of the input video file
   const { path } = req.file;
+  // console.log(path.split('\\')[1])
   const output_fileName = `${pathVal.join(process.cwd(), "Output")}/${
     req.file.originalname.split(".")[0]
   }.m3u8`;
+  console.log(output_fileName)
   const upload_clodinary_path = `${pathVal.join(process.cwd(), "Output")}/`;
+  // console.log("upload cloudinary path : ",upload_clodinary_path)
 
   try {
     await new Promise((resolve, reject) => {
