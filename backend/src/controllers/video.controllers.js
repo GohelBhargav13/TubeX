@@ -15,7 +15,7 @@ export const uploadVideo = async (req, res) => {
 
   // take the path of the input video file
   const { path } = req.file;
-  // console.log(path.split('\\')[1])
+  console.log("Path of the video file : ", path);
   const output_fileName = `${pathVal.join(process.cwd(), "Output")}/${
     req.file.originalname.split(".")[0]
   }.m3u8`;
