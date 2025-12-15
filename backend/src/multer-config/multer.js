@@ -5,11 +5,11 @@ import fs from "node:fs"
 const storage = multer.diskStorage({
     // Define the destination folder for the video store
     destination:function(req,file,cb){
-        const dir = process.cwd().split('\\')[1]
-        // console.log(dir)
+        const dir = "/Videos"
+        console.log(dir)
         if(!fs.existsSync(dir)){
-            console.log("videos folder created at :", dir)
-            fs.mkdirSync(path.join(process.cwd(), dir),{ recursive:true })
+            // console.log("videos folder created at :", dir)
+            fs.mkdirSync(dir, { recursive:true })
         }
         cb(null,dir)
     },
