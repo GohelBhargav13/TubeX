@@ -4,9 +4,9 @@ import fs from "fs"
 import "dotenv/config"
 
 const s3 = new AWS.S3({
-    accessKeyId:process.env.S3_ACCESSID || "AKIA2NK3X7XBS4RSR24T",
-    secretAccessKey:process.env.S3_SECRET_ACCESSID || "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",
-    region:process.env.S3_REGION || "eu-north-1"
+    accessKeyId:process.env.S3_ACCESSID,
+    secretAccessKey:process.env.S3_SECRET_ACCESSID,
+    region:process.env.S3_REGION
 })
 
 export const uploadVideoToS3 = async (folderPath,videoTitle) => {
@@ -36,7 +36,7 @@ export const uploadVideoToS3 = async (folderPath,videoTitle) => {
 
         // upload the data on the aws s3 bucket
         const data = await s3.upload({
-            Bucket:process.env.S3_BUCKET || "hls.bhargavgohel",
+            Bucket:process.env.S3_BUCKET,
             Key:`videos/${videoTitle}/${file}`,
             Body:fs.readFileSync(file_path),
             ContentType: file.endsWith('.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/MP2T',
