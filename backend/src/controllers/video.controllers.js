@@ -10,16 +10,17 @@ import Userm from "../models/user.models.js";
 export const uploadVideo = async (req, res) => {
   const { videoTitle, videoDescription } = req.body;
 
-  console.log("This is the video files : ", req.file);
-  console.log("Video details: ", req.body);
+  // console.log("This is the video files : ", req.file);
+  // console.log("Video details: ", req.body);
 
   // take the path of the input video file
   const { path } = req.file;
-  console.log("Path of the video file : ", path);
+  // console.log("Path of the video file : ", path);
+
   const output_fileName = `${pathVal.join(process.cwd(), "Output")}/${
     req.file.originalname.split(".")[0]
   }.m3u8`;
-  console.log(output_fileName)
+  // console.log(output_fileName)
   const upload_clodinary_path = `${pathVal.join(process.cwd(), "Output")}/`;
   // console.log("upload cloudinary path : ",upload_clodinary_path)
 
@@ -44,10 +45,14 @@ export const uploadVideo = async (req, res) => {
         .run();
     });
 
+    const original_video = req.file.path
+    // console.log("The original video url is : ", original_video)
+
     // Function for the S3 data upload
-    const url_data = await uploadVideoToS3(upload_clodinary_path,videoTitle);
+    const url_data = await uploadVideoToS3(upload_clodinary_path,videoTitle,original_video);
+
     // Print the data
-    console.log("Data From the S3 : ", url_data);
+    // console.log("Data From the S3 : ", url_data);
 
     // add details of the video in database
 
