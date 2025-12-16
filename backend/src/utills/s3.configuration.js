@@ -6,7 +6,7 @@ import "dotenv/config"
 const s3 = new AWS.S3({
     accessKeyId:process.env.S3_ACCESSID,
     secretAccessKey:process.env.S3_SECRET_ACCESSID,
-    region:process.env.S3_REGION
+    region:process.env.S3_REGION 
 })
 
 export const uploadVideoToS3 = async (folderPath,videoTitle) => {
