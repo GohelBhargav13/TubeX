@@ -9,7 +9,8 @@ const s3 = new AWS.S3({
     region:process.env.S3_REGION 
 })
 
-export const uploadVideoToS3 = async (folderPath,videoTitle) => {
+export const uploadVideoToS3 = async (folderPath,videoTitle,original_video_url) => {
+  console.log("Starting upload to S3 from folder:", folderPath);
   const pathUrl = [];
   const folderPath_output = folderPath.split("\\").pop()
    if(!videoTitle){
@@ -49,6 +50,9 @@ export const uploadVideoToS3 = async (folderPath,videoTitle) => {
 
         // Delete the file after successful upload
         fs.unlinkSync(file_path);
+        if(fs.existsSync(original_video_url)){
+            fs.unlinkSync(original_video_url)
+        }
         console.log("✅ File deleted locally after upload");
       }
     }
